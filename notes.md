@@ -1,9 +1,9 @@
-
-## Crypto Nexus
+ 
+# Crypto Nexus
 
 It is a web app/ game where users get virtual money to invest, trade virtual crypto coins.
 
-# Project details
+## Project details
 - At the time of new user registration every user gets starting $10,000 to invest
 - there will be a admin for the market (i.e *me*) which can introduce new coins in the market
 - each coin must have limited quantity as the real crypto market works 
@@ -60,20 +60,20 @@ It is a web app/ game where users get virtual money to invest, trade virtual cry
         Liquidity	Low cap vs Large cap
 - Add trade fee to avoid spam trading
 
-# Cron Jobs
+## Cron Jobs
 - price update(every 30mins)
 - monthly rewards
 - news generation
 - will use https://cron-job.org/
 
-# Coins
+## Coins
 - name, logo, volatility score, type(AI, meme, game)
   
-# Coin Price Schema
+## Coin Price Schema
 - id, coinId, timestamp, seasonId, price
 
 
-# Technical details
+## Technical details
 - next.js project
 - neondb with prisma orm
 - auth using Auth.js
@@ -83,7 +83,7 @@ It is a web app/ game where users get virtual money to invest, trade virtual cry
         Prices → update every 30 mins (cron + polling)
         Events → push via WebSockets
 
-# Coin Price Engine
+## Coin Price Engine
 ```
 buyVolume = 5000
 sellVolume = 2000
@@ -119,7 +119,7 @@ const priceChange =
 price = price * (1 + priceChange);
 ```
 
-# Candlestick graph
+## Candlestick graph
 - will use https://tradingview.github.io/lightweight-charts/docs/series-types#candlestick
 - 
 
