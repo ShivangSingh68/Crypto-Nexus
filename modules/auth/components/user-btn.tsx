@@ -11,19 +11,21 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { LogOut, User } from "lucide-react";
-import LogoutButton from "./logout-button";
+import LogoutButton from "./logout-btn";
 import { useCurrentUser } from "../hooks/use-current-user";
 
 const UserButton = () => {
 
   const user = useCurrentUser()
-
+    if(!user) {
+        return null;
+    }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
         <div className={cn("relative rounded-full")}>
           <Avatar>
-            <AvatarImage src={user?.image!} alt={user?.name!} />
+            <AvatarImage src={user.image!} alt={user?.name ?? ""} />
             <AvatarFallback className="bg-red-500">
               <User className="text-white" />
             </AvatarFallback>
