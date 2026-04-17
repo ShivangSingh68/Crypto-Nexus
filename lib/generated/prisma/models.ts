@@ -10,4 +10,12 @@
  */
 export type * from './models/User'
 export type * from './models/Account'
+export type * from './models/Coin'
+export type * from './models/Portfolio'
+export type * from './models/CoinPrice'
+export type * from './models/Trade'
+export type * from './models/News'
+export type * from './models/Holding'
+export type * from './models/Achievement'
+export type * from './models/UserAchievement'
 export type * from './commonInputTypes'

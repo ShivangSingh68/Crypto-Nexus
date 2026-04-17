@@ -25,8 +25,12 @@ model User {
   name String?
   email String @unique
   image String?
-  accounts Account[]
   role UserRole @default(USER)
+  lastTradeAt DateTime?
+
+  accounts Account[]
+  portfolio Portfolio?
+  achievements  UserAchievement[] 
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -50,4 +54,144 @@ model Account {
 
   @@unique([provider, providerAccountId])
   @@index([userId])
+}
+
+enum CoinType {
+  AI
+  MEME
+  GAME
+}
+
+enum TradeType {
+  BUY
+  SELL
+}
+
+enum AchievementType {
+  FIRST_PROFIT
+  HUNDRED_TRADES
+  TEN_X_PORTFOLIO
+  SURVIVED_CRASH
+}
+
+enum Volatility {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+model Coin {
+  id  String @id @default(cuid()) @map("_id")
+  name String
+  logo  String
+  ticker String
+  type  CoinType 
+  totalSupply Decimal @db.Decimal(18, 6)   //fixed max supply
+  circulatingSupply Decimal @db.Decimal(18, 6)     //circulating supply
+  liquidity Decimal @db.Decimal(18, 6)     //low = volatality
+  volatility  Volatility
+  currentPrice  Decimal @db.Decimal(18, 6) //latest price denormalised for speed
+  sentiment Decimal @db.Decimal(18, 6) @default(0) //-1 to 1 decay over time
+  momentum  Decimal @db.Decimal(18, 6) @default(0) //trend multiplier
+  buyVolume Decimal @db.Decimal(18, 6)  @default(0) //resets each interval
+  sellVolume Decimal @db.Decimal(18, 6)  @default(0) //resets each interval
+  lastVolumeResetAt DateTime  @default(now())
+
+  
+  price CoinPrice[]
+  news  News[]
+  holdings Holding[]
+}
+
+model Portfolio {
+  id String @id @default(cuid()) @map("_id")
+  userId String @unique //For one-to-one
+  cash Decimal @db.Decimal(18, 6) @default(10000.00)
+  value Decimal @db.Decimal(18, 6) @default(0)
+  holdings Holding[]
+  trades  Trade[]
+  lastMonthlyRewardAt DateTime?
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CoinPrice {
+  id  String  @id @default(cuid()) @map("_id")
+  coinId String
+  price Decimal @db.Decimal(18, 6)
+
+  coin Coin @relation(fields: [coinId], references: [id])
+
+  timestamp DateTime @default(now())
+
+  @@index([coinId])
+  @@index([timestamp])
+}
+
+model Trade {
+  id String @id @default(cuid()) @map("_id")
+  traderId  String
+  coinId String
+  portfolioId String
+  type TradeType
+  tradeValue Decimal @db.Decimal(18, 6)
+  coinCount Decimal @db.Decimal(18, 6)
+  priceAtExecution  Decimal @db.Decimal(18, 6)
+  fee Decimal @db.Decimal(18,6)
+  timestamp DateTime @default(now())
+
+  portfolio Portfolio @relation(fields: [portfolioId], references: [id])
+  @@index([coinId])
+  @@index([portfolioId])  
+  @@index([timestamp])
+}
+
+model News {
+  id  String @id  @default(cuid())  @map("_id")
+  coinId  String
+  content String
+  timestamp DateTime @default(now())
+  impact  Decimal @db.Decimal(18, 6) //-1 to +1
+
+
+  coin Coin @relation(fields: [coinId], references: [id])
+  @@index([coinId])
+  @@index([timestamp])
+}
+
+model Holding {
+  id String @id @default(cuid()) @map("_id")
+  portfolioId String
+  coinId  String
+  quantity  Decimal @db.Decimal(18, 6) @default(0)
+  avgBuyPrice Decimal @db.Decimal(18, 6) @default(0)   //For PnL calculations
+
+  portfolio Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  coin Coin  @relation(fields: [coinId], references: [id])
+
+  @@unique([portfolioId, coinId])
+  @@index([portfolioId, coinId])
+}
+
+model Achievement {
+  id  String @id @default(cuid()) @map("_id")
+  type AchievementType @unique
+  description String
+
+  users UserAchievement[]
+}
+
+model UserAchievement {
+  id String @id @default(cuid())  @map("_id")
+  userId String
+  achievementId String
+  unlockedAt  DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  achievement Achievement @relation(fields: [achievementId], references: [id])
+
+  @@unique([achievementId, userId])
 }

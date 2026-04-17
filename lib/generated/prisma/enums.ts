@@ -15,3 +15,39 @@ export const UserRole = {
 } as const
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
+
+
+export const CoinType = {
+  AI: 'AI',
+  MEME: 'MEME',
+  GAME: 'GAME'
+} as const
+
+export type CoinType = (typeof CoinType)[keyof typeof CoinType]
+
+
+export const TradeType = {
+  BUY: 'BUY',
+  SELL: 'SELL'
+} as const
+
+export type TradeType = (typeof TradeType)[keyof typeof TradeType]
+
+
+export const AchievementType = {
+  FIRST_PROFIT: 'FIRST_PROFIT',
+  HUNDRED_TRADES: 'HUNDRED_TRADES',
+  TEN_X_PORTFOLIO: 'TEN_X_PORTFOLIO',
+  SURVIVED_CRASH: 'SURVIVED_CRASH'
+} as const
+
+export type AchievementType = (typeof AchievementType)[keyof typeof AchievementType]
+
+
+export const Volatility = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH'
+} as const
+
+export type Volatility = (typeof Volatility)[keyof typeof Volatility]

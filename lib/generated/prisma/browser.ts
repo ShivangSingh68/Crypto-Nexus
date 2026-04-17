@@ -27,3 +27,43 @@ export type User = Prisma.UserModel
  * 
  */
 export type Account = Prisma.AccountModel
+/**
+ * Model Coin
+ * 
+ */
+export type Coin = Prisma.CoinModel
+/**
+ * Model Portfolio
+ * 
+ */
+export type Portfolio = Prisma.PortfolioModel
+/**
+ * Model CoinPrice
+ * 
+ */
+export type CoinPrice = Prisma.CoinPriceModel
+/**
+ * Model Trade
+ * 
+ */
+export type Trade = Prisma.TradeModel
+/**
+ * Model News
+ * 
+ */
+export type News = Prisma.NewsModel
+/**
+ * Model Holding
+ * 
+ */
+export type Holding = Prisma.HoldingModel
+/**
+ * Model Achievement
+ * 
+ */
+export type Achievement = Prisma.AchievementModel
+/**
+ * Model UserAchievement
+ * 
+ */
+export type UserAchievement = Prisma.UserAchievementModel

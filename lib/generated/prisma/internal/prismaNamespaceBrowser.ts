@@ -50,7 +50,15 @@ export const AnyNull = runtime.objectEnumValues.instances.AnyNull
 
 export const ModelName = {
   User: 'User',
-  Account: 'Account'
+  Account: 'Account',
+  Coin: 'Coin',
+  Portfolio: 'Portfolio',
+  CoinPrice: 'CoinPrice',
+  Trade: 'Trade',
+  News: 'News',
+  Holding: 'Holding',
+  Achievement: 'Achievement',
+  UserAchievement: 'UserAchievement'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -75,6 +83,7 @@ export const UserScalarFieldEnum = {
   email: 'email',
   image: 'image',
   role: 'role',
+  lastTradeAt: 'lastTradeAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -98,6 +107,107 @@ export const AccountScalarFieldEnum = {
 } as const
 
 export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
+
+
+export const CoinScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  logo: 'logo',
+  ticker: 'ticker',
+  type: 'type',
+  totalSupply: 'totalSupply',
+  circulatingSupply: 'circulatingSupply',
+  liquidity: 'liquidity',
+  volatility: 'volatility',
+  currentPrice: 'currentPrice',
+  sentiment: 'sentiment',
+  momentum: 'momentum',
+  buyVolume: 'buyVolume',
+  sellVolume: 'sellVolume',
+  lastVolumeResetAt: 'lastVolumeResetAt'
+} as const
+
+export type CoinScalarFieldEnum = (typeof CoinScalarFieldEnum)[keyof typeof CoinScalarFieldEnum]
+
+
+export const PortfolioScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  cash: 'cash',
+  value: 'value',
+  lastMonthlyRewardAt: 'lastMonthlyRewardAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PortfolioScalarFieldEnum = (typeof PortfolioScalarFieldEnum)[keyof typeof PortfolioScalarFieldEnum]
+
+
+export const CoinPriceScalarFieldEnum = {
+  id: 'id',
+  coinId: 'coinId',
+  price: 'price',
+  timestamp: 'timestamp'
+} as const
+
+export type CoinPriceScalarFieldEnum = (typeof CoinPriceScalarFieldEnum)[keyof typeof CoinPriceScalarFieldEnum]
+
+
+export const TradeScalarFieldEnum = {
+  id: 'id',
+  traderId: 'traderId',
+  coinId: 'coinId',
+  portfolioId: 'portfolioId',
+  type: 'type',
+  tradeValue: 'tradeValue',
+  coinCount: 'coinCount',
+  priceAtExecution: 'priceAtExecution',
+  fee: 'fee',
+  timestamp: 'timestamp'
+} as const
+
+export type TradeScalarFieldEnum = (typeof TradeScalarFieldEnum)[keyof typeof TradeScalarFieldEnum]
+
+
+export const NewsScalarFieldEnum = {
+  id: 'id',
+  coinId: 'coinId',
+  content: 'content',
+  timestamp: 'timestamp',
+  impact: 'impact'
+} as const
+
+export type NewsScalarFieldEnum = (typeof NewsScalarFieldEnum)[keyof typeof NewsScalarFieldEnum]
+
+
+export const HoldingScalarFieldEnum = {
+  id: 'id',
+  portfolioId: 'portfolioId',
+  coinId: 'coinId',
+  quantity: 'quantity',
+  avgBuyPrice: 'avgBuyPrice'
+} as const
+
+export type HoldingScalarFieldEnum = (typeof HoldingScalarFieldEnum)[keyof typeof HoldingScalarFieldEnum]
+
+
+export const AchievementScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  description: 'description'
+} as const
+
+export type AchievementScalarFieldEnum = (typeof AchievementScalarFieldEnum)[keyof typeof AchievementScalarFieldEnum]
+
+
+export const UserAchievementScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  achievementId: 'achievementId',
+  unlockedAt: 'unlockedAt'
+} as const
+
+export type UserAchievementScalarFieldEnum = (typeof UserAchievementScalarFieldEnum)[keyof typeof UserAchievementScalarFieldEnum]
 
 
 export const SortOrder = {
