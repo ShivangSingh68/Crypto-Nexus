@@ -110,6 +110,7 @@ model Portfolio {
   value Decimal @db.Decimal(18, 6) @default(0)
   holdings Holding[]
   trades  Trade[]
+  snapshots  PortfolioSnapshot[]
   lastMonthlyRewardAt DateTime?
 
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -194,4 +195,16 @@ model UserAchievement {
   achievement Achievement @relation(fields: [achievementId], references: [id])
 
   @@unique([achievementId, userId])
+}
+
+model PortfolioSnapshot {
+  id String @id @default(cuid()) @map("_id")
+  portfolioId String
+  timestamp DateTime  @default(now())
+  value Decimal @db.Decimal(18,6) @default(0)
+
+  portfolio Portfolio @relation(fields: [portfolioId], references: [id])
+
+  @@index([portfolioId])
+  @@index([timestamp])
 }

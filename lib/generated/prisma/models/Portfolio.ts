@@ -238,6 +238,7 @@ export type PortfolioWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Portfolio"> | Date | string
   holdings?: Prisma.HoldingListRelationFilter
   trades?: Prisma.TradeListRelationFilter
+  snapshots?: Prisma.PortfolioSnapshotListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -251,6 +252,7 @@ export type PortfolioOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   holdings?: Prisma.HoldingOrderByRelationAggregateInput
   trades?: Prisma.TradeOrderByRelationAggregateInput
+  snapshots?: Prisma.PortfolioSnapshotOrderByRelationAggregateInput
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -267,6 +269,7 @@ export type PortfolioWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Portfolio"> | Date | string
   holdings?: Prisma.HoldingListRelationFilter
   trades?: Prisma.TradeListRelationFilter
+  snapshots?: Prisma.PortfolioSnapshotListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId">
 
@@ -307,6 +310,7 @@ export type PortfolioCreateInput = {
   updatedAt?: Date | string
   holdings?: Prisma.HoldingCreateNestedManyWithoutPortfolioInput
   trades?: Prisma.TradeCreateNestedManyWithoutPortfolioInput
+  snapshots?: Prisma.PortfolioSnapshotCreateNestedManyWithoutPortfolioInput
   user: Prisma.UserCreateNestedOneWithoutPortfolioInput
 }
 
@@ -320,6 +324,7 @@ export type PortfolioUncheckedCreateInput = {
   updatedAt?: Date | string
   holdings?: Prisma.HoldingUncheckedCreateNestedManyWithoutPortfolioInput
   trades?: Prisma.TradeUncheckedCreateNestedManyWithoutPortfolioInput
+  snapshots?: Prisma.PortfolioSnapshotUncheckedCreateNestedManyWithoutPortfolioInput
 }
 
 export type PortfolioUpdateInput = {
@@ -331,6 +336,7 @@ export type PortfolioUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   holdings?: Prisma.HoldingUpdateManyWithoutPortfolioNestedInput
   trades?: Prisma.TradeUpdateManyWithoutPortfolioNestedInput
+  snapshots?: Prisma.PortfolioSnapshotUpdateManyWithoutPortfolioNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutPortfolioNestedInput
 }
 
@@ -344,6 +350,7 @@ export type PortfolioUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   holdings?: Prisma.HoldingUncheckedUpdateManyWithoutPortfolioNestedInput
   trades?: Prisma.TradeUncheckedUpdateManyWithoutPortfolioNestedInput
+  snapshots?: Prisma.PortfolioSnapshotUncheckedUpdateManyWithoutPortfolioNestedInput
 }
 
 export type PortfolioCreateManyInput = {
@@ -485,6 +492,20 @@ export type PortfolioUpdateOneRequiredWithoutHoldingsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PortfolioUpdateToOneWithWhereWithoutHoldingsInput, Prisma.PortfolioUpdateWithoutHoldingsInput>, Prisma.PortfolioUncheckedUpdateWithoutHoldingsInput>
 }
 
+export type PortfolioCreateNestedOneWithoutSnapshotsInput = {
+  create?: Prisma.XOR<Prisma.PortfolioCreateWithoutSnapshotsInput, Prisma.PortfolioUncheckedCreateWithoutSnapshotsInput>
+  connectOrCreate?: Prisma.PortfolioCreateOrConnectWithoutSnapshotsInput
+  connect?: Prisma.PortfolioWhereUniqueInput
+}
+
+export type PortfolioUpdateOneRequiredWithoutSnapshotsNestedInput = {
+  create?: Prisma.XOR<Prisma.PortfolioCreateWithoutSnapshotsInput, Prisma.PortfolioUncheckedCreateWithoutSnapshotsInput>
+  connectOrCreate?: Prisma.PortfolioCreateOrConnectWithoutSnapshotsInput
+  upsert?: Prisma.PortfolioUpsertWithoutSnapshotsInput
+  connect?: Prisma.PortfolioWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PortfolioUpdateToOneWithWhereWithoutSnapshotsInput, Prisma.PortfolioUpdateWithoutSnapshotsInput>, Prisma.PortfolioUncheckedUpdateWithoutSnapshotsInput>
+}
+
 export type PortfolioCreateWithoutUserInput = {
   id?: string
   cash?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -494,6 +515,7 @@ export type PortfolioCreateWithoutUserInput = {
   updatedAt?: Date | string
   holdings?: Prisma.HoldingCreateNestedManyWithoutPortfolioInput
   trades?: Prisma.TradeCreateNestedManyWithoutPortfolioInput
+  snapshots?: Prisma.PortfolioSnapshotCreateNestedManyWithoutPortfolioInput
 }
 
 export type PortfolioUncheckedCreateWithoutUserInput = {
@@ -505,6 +527,7 @@ export type PortfolioUncheckedCreateWithoutUserInput = {
   updatedAt?: Date | string
   holdings?: Prisma.HoldingUncheckedCreateNestedManyWithoutPortfolioInput
   trades?: Prisma.TradeUncheckedCreateNestedManyWithoutPortfolioInput
+  snapshots?: Prisma.PortfolioSnapshotUncheckedCreateNestedManyWithoutPortfolioInput
 }
 
 export type PortfolioCreateOrConnectWithoutUserInput = {
@@ -532,6 +555,7 @@ export type PortfolioUpdateWithoutUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   holdings?: Prisma.HoldingUpdateManyWithoutPortfolioNestedInput
   trades?: Prisma.TradeUpdateManyWithoutPortfolioNestedInput
+  snapshots?: Prisma.PortfolioSnapshotUpdateManyWithoutPortfolioNestedInput
 }
 
 export type PortfolioUncheckedUpdateWithoutUserInput = {
@@ -543,6 +567,7 @@ export type PortfolioUncheckedUpdateWithoutUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   holdings?: Prisma.HoldingUncheckedUpdateManyWithoutPortfolioNestedInput
   trades?: Prisma.TradeUncheckedUpdateManyWithoutPortfolioNestedInput
+  snapshots?: Prisma.PortfolioSnapshotUncheckedUpdateManyWithoutPortfolioNestedInput
 }
 
 export type PortfolioCreateWithoutTradesInput = {
@@ -553,6 +578,7 @@ export type PortfolioCreateWithoutTradesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   holdings?: Prisma.HoldingCreateNestedManyWithoutPortfolioInput
+  snapshots?: Prisma.PortfolioSnapshotCreateNestedManyWithoutPortfolioInput
   user: Prisma.UserCreateNestedOneWithoutPortfolioInput
 }
 
@@ -565,6 +591,7 @@ export type PortfolioUncheckedCreateWithoutTradesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   holdings?: Prisma.HoldingUncheckedCreateNestedManyWithoutPortfolioInput
+  snapshots?: Prisma.PortfolioSnapshotUncheckedCreateNestedManyWithoutPortfolioInput
 }
 
 export type PortfolioCreateOrConnectWithoutTradesInput = {
@@ -591,6 +618,7 @@ export type PortfolioUpdateWithoutTradesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   holdings?: Prisma.HoldingUpdateManyWithoutPortfolioNestedInput
+  snapshots?: Prisma.PortfolioSnapshotUpdateManyWithoutPortfolioNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutPortfolioNestedInput
 }
 
@@ -603,6 +631,7 @@ export type PortfolioUncheckedUpdateWithoutTradesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   holdings?: Prisma.HoldingUncheckedUpdateManyWithoutPortfolioNestedInput
+  snapshots?: Prisma.PortfolioSnapshotUncheckedUpdateManyWithoutPortfolioNestedInput
 }
 
 export type PortfolioCreateWithoutHoldingsInput = {
@@ -613,6 +642,7 @@ export type PortfolioCreateWithoutHoldingsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   trades?: Prisma.TradeCreateNestedManyWithoutPortfolioInput
+  snapshots?: Prisma.PortfolioSnapshotCreateNestedManyWithoutPortfolioInput
   user: Prisma.UserCreateNestedOneWithoutPortfolioInput
 }
 
@@ -625,6 +655,7 @@ export type PortfolioUncheckedCreateWithoutHoldingsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   trades?: Prisma.TradeUncheckedCreateNestedManyWithoutPortfolioInput
+  snapshots?: Prisma.PortfolioSnapshotUncheckedCreateNestedManyWithoutPortfolioInput
 }
 
 export type PortfolioCreateOrConnectWithoutHoldingsInput = {
@@ -651,6 +682,7 @@ export type PortfolioUpdateWithoutHoldingsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   trades?: Prisma.TradeUpdateManyWithoutPortfolioNestedInput
+  snapshots?: Prisma.PortfolioSnapshotUpdateManyWithoutPortfolioNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutPortfolioNestedInput
 }
 
@@ -663,6 +695,71 @@ export type PortfolioUncheckedUpdateWithoutHoldingsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   trades?: Prisma.TradeUncheckedUpdateManyWithoutPortfolioNestedInput
+  snapshots?: Prisma.PortfolioSnapshotUncheckedUpdateManyWithoutPortfolioNestedInput
+}
+
+export type PortfolioCreateWithoutSnapshotsInput = {
+  id?: string
+  cash?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  value?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  lastMonthlyRewardAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  holdings?: Prisma.HoldingCreateNestedManyWithoutPortfolioInput
+  trades?: Prisma.TradeCreateNestedManyWithoutPortfolioInput
+  user: Prisma.UserCreateNestedOneWithoutPortfolioInput
+}
+
+export type PortfolioUncheckedCreateWithoutSnapshotsInput = {
+  id?: string
+  userId: string
+  cash?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  value?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  lastMonthlyRewardAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  holdings?: Prisma.HoldingUncheckedCreateNestedManyWithoutPortfolioInput
+  trades?: Prisma.TradeUncheckedCreateNestedManyWithoutPortfolioInput
+}
+
+export type PortfolioCreateOrConnectWithoutSnapshotsInput = {
+  where: Prisma.PortfolioWhereUniqueInput
+  create: Prisma.XOR<Prisma.PortfolioCreateWithoutSnapshotsInput, Prisma.PortfolioUncheckedCreateWithoutSnapshotsInput>
+}
+
+export type PortfolioUpsertWithoutSnapshotsInput = {
+  update: Prisma.XOR<Prisma.PortfolioUpdateWithoutSnapshotsInput, Prisma.PortfolioUncheckedUpdateWithoutSnapshotsInput>
+  create: Prisma.XOR<Prisma.PortfolioCreateWithoutSnapshotsInput, Prisma.PortfolioUncheckedCreateWithoutSnapshotsInput>
+  where?: Prisma.PortfolioWhereInput
+}
+
+export type PortfolioUpdateToOneWithWhereWithoutSnapshotsInput = {
+  where?: Prisma.PortfolioWhereInput
+  data: Prisma.XOR<Prisma.PortfolioUpdateWithoutSnapshotsInput, Prisma.PortfolioUncheckedUpdateWithoutSnapshotsInput>
+}
+
+export type PortfolioUpdateWithoutSnapshotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  cash?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  lastMonthlyRewardAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  holdings?: Prisma.HoldingUpdateManyWithoutPortfolioNestedInput
+  trades?: Prisma.TradeUpdateManyWithoutPortfolioNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutPortfolioNestedInput
+}
+
+export type PortfolioUncheckedUpdateWithoutSnapshotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  cash?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  value?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  lastMonthlyRewardAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  holdings?: Prisma.HoldingUncheckedUpdateManyWithoutPortfolioNestedInput
+  trades?: Prisma.TradeUncheckedUpdateManyWithoutPortfolioNestedInput
 }
 
 
@@ -673,11 +770,13 @@ export type PortfolioUncheckedUpdateWithoutHoldingsInput = {
 export type PortfolioCountOutputType = {
   holdings: number
   trades: number
+  snapshots: number
 }
 
 export type PortfolioCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   holdings?: boolean | PortfolioCountOutputTypeCountHoldingsArgs
   trades?: boolean | PortfolioCountOutputTypeCountTradesArgs
+  snapshots?: boolean | PortfolioCountOutputTypeCountSnapshotsArgs
 }
 
 /**
@@ -704,6 +803,13 @@ export type PortfolioCountOutputTypeCountTradesArgs<ExtArgs extends runtime.Type
   where?: Prisma.TradeWhereInput
 }
 
+/**
+ * PortfolioCountOutputType without action
+ */
+export type PortfolioCountOutputTypeCountSnapshotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PortfolioSnapshotWhereInput
+}
+
 
 export type PortfolioSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -715,6 +821,7 @@ export type PortfolioSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   updatedAt?: boolean
   holdings?: boolean | Prisma.Portfolio$holdingsArgs<ExtArgs>
   trades?: boolean | Prisma.Portfolio$tradesArgs<ExtArgs>
+  snapshots?: boolean | Prisma.Portfolio$snapshotsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.PortfolioCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["portfolio"]>
@@ -755,6 +862,7 @@ export type PortfolioOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 export type PortfolioInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   holdings?: boolean | Prisma.Portfolio$holdingsArgs<ExtArgs>
   trades?: boolean | Prisma.Portfolio$tradesArgs<ExtArgs>
+  snapshots?: boolean | Prisma.Portfolio$snapshotsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.PortfolioCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -770,6 +878,7 @@ export type $PortfolioPayload<ExtArgs extends runtime.Types.Extensions.InternalA
   objects: {
     holdings: Prisma.$HoldingPayload<ExtArgs>[]
     trades: Prisma.$TradePayload<ExtArgs>[]
+    snapshots: Prisma.$PortfolioSnapshotPayload<ExtArgs>[]
     user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1176,6 +1285,7 @@ export interface Prisma__PortfolioClient<T, Null = never, ExtArgs extends runtim
   readonly [Symbol.toStringTag]: "PrismaPromise"
   holdings<T extends Prisma.Portfolio$holdingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Portfolio$holdingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HoldingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   trades<T extends Prisma.Portfolio$tradesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Portfolio$tradesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TradePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  snapshots<T extends Prisma.Portfolio$snapshotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Portfolio$snapshotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PortfolioSnapshotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1654,6 +1764,30 @@ export type Portfolio$tradesArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.TradeScalarFieldEnum | Prisma.TradeScalarFieldEnum[]
+}
+
+/**
+ * Portfolio.snapshots
+ */
+export type Portfolio$snapshotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PortfolioSnapshot
+   */
+  select?: Prisma.PortfolioSnapshotSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PortfolioSnapshot
+   */
+  omit?: Prisma.PortfolioSnapshotOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PortfolioSnapshotInclude<ExtArgs> | null
+  where?: Prisma.PortfolioSnapshotWhereInput
+  orderBy?: Prisma.PortfolioSnapshotOrderByWithRelationInput | Prisma.PortfolioSnapshotOrderByWithRelationInput[]
+  cursor?: Prisma.PortfolioSnapshotWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PortfolioSnapshotScalarFieldEnum | Prisma.PortfolioSnapshotScalarFieldEnum[]
 }
 
 /**

@@ -1,4 +1,0 @@
-// TODO:
-
-// resetSeason()
-// assignBadges()

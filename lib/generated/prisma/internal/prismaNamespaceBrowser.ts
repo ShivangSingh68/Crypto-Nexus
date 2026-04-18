@@ -58,7 +58,8 @@ export const ModelName = {
   News: 'News',
   Holding: 'Holding',
   Achievement: 'Achievement',
-  UserAchievement: 'UserAchievement'
+  UserAchievement: 'UserAchievement',
+  PortfolioSnapshot: 'PortfolioSnapshot'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -208,6 +209,16 @@ export const UserAchievementScalarFieldEnum = {
 } as const
 
 export type UserAchievementScalarFieldEnum = (typeof UserAchievementScalarFieldEnum)[keyof typeof UserAchievementScalarFieldEnum]
+
+
+export const PortfolioSnapshotScalarFieldEnum = {
+  id: 'id',
+  portfolioId: 'portfolioId',
+  timestamp: 'timestamp',
+  value: 'value'
+} as const
+
+export type PortfolioSnapshotScalarFieldEnum = (typeof PortfolioSnapshotScalarFieldEnum)[keyof typeof PortfolioSnapshotScalarFieldEnum]
 
 
 export const SortOrder = {
