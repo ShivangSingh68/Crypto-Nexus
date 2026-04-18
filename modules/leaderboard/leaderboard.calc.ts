@@ -1,7 +1,5 @@
-//TODO:
 
 import { LatestPortfolioSnapshotView} from "./leaderboard.types";
-
 
 export function rankUsers(
   portfolios: LatestPortfolioSnapshotView[]

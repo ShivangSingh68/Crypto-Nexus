@@ -1,8 +1,6 @@
-//TODO:
 
 import { User } from "@/lib/generated/prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
-
 
 interface Snapshot {
     value: Decimal,
