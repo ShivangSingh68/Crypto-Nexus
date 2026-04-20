@@ -5,6 +5,7 @@ import { Message } from "@/types/messages";
 import { Decimal } from "@prisma/client/runtime/library";
 import { validateBuy, validateSell } from "./validateTrade";
 import { Coin } from "@/lib/generated/prisma/client";
+import { updateAchievements } from "../achievements/achievements.service";
 
 interface ExecuteUserTradeParams {
   userId: string;
@@ -52,6 +53,8 @@ export async function executeUserTrade(
         error: "No portfolio linked to the user",
       };
     }
+
+    let avgBuyPrice = new Decimal(0);
     if (type === "BUY") {
       const res = validateBuy(
         quantity,
@@ -136,6 +139,7 @@ export async function executeUserTrade(
         },
         select: {
           quantity: true,
+          avgBuyPrice: true,
         },
       });
       if (!coinHolding) {
@@ -144,6 +148,7 @@ export async function executeUserTrade(
           error: "Failed to find coin holding for this portfolio",
         };
       }
+      avgBuyPrice = coinHolding.avgBuyPrice;
       const res = validateSell(
         quantity,
         coinHolding.quantity,
@@ -218,6 +223,8 @@ export async function executeUserTrade(
       };
     }
 
+    await updateAchievements(userId, "Trade", avgBuyPrice);
+    
     return {
       success: true,
       msg: "Trade executed successfully",

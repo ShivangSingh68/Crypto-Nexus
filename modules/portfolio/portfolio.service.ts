@@ -19,6 +19,7 @@ import {
 } from "./portfolio.calc";
 import { Decimal } from "@prisma/client/runtime/library";
 import { Holding, PortfolioSnapshot } from "@/lib/generated/prisma/client";
+import { updateAchievements } from "../achievements/achievements.service";
 
 //returns cash, totalValue, totalPnl, holdings[]
 export async function getUserPortfolio(
@@ -570,6 +571,8 @@ export async function createPortfolioSnapshot(
         error: "Failed to create portfolio snapshot",
       };
     }
+
+    await updateAchievements(userId, "Price_Update");
 
     return {
       success: true,

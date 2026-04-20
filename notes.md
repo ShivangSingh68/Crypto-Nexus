@@ -8,8 +8,7 @@ It is a web app/ game where users get virtual money to invest, trade virtual cry
 - there will be a admin for the market (i.e *me*) which can introduce new coins in the market
 - each coin must have limited quantity as the real crypto market works 
 - each user can buy and sell coins in their respective portfolio 
-- each user will get bonus cash ($500) every month to represent real world inflation
-- Reset leaderboard after every season (3 months) + give badges to top 10
+- each user will get bonus cash ($500) every month to represent real world inflationa
 - Achievement system
   
         “First Profit”
@@ -70,7 +69,7 @@ It is a web app/ game where users get virtual money to invest, trade virtual cry
 - name, logo, volatility score, type(AI, meme, game)
   
 ## Coin Price Schema
-- id, coinId, timestamp, seasonId, price
+- id, coinId, timestamp, price
 
 
 ## Technical details

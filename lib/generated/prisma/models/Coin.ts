@@ -327,6 +327,7 @@ export type CoinWhereInput = {
   price?: Prisma.CoinPriceListRelationFilter
   news?: Prisma.NewsListRelationFilter
   holdings?: Prisma.HoldingListRelationFilter
+  trades?: Prisma.TradeListRelationFilter
 }
 
 export type CoinOrderByWithRelationInput = {
@@ -348,6 +349,7 @@ export type CoinOrderByWithRelationInput = {
   price?: Prisma.CoinPriceOrderByRelationAggregateInput
   news?: Prisma.NewsOrderByRelationAggregateInput
   holdings?: Prisma.HoldingOrderByRelationAggregateInput
+  trades?: Prisma.TradeOrderByRelationAggregateInput
 }
 
 export type CoinWhereUniqueInput = Prisma.AtLeast<{
@@ -372,6 +374,7 @@ export type CoinWhereUniqueInput = Prisma.AtLeast<{
   price?: Prisma.CoinPriceListRelationFilter
   news?: Prisma.NewsListRelationFilter
   holdings?: Prisma.HoldingListRelationFilter
+  trades?: Prisma.TradeListRelationFilter
 }, "id">
 
 export type CoinOrderByWithAggregationInput = {
@@ -437,6 +440,7 @@ export type CoinCreateInput = {
   price?: Prisma.CoinPriceCreateNestedManyWithoutCoinInput
   news?: Prisma.NewsCreateNestedManyWithoutCoinInput
   holdings?: Prisma.HoldingCreateNestedManyWithoutCoinInput
+  trades?: Prisma.TradeCreateNestedManyWithoutCoinInput
 }
 
 export type CoinUncheckedCreateInput = {
@@ -458,6 +462,7 @@ export type CoinUncheckedCreateInput = {
   price?: Prisma.CoinPriceUncheckedCreateNestedManyWithoutCoinInput
   news?: Prisma.NewsUncheckedCreateNestedManyWithoutCoinInput
   holdings?: Prisma.HoldingUncheckedCreateNestedManyWithoutCoinInput
+  trades?: Prisma.TradeUncheckedCreateNestedManyWithoutCoinInput
 }
 
 export type CoinUpdateInput = {
@@ -479,6 +484,7 @@ export type CoinUpdateInput = {
   price?: Prisma.CoinPriceUpdateManyWithoutCoinNestedInput
   news?: Prisma.NewsUpdateManyWithoutCoinNestedInput
   holdings?: Prisma.HoldingUpdateManyWithoutCoinNestedInput
+  trades?: Prisma.TradeUpdateManyWithoutCoinNestedInput
 }
 
 export type CoinUncheckedUpdateInput = {
@@ -500,6 +506,7 @@ export type CoinUncheckedUpdateInput = {
   price?: Prisma.CoinPriceUncheckedUpdateManyWithoutCoinNestedInput
   news?: Prisma.NewsUncheckedUpdateManyWithoutCoinNestedInput
   holdings?: Prisma.HoldingUncheckedUpdateManyWithoutCoinNestedInput
+  trades?: Prisma.TradeUncheckedUpdateManyWithoutCoinNestedInput
 }
 
 export type CoinCreateManyInput = {
@@ -667,6 +674,20 @@ export type CoinUpdateOneRequiredWithoutPriceNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CoinUpdateToOneWithWhereWithoutPriceInput, Prisma.CoinUpdateWithoutPriceInput>, Prisma.CoinUncheckedUpdateWithoutPriceInput>
 }
 
+export type CoinCreateNestedOneWithoutTradesInput = {
+  create?: Prisma.XOR<Prisma.CoinCreateWithoutTradesInput, Prisma.CoinUncheckedCreateWithoutTradesInput>
+  connectOrCreate?: Prisma.CoinCreateOrConnectWithoutTradesInput
+  connect?: Prisma.CoinWhereUniqueInput
+}
+
+export type CoinUpdateOneRequiredWithoutTradesNestedInput = {
+  create?: Prisma.XOR<Prisma.CoinCreateWithoutTradesInput, Prisma.CoinUncheckedCreateWithoutTradesInput>
+  connectOrCreate?: Prisma.CoinCreateOrConnectWithoutTradesInput
+  upsert?: Prisma.CoinUpsertWithoutTradesInput
+  connect?: Prisma.CoinWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CoinUpdateToOneWithWhereWithoutTradesInput, Prisma.CoinUpdateWithoutTradesInput>, Prisma.CoinUncheckedUpdateWithoutTradesInput>
+}
+
 export type CoinCreateNestedOneWithoutNewsInput = {
   create?: Prisma.XOR<Prisma.CoinCreateWithoutNewsInput, Prisma.CoinUncheckedCreateWithoutNewsInput>
   connectOrCreate?: Prisma.CoinCreateOrConnectWithoutNewsInput
@@ -713,6 +734,7 @@ export type CoinCreateWithoutPriceInput = {
   lastVolumeResetAt?: Date | string
   news?: Prisma.NewsCreateNestedManyWithoutCoinInput
   holdings?: Prisma.HoldingCreateNestedManyWithoutCoinInput
+  trades?: Prisma.TradeCreateNestedManyWithoutCoinInput
 }
 
 export type CoinUncheckedCreateWithoutPriceInput = {
@@ -733,6 +755,7 @@ export type CoinUncheckedCreateWithoutPriceInput = {
   lastVolumeResetAt?: Date | string
   news?: Prisma.NewsUncheckedCreateNestedManyWithoutCoinInput
   holdings?: Prisma.HoldingUncheckedCreateNestedManyWithoutCoinInput
+  trades?: Prisma.TradeUncheckedCreateNestedManyWithoutCoinInput
 }
 
 export type CoinCreateOrConnectWithoutPriceInput = {
@@ -769,6 +792,7 @@ export type CoinUpdateWithoutPriceInput = {
   lastVolumeResetAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   news?: Prisma.NewsUpdateManyWithoutCoinNestedInput
   holdings?: Prisma.HoldingUpdateManyWithoutCoinNestedInput
+  trades?: Prisma.TradeUpdateManyWithoutCoinNestedInput
 }
 
 export type CoinUncheckedUpdateWithoutPriceInput = {
@@ -787,6 +811,107 @@ export type CoinUncheckedUpdateWithoutPriceInput = {
   buyVolume?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   sellVolume?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lastVolumeResetAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  news?: Prisma.NewsUncheckedUpdateManyWithoutCoinNestedInput
+  holdings?: Prisma.HoldingUncheckedUpdateManyWithoutCoinNestedInput
+  trades?: Prisma.TradeUncheckedUpdateManyWithoutCoinNestedInput
+}
+
+export type CoinCreateWithoutTradesInput = {
+  id?: string
+  name: string
+  logo: string
+  ticker: string
+  type: $Enums.CoinType
+  totalSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
+  circulatingSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
+  liquidity: runtime.Decimal | runtime.DecimalJsLike | number | string
+  volatility: $Enums.Volatility
+  currentPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sentiment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  momentum?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  buyVolume?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sellVolume?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  lastVolumeResetAt?: Date | string
+  price?: Prisma.CoinPriceCreateNestedManyWithoutCoinInput
+  news?: Prisma.NewsCreateNestedManyWithoutCoinInput
+  holdings?: Prisma.HoldingCreateNestedManyWithoutCoinInput
+}
+
+export type CoinUncheckedCreateWithoutTradesInput = {
+  id?: string
+  name: string
+  logo: string
+  ticker: string
+  type: $Enums.CoinType
+  totalSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
+  circulatingSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
+  liquidity: runtime.Decimal | runtime.DecimalJsLike | number | string
+  volatility: $Enums.Volatility
+  currentPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sentiment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  momentum?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  buyVolume?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  sellVolume?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  lastVolumeResetAt?: Date | string
+  price?: Prisma.CoinPriceUncheckedCreateNestedManyWithoutCoinInput
+  news?: Prisma.NewsUncheckedCreateNestedManyWithoutCoinInput
+  holdings?: Prisma.HoldingUncheckedCreateNestedManyWithoutCoinInput
+}
+
+export type CoinCreateOrConnectWithoutTradesInput = {
+  where: Prisma.CoinWhereUniqueInput
+  create: Prisma.XOR<Prisma.CoinCreateWithoutTradesInput, Prisma.CoinUncheckedCreateWithoutTradesInput>
+}
+
+export type CoinUpsertWithoutTradesInput = {
+  update: Prisma.XOR<Prisma.CoinUpdateWithoutTradesInput, Prisma.CoinUncheckedUpdateWithoutTradesInput>
+  create: Prisma.XOR<Prisma.CoinCreateWithoutTradesInput, Prisma.CoinUncheckedCreateWithoutTradesInput>
+  where?: Prisma.CoinWhereInput
+}
+
+export type CoinUpdateToOneWithWhereWithoutTradesInput = {
+  where?: Prisma.CoinWhereInput
+  data: Prisma.XOR<Prisma.CoinUpdateWithoutTradesInput, Prisma.CoinUncheckedUpdateWithoutTradesInput>
+}
+
+export type CoinUpdateWithoutTradesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  logo?: Prisma.StringFieldUpdateOperationsInput | string
+  ticker?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumCoinTypeFieldUpdateOperationsInput | $Enums.CoinType
+  totalSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  circulatingSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  liquidity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  volatility?: Prisma.EnumVolatilityFieldUpdateOperationsInput | $Enums.Volatility
+  currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sentiment?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  momentum?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  buyVolume?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sellVolume?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  lastVolumeResetAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.CoinPriceUpdateManyWithoutCoinNestedInput
+  news?: Prisma.NewsUpdateManyWithoutCoinNestedInput
+  holdings?: Prisma.HoldingUpdateManyWithoutCoinNestedInput
+}
+
+export type CoinUncheckedUpdateWithoutTradesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  logo?: Prisma.StringFieldUpdateOperationsInput | string
+  ticker?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumCoinTypeFieldUpdateOperationsInput | $Enums.CoinType
+  totalSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  circulatingSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  liquidity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  volatility?: Prisma.EnumVolatilityFieldUpdateOperationsInput | $Enums.Volatility
+  currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sentiment?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  momentum?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  buyVolume?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  sellVolume?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  lastVolumeResetAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  price?: Prisma.CoinPriceUncheckedUpdateManyWithoutCoinNestedInput
   news?: Prisma.NewsUncheckedUpdateManyWithoutCoinNestedInput
   holdings?: Prisma.HoldingUncheckedUpdateManyWithoutCoinNestedInput
 }
@@ -809,6 +934,7 @@ export type CoinCreateWithoutNewsInput = {
   lastVolumeResetAt?: Date | string
   price?: Prisma.CoinPriceCreateNestedManyWithoutCoinInput
   holdings?: Prisma.HoldingCreateNestedManyWithoutCoinInput
+  trades?: Prisma.TradeCreateNestedManyWithoutCoinInput
 }
 
 export type CoinUncheckedCreateWithoutNewsInput = {
@@ -829,6 +955,7 @@ export type CoinUncheckedCreateWithoutNewsInput = {
   lastVolumeResetAt?: Date | string
   price?: Prisma.CoinPriceUncheckedCreateNestedManyWithoutCoinInput
   holdings?: Prisma.HoldingUncheckedCreateNestedManyWithoutCoinInput
+  trades?: Prisma.TradeUncheckedCreateNestedManyWithoutCoinInput
 }
 
 export type CoinCreateOrConnectWithoutNewsInput = {
@@ -865,6 +992,7 @@ export type CoinUpdateWithoutNewsInput = {
   lastVolumeResetAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   price?: Prisma.CoinPriceUpdateManyWithoutCoinNestedInput
   holdings?: Prisma.HoldingUpdateManyWithoutCoinNestedInput
+  trades?: Prisma.TradeUpdateManyWithoutCoinNestedInput
 }
 
 export type CoinUncheckedUpdateWithoutNewsInput = {
@@ -885,6 +1013,7 @@ export type CoinUncheckedUpdateWithoutNewsInput = {
   lastVolumeResetAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   price?: Prisma.CoinPriceUncheckedUpdateManyWithoutCoinNestedInput
   holdings?: Prisma.HoldingUncheckedUpdateManyWithoutCoinNestedInput
+  trades?: Prisma.TradeUncheckedUpdateManyWithoutCoinNestedInput
 }
 
 export type CoinCreateWithoutHoldingsInput = {
@@ -905,6 +1034,7 @@ export type CoinCreateWithoutHoldingsInput = {
   lastVolumeResetAt?: Date | string
   price?: Prisma.CoinPriceCreateNestedManyWithoutCoinInput
   news?: Prisma.NewsCreateNestedManyWithoutCoinInput
+  trades?: Prisma.TradeCreateNestedManyWithoutCoinInput
 }
 
 export type CoinUncheckedCreateWithoutHoldingsInput = {
@@ -925,6 +1055,7 @@ export type CoinUncheckedCreateWithoutHoldingsInput = {
   lastVolumeResetAt?: Date | string
   price?: Prisma.CoinPriceUncheckedCreateNestedManyWithoutCoinInput
   news?: Prisma.NewsUncheckedCreateNestedManyWithoutCoinInput
+  trades?: Prisma.TradeUncheckedCreateNestedManyWithoutCoinInput
 }
 
 export type CoinCreateOrConnectWithoutHoldingsInput = {
@@ -961,6 +1092,7 @@ export type CoinUpdateWithoutHoldingsInput = {
   lastVolumeResetAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   price?: Prisma.CoinPriceUpdateManyWithoutCoinNestedInput
   news?: Prisma.NewsUpdateManyWithoutCoinNestedInput
+  trades?: Prisma.TradeUpdateManyWithoutCoinNestedInput
 }
 
 export type CoinUncheckedUpdateWithoutHoldingsInput = {
@@ -981,6 +1113,7 @@ export type CoinUncheckedUpdateWithoutHoldingsInput = {
   lastVolumeResetAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   price?: Prisma.CoinPriceUncheckedUpdateManyWithoutCoinNestedInput
   news?: Prisma.NewsUncheckedUpdateManyWithoutCoinNestedInput
+  trades?: Prisma.TradeUncheckedUpdateManyWithoutCoinNestedInput
 }
 
 
@@ -992,12 +1125,14 @@ export type CoinCountOutputType = {
   price: number
   news: number
   holdings: number
+  trades: number
 }
 
 export type CoinCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   price?: boolean | CoinCountOutputTypeCountPriceArgs
   news?: boolean | CoinCountOutputTypeCountNewsArgs
   holdings?: boolean | CoinCountOutputTypeCountHoldingsArgs
+  trades?: boolean | CoinCountOutputTypeCountTradesArgs
 }
 
 /**
@@ -1031,6 +1166,13 @@ export type CoinCountOutputTypeCountHoldingsArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.HoldingWhereInput
 }
 
+/**
+ * CoinCountOutputType without action
+ */
+export type CoinCountOutputTypeCountTradesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TradeWhereInput
+}
+
 
 export type CoinSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1051,6 +1193,7 @@ export type CoinSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   price?: boolean | Prisma.Coin$priceArgs<ExtArgs>
   news?: boolean | Prisma.Coin$newsArgs<ExtArgs>
   holdings?: boolean | Prisma.Coin$holdingsArgs<ExtArgs>
+  trades?: boolean | Prisma.Coin$tradesArgs<ExtArgs>
   _count?: boolean | Prisma.CoinCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["coin"]>
 
@@ -1113,6 +1256,7 @@ export type CoinInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   price?: boolean | Prisma.Coin$priceArgs<ExtArgs>
   news?: boolean | Prisma.Coin$newsArgs<ExtArgs>
   holdings?: boolean | Prisma.Coin$holdingsArgs<ExtArgs>
+  trades?: boolean | Prisma.Coin$tradesArgs<ExtArgs>
   _count?: boolean | Prisma.CoinCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CoinIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1124,6 +1268,7 @@ export type $CoinPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     price: Prisma.$CoinPricePayload<ExtArgs>[]
     news: Prisma.$NewsPayload<ExtArgs>[]
     holdings: Prisma.$HoldingPayload<ExtArgs>[]
+    trades: Prisma.$TradePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1538,6 +1683,7 @@ export interface Prisma__CoinClient<T, Null = never, ExtArgs extends runtime.Typ
   price<T extends Prisma.Coin$priceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Coin$priceArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CoinPricePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   news<T extends Prisma.Coin$newsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Coin$newsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NewsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   holdings<T extends Prisma.Coin$holdingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Coin$holdingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HoldingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  trades<T extends Prisma.Coin$tradesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Coin$tradesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TradePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2039,6 +2185,30 @@ export type Coin$holdingsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.HoldingScalarFieldEnum | Prisma.HoldingScalarFieldEnum[]
+}
+
+/**
+ * Coin.trades
+ */
+export type Coin$tradesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Trade
+   */
+  select?: Prisma.TradeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Trade
+   */
+  omit?: Prisma.TradeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TradeInclude<ExtArgs> | null
+  where?: Prisma.TradeWhereInput
+  orderBy?: Prisma.TradeOrderByWithRelationInput | Prisma.TradeOrderByWithRelationInput[]
+  cursor?: Prisma.TradeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TradeScalarFieldEnum | Prisma.TradeScalarFieldEnum[]
 }
 
 /**

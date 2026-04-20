@@ -68,10 +68,15 @@ enum TradeType {
 }
 
 enum AchievementType {
+  FIRST_TRADE
   FIRST_PROFIT
-  HUNDRED_TRADES
-  TEN_X_PORTFOLIO
-  SURVIVED_CRASH
+  TEN_TRADES
+  DOUBLE_PORTFOLIO
+  MEME_LORD
+  AI_VISIONARY
+  TOP_TEN
+  RANK_ONE
+  MILLIONARE
 }
 
 enum Volatility {
@@ -101,6 +106,7 @@ model Coin {
   price CoinPrice[]
   news  News[]
   holdings Holding[]
+  trades Trade[]
 }
 
 model Portfolio {
@@ -145,6 +151,7 @@ model Trade {
   timestamp DateTime @default(now())
 
   portfolio Portfolio @relation(fields: [portfolioId], references: [id])
+  coin  Coin @relation(fields: [coinId], references: [id])
   @@index([coinId])
   @@index([portfolioId])  
   @@index([timestamp])
@@ -153,7 +160,8 @@ model Trade {
 model News {
   id  String @id  @default(cuid())  @map("_id")
   coinId  String
-  content String
+  description String
+  heading String
   timestamp DateTime @default(now())
   impact  Decimal @db.Decimal(18, 6) //-1 to +1
 

@@ -269,6 +269,7 @@ export type TradeWhereInput = {
   fee?: Prisma.DecimalFilter<"Trade"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   timestamp?: Prisma.DateTimeFilter<"Trade"> | Date | string
   portfolio?: Prisma.XOR<Prisma.PortfolioScalarRelationFilter, Prisma.PortfolioWhereInput>
+  coin?: Prisma.XOR<Prisma.CoinScalarRelationFilter, Prisma.CoinWhereInput>
 }
 
 export type TradeOrderByWithRelationInput = {
@@ -283,6 +284,7 @@ export type TradeOrderByWithRelationInput = {
   fee?: Prisma.SortOrder
   timestamp?: Prisma.SortOrder
   portfolio?: Prisma.PortfolioOrderByWithRelationInput
+  coin?: Prisma.CoinOrderByWithRelationInput
 }
 
 export type TradeWhereUniqueInput = Prisma.AtLeast<{
@@ -300,6 +302,7 @@ export type TradeWhereUniqueInput = Prisma.AtLeast<{
   fee?: Prisma.DecimalFilter<"Trade"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   timestamp?: Prisma.DateTimeFilter<"Trade"> | Date | string
   portfolio?: Prisma.XOR<Prisma.PortfolioScalarRelationFilter, Prisma.PortfolioWhereInput>
+  coin?: Prisma.XOR<Prisma.CoinScalarRelationFilter, Prisma.CoinWhereInput>
 }, "id">
 
 export type TradeOrderByWithAggregationInput = {
@@ -339,7 +342,6 @@ export type TradeScalarWhereWithAggregatesInput = {
 export type TradeCreateInput = {
   id?: string
   traderId: string
-  coinId: string
   type: $Enums.TradeType
   tradeValue: runtime.Decimal | runtime.DecimalJsLike | number | string
   coinCount: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -347,6 +349,7 @@ export type TradeCreateInput = {
   fee: runtime.Decimal | runtime.DecimalJsLike | number | string
   timestamp?: Date | string
   portfolio: Prisma.PortfolioCreateNestedOneWithoutTradesInput
+  coin: Prisma.CoinCreateNestedOneWithoutTradesInput
 }
 
 export type TradeUncheckedCreateInput = {
@@ -365,7 +368,6 @@ export type TradeUncheckedCreateInput = {
 export type TradeUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   traderId?: Prisma.StringFieldUpdateOperationsInput | string
-  coinId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumTradeTypeFieldUpdateOperationsInput | $Enums.TradeType
   tradeValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coinCount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -373,6 +375,7 @@ export type TradeUpdateInput = {
   fee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   portfolio?: Prisma.PortfolioUpdateOneRequiredWithoutTradesNestedInput
+  coin?: Prisma.CoinUpdateOneRequiredWithoutTradesNestedInput
 }
 
 export type TradeUncheckedUpdateInput = {
@@ -404,7 +407,6 @@ export type TradeCreateManyInput = {
 export type TradeUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   traderId?: Prisma.StringFieldUpdateOperationsInput | string
-  coinId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumTradeTypeFieldUpdateOperationsInput | $Enums.TradeType
   tradeValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coinCount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -489,6 +491,48 @@ export type TradeSumOrderByAggregateInput = {
   fee?: Prisma.SortOrder
 }
 
+export type TradeCreateNestedManyWithoutCoinInput = {
+  create?: Prisma.XOR<Prisma.TradeCreateWithoutCoinInput, Prisma.TradeUncheckedCreateWithoutCoinInput> | Prisma.TradeCreateWithoutCoinInput[] | Prisma.TradeUncheckedCreateWithoutCoinInput[]
+  connectOrCreate?: Prisma.TradeCreateOrConnectWithoutCoinInput | Prisma.TradeCreateOrConnectWithoutCoinInput[]
+  createMany?: Prisma.TradeCreateManyCoinInputEnvelope
+  connect?: Prisma.TradeWhereUniqueInput | Prisma.TradeWhereUniqueInput[]
+}
+
+export type TradeUncheckedCreateNestedManyWithoutCoinInput = {
+  create?: Prisma.XOR<Prisma.TradeCreateWithoutCoinInput, Prisma.TradeUncheckedCreateWithoutCoinInput> | Prisma.TradeCreateWithoutCoinInput[] | Prisma.TradeUncheckedCreateWithoutCoinInput[]
+  connectOrCreate?: Prisma.TradeCreateOrConnectWithoutCoinInput | Prisma.TradeCreateOrConnectWithoutCoinInput[]
+  createMany?: Prisma.TradeCreateManyCoinInputEnvelope
+  connect?: Prisma.TradeWhereUniqueInput | Prisma.TradeWhereUniqueInput[]
+}
+
+export type TradeUpdateManyWithoutCoinNestedInput = {
+  create?: Prisma.XOR<Prisma.TradeCreateWithoutCoinInput, Prisma.TradeUncheckedCreateWithoutCoinInput> | Prisma.TradeCreateWithoutCoinInput[] | Prisma.TradeUncheckedCreateWithoutCoinInput[]
+  connectOrCreate?: Prisma.TradeCreateOrConnectWithoutCoinInput | Prisma.TradeCreateOrConnectWithoutCoinInput[]
+  upsert?: Prisma.TradeUpsertWithWhereUniqueWithoutCoinInput | Prisma.TradeUpsertWithWhereUniqueWithoutCoinInput[]
+  createMany?: Prisma.TradeCreateManyCoinInputEnvelope
+  set?: Prisma.TradeWhereUniqueInput | Prisma.TradeWhereUniqueInput[]
+  disconnect?: Prisma.TradeWhereUniqueInput | Prisma.TradeWhereUniqueInput[]
+  delete?: Prisma.TradeWhereUniqueInput | Prisma.TradeWhereUniqueInput[]
+  connect?: Prisma.TradeWhereUniqueInput | Prisma.TradeWhereUniqueInput[]
+  update?: Prisma.TradeUpdateWithWhereUniqueWithoutCoinInput | Prisma.TradeUpdateWithWhereUniqueWithoutCoinInput[]
+  updateMany?: Prisma.TradeUpdateManyWithWhereWithoutCoinInput | Prisma.TradeUpdateManyWithWhereWithoutCoinInput[]
+  deleteMany?: Prisma.TradeScalarWhereInput | Prisma.TradeScalarWhereInput[]
+}
+
+export type TradeUncheckedUpdateManyWithoutCoinNestedInput = {
+  create?: Prisma.XOR<Prisma.TradeCreateWithoutCoinInput, Prisma.TradeUncheckedCreateWithoutCoinInput> | Prisma.TradeCreateWithoutCoinInput[] | Prisma.TradeUncheckedCreateWithoutCoinInput[]
+  connectOrCreate?: Prisma.TradeCreateOrConnectWithoutCoinInput | Prisma.TradeCreateOrConnectWithoutCoinInput[]
+  upsert?: Prisma.TradeUpsertWithWhereUniqueWithoutCoinInput | Prisma.TradeUpsertWithWhereUniqueWithoutCoinInput[]
+  createMany?: Prisma.TradeCreateManyCoinInputEnvelope
+  set?: Prisma.TradeWhereUniqueInput | Prisma.TradeWhereUniqueInput[]
+  disconnect?: Prisma.TradeWhereUniqueInput | Prisma.TradeWhereUniqueInput[]
+  delete?: Prisma.TradeWhereUniqueInput | Prisma.TradeWhereUniqueInput[]
+  connect?: Prisma.TradeWhereUniqueInput | Prisma.TradeWhereUniqueInput[]
+  update?: Prisma.TradeUpdateWithWhereUniqueWithoutCoinInput | Prisma.TradeUpdateWithWhereUniqueWithoutCoinInput[]
+  updateMany?: Prisma.TradeUpdateManyWithWhereWithoutCoinInput | Prisma.TradeUpdateManyWithWhereWithoutCoinInput[]
+  deleteMany?: Prisma.TradeScalarWhereInput | Prisma.TradeScalarWhereInput[]
+}
+
 export type TradeCreateNestedManyWithoutPortfolioInput = {
   create?: Prisma.XOR<Prisma.TradeCreateWithoutPortfolioInput, Prisma.TradeUncheckedCreateWithoutPortfolioInput> | Prisma.TradeCreateWithoutPortfolioInput[] | Prisma.TradeUncheckedCreateWithoutPortfolioInput[]
   connectOrCreate?: Prisma.TradeCreateOrConnectWithoutPortfolioInput | Prisma.TradeCreateOrConnectWithoutPortfolioInput[]
@@ -535,16 +579,82 @@ export type EnumTradeTypeFieldUpdateOperationsInput = {
   set?: $Enums.TradeType
 }
 
-export type TradeCreateWithoutPortfolioInput = {
+export type TradeCreateWithoutCoinInput = {
   id?: string
   traderId: string
-  coinId: string
   type: $Enums.TradeType
   tradeValue: runtime.Decimal | runtime.DecimalJsLike | number | string
   coinCount: runtime.Decimal | runtime.DecimalJsLike | number | string
   priceAtExecution: runtime.Decimal | runtime.DecimalJsLike | number | string
   fee: runtime.Decimal | runtime.DecimalJsLike | number | string
   timestamp?: Date | string
+  portfolio: Prisma.PortfolioCreateNestedOneWithoutTradesInput
+}
+
+export type TradeUncheckedCreateWithoutCoinInput = {
+  id?: string
+  traderId: string
+  portfolioId: string
+  type: $Enums.TradeType
+  tradeValue: runtime.Decimal | runtime.DecimalJsLike | number | string
+  coinCount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  priceAtExecution: runtime.Decimal | runtime.DecimalJsLike | number | string
+  fee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  timestamp?: Date | string
+}
+
+export type TradeCreateOrConnectWithoutCoinInput = {
+  where: Prisma.TradeWhereUniqueInput
+  create: Prisma.XOR<Prisma.TradeCreateWithoutCoinInput, Prisma.TradeUncheckedCreateWithoutCoinInput>
+}
+
+export type TradeCreateManyCoinInputEnvelope = {
+  data: Prisma.TradeCreateManyCoinInput | Prisma.TradeCreateManyCoinInput[]
+  skipDuplicates?: boolean
+}
+
+export type TradeUpsertWithWhereUniqueWithoutCoinInput = {
+  where: Prisma.TradeWhereUniqueInput
+  update: Prisma.XOR<Prisma.TradeUpdateWithoutCoinInput, Prisma.TradeUncheckedUpdateWithoutCoinInput>
+  create: Prisma.XOR<Prisma.TradeCreateWithoutCoinInput, Prisma.TradeUncheckedCreateWithoutCoinInput>
+}
+
+export type TradeUpdateWithWhereUniqueWithoutCoinInput = {
+  where: Prisma.TradeWhereUniqueInput
+  data: Prisma.XOR<Prisma.TradeUpdateWithoutCoinInput, Prisma.TradeUncheckedUpdateWithoutCoinInput>
+}
+
+export type TradeUpdateManyWithWhereWithoutCoinInput = {
+  where: Prisma.TradeScalarWhereInput
+  data: Prisma.XOR<Prisma.TradeUpdateManyMutationInput, Prisma.TradeUncheckedUpdateManyWithoutCoinInput>
+}
+
+export type TradeScalarWhereInput = {
+  AND?: Prisma.TradeScalarWhereInput | Prisma.TradeScalarWhereInput[]
+  OR?: Prisma.TradeScalarWhereInput[]
+  NOT?: Prisma.TradeScalarWhereInput | Prisma.TradeScalarWhereInput[]
+  id?: Prisma.StringFilter<"Trade"> | string
+  traderId?: Prisma.StringFilter<"Trade"> | string
+  coinId?: Prisma.StringFilter<"Trade"> | string
+  portfolioId?: Prisma.StringFilter<"Trade"> | string
+  type?: Prisma.EnumTradeTypeFilter<"Trade"> | $Enums.TradeType
+  tradeValue?: Prisma.DecimalFilter<"Trade"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  coinCount?: Prisma.DecimalFilter<"Trade"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  priceAtExecution?: Prisma.DecimalFilter<"Trade"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  fee?: Prisma.DecimalFilter<"Trade"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  timestamp?: Prisma.DateTimeFilter<"Trade"> | Date | string
+}
+
+export type TradeCreateWithoutPortfolioInput = {
+  id?: string
+  traderId: string
+  type: $Enums.TradeType
+  tradeValue: runtime.Decimal | runtime.DecimalJsLike | number | string
+  coinCount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  priceAtExecution: runtime.Decimal | runtime.DecimalJsLike | number | string
+  fee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  timestamp?: Date | string
+  coin: Prisma.CoinCreateNestedOneWithoutTradesInput
 }
 
 export type TradeUncheckedCreateWithoutPortfolioInput = {
@@ -585,20 +695,52 @@ export type TradeUpdateManyWithWhereWithoutPortfolioInput = {
   data: Prisma.XOR<Prisma.TradeUpdateManyMutationInput, Prisma.TradeUncheckedUpdateManyWithoutPortfolioInput>
 }
 
-export type TradeScalarWhereInput = {
-  AND?: Prisma.TradeScalarWhereInput | Prisma.TradeScalarWhereInput[]
-  OR?: Prisma.TradeScalarWhereInput[]
-  NOT?: Prisma.TradeScalarWhereInput | Prisma.TradeScalarWhereInput[]
-  id?: Prisma.StringFilter<"Trade"> | string
-  traderId?: Prisma.StringFilter<"Trade"> | string
-  coinId?: Prisma.StringFilter<"Trade"> | string
-  portfolioId?: Prisma.StringFilter<"Trade"> | string
-  type?: Prisma.EnumTradeTypeFilter<"Trade"> | $Enums.TradeType
-  tradeValue?: Prisma.DecimalFilter<"Trade"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  coinCount?: Prisma.DecimalFilter<"Trade"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  priceAtExecution?: Prisma.DecimalFilter<"Trade"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  fee?: Prisma.DecimalFilter<"Trade"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  timestamp?: Prisma.DateTimeFilter<"Trade"> | Date | string
+export type TradeCreateManyCoinInput = {
+  id?: string
+  traderId: string
+  portfolioId: string
+  type: $Enums.TradeType
+  tradeValue: runtime.Decimal | runtime.DecimalJsLike | number | string
+  coinCount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  priceAtExecution: runtime.Decimal | runtime.DecimalJsLike | number | string
+  fee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  timestamp?: Date | string
+}
+
+export type TradeUpdateWithoutCoinInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  traderId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumTradeTypeFieldUpdateOperationsInput | $Enums.TradeType
+  tradeValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  coinCount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  priceAtExecution?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  fee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  portfolio?: Prisma.PortfolioUpdateOneRequiredWithoutTradesNestedInput
+}
+
+export type TradeUncheckedUpdateWithoutCoinInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  traderId?: Prisma.StringFieldUpdateOperationsInput | string
+  portfolioId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumTradeTypeFieldUpdateOperationsInput | $Enums.TradeType
+  tradeValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  coinCount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  priceAtExecution?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  fee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TradeUncheckedUpdateManyWithoutCoinInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  traderId?: Prisma.StringFieldUpdateOperationsInput | string
+  portfolioId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumTradeTypeFieldUpdateOperationsInput | $Enums.TradeType
+  tradeValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  coinCount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  priceAtExecution?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  fee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type TradeCreateManyPortfolioInput = {
@@ -616,13 +758,13 @@ export type TradeCreateManyPortfolioInput = {
 export type TradeUpdateWithoutPortfolioInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   traderId?: Prisma.StringFieldUpdateOperationsInput | string
-  coinId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumTradeTypeFieldUpdateOperationsInput | $Enums.TradeType
   tradeValue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coinCount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   priceAtExecution?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   fee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  coin?: Prisma.CoinUpdateOneRequiredWithoutTradesNestedInput
 }
 
 export type TradeUncheckedUpdateWithoutPortfolioInput = {
@@ -663,6 +805,7 @@ export type TradeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   fee?: boolean
   timestamp?: boolean
   portfolio?: boolean | Prisma.PortfolioDefaultArgs<ExtArgs>
+  coin?: boolean | Prisma.CoinDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["trade"]>
 
 export type TradeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -677,6 +820,7 @@ export type TradeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   fee?: boolean
   timestamp?: boolean
   portfolio?: boolean | Prisma.PortfolioDefaultArgs<ExtArgs>
+  coin?: boolean | Prisma.CoinDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["trade"]>
 
 export type TradeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -691,6 +835,7 @@ export type TradeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   fee?: boolean
   timestamp?: boolean
   portfolio?: boolean | Prisma.PortfolioDefaultArgs<ExtArgs>
+  coin?: boolean | Prisma.CoinDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["trade"]>
 
 export type TradeSelectScalar = {
@@ -709,18 +854,22 @@ export type TradeSelectScalar = {
 export type TradeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "traderId" | "coinId" | "portfolioId" | "type" | "tradeValue" | "coinCount" | "priceAtExecution" | "fee" | "timestamp", ExtArgs["result"]["trade"]>
 export type TradeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   portfolio?: boolean | Prisma.PortfolioDefaultArgs<ExtArgs>
+  coin?: boolean | Prisma.CoinDefaultArgs<ExtArgs>
 }
 export type TradeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   portfolio?: boolean | Prisma.PortfolioDefaultArgs<ExtArgs>
+  coin?: boolean | Prisma.CoinDefaultArgs<ExtArgs>
 }
 export type TradeIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   portfolio?: boolean | Prisma.PortfolioDefaultArgs<ExtArgs>
+  coin?: boolean | Prisma.CoinDefaultArgs<ExtArgs>
 }
 
 export type $TradePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Trade"
   objects: {
     portfolio: Prisma.$PortfolioPayload<ExtArgs>
+    coin: Prisma.$CoinPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1128,6 +1277,7 @@ readonly fields: TradeFieldRefs;
 export interface Prisma__TradeClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   portfolio<T extends Prisma.PortfolioDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PortfolioDefaultArgs<ExtArgs>>): Prisma.Prisma__PortfolioClient<runtime.Types.Result.GetResult<Prisma.$PortfolioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  coin<T extends Prisma.CoinDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CoinDefaultArgs<ExtArgs>>): Prisma.Prisma__CoinClient<runtime.Types.Result.GetResult<Prisma.$CoinPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

@@ -173,7 +173,8 @@ export type TradeScalarFieldEnum = (typeof TradeScalarFieldEnum)[keyof typeof Tr
 export const NewsScalarFieldEnum = {
   id: 'id',
   coinId: 'coinId',
-  content: 'content',
+  description: 'description',
+  heading: 'heading',
   timestamp: 'timestamp',
   impact: 'impact'
 } as const

@@ -35,10 +35,15 @@ export type TradeType = (typeof TradeType)[keyof typeof TradeType]
 
 
 export const AchievementType = {
+  FIRST_TRADE: 'FIRST_TRADE',
   FIRST_PROFIT: 'FIRST_PROFIT',
-  HUNDRED_TRADES: 'HUNDRED_TRADES',
-  TEN_X_PORTFOLIO: 'TEN_X_PORTFOLIO',
-  SURVIVED_CRASH: 'SURVIVED_CRASH'
+  TEN_TRADES: 'TEN_TRADES',
+  DOUBLE_PORTFOLIO: 'DOUBLE_PORTFOLIO',
+  MEME_LORD: 'MEME_LORD',
+  AI_VISIONARY: 'AI_VISIONARY',
+  TOP_TEN: 'TOP_TEN',
+  RANK_ONE: 'RANK_ONE',
+  MILLIONARE: 'MILLIONARE'
 } as const
 
 export type AchievementType = (typeof AchievementType)[keyof typeof AchievementType]

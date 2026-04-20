@@ -139,46 +139,26 @@ export async function getRecentPrices(num: number, coinId: string) {
 }
 
 export async function updateSentimentBasedOnNews(
-  newsId: string,
+  coinId: string,
+  impact: Decimal,
 ): Promise<Message<Decimal>> {
   try {
-    const news = await db.news.findUnique({
-      where: {
-        id: newsId,
-      },
-    });
-    if (!news) {
-      return {
-        success: false,
-        error: "Invalid news id",
-      };
-    }
-    const coin = await db.coin.findFirst({
-      where: {
-        id: news.coinId,
-      },
+    const coin = await db.coin.findUnique({
+      where: { id: coinId },
     });
     if (!coin) {
       return {
         success: false,
-        error: "News not linked to any valid coin",
+        error: "Invalid coin id",
       };
     }
-    const newSentiment = applyNewsImpact(coin.sentiment, news.impact);
-    const coinWithUpdatedSentiment = await db.coin.update({
-      where: {
-        id: coin.id,
-      },
-      data: {
-        sentiment: newSentiment,
-      },
+
+    const newSentiment = applyNewsImpact(coin.sentiment, impact);
+
+    await db.coin.update({
+      where: { id: coin.id },
+      data: { sentiment: newSentiment },
     });
-    if (!coinWithUpdatedSentiment) {
-      return {
-        success: false,
-        error: "Failed to update coin sentiments",
-      };
-    }
 
     return {
       success: true,
@@ -187,9 +167,6 @@ export async function updateSentimentBasedOnNews(
   } catch (error) {
     console.error("Error: ", error);
     const errMsg = error instanceof Error ? error.message : "Internal Error";
-    return {
-      success: false,
-      error: errMsg,
-    };
+    return { success: false, error: errMsg };
   }
 }
