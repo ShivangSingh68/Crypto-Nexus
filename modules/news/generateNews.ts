@@ -21,7 +21,9 @@ export async function generateNewsEvent(timestamp: Date): Promise<Message<AIResp
             }
         });
 
-        const prompt = getPrompt(coins);
+        const filteredCoins = coins.filter(() => Math.random() >= 0.7);
+
+        const prompt = getPrompt(filteredCoins);
 
         const response = await ai.models.generateContent({
             model: "gemini-2.5-flash",

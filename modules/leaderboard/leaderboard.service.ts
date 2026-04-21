@@ -10,20 +10,6 @@ import {
 import { Decimal } from "@prisma/client/runtime/library";
 import { getCurrentUser } from "../auth/actions";
 
-async function getRankedPortfolios(): Promise<LatestPortfolioSnapshotView[]> {
-  const portfolios = await db.portfolio.findMany({
-    include: {
-      user: true,
-      snapshots: {
-        orderBy: { timestamp: "desc" },
-        take: 1,
-        select: { value: true },
-      },
-    },
-  });
-  return rankUsers(portfolios);
-}
-
 async function getRankedByPerformance(
   order: "asc" | "desc",
 ): Promise<{ user: User; prcnt: Decimal }[]> {
@@ -61,6 +47,21 @@ async function getRankedByPerformance(
     )
     .slice(0, 10);
 }
+
+ export async function getRankedPortfolios(): Promise<LatestPortfolioSnapshotView[]> {
+  const portfolios = await db.portfolio.findMany({
+    include: {
+      user: true,
+      snapshots: {
+        orderBy: { timestamp: "desc" },
+        take: 1,
+        select: { value: true },
+      },
+    },
+  });
+  return rankUsers(portfolios);
+}
+
 
 
 export async function getRichestUser(): Promise<Message<User>> {

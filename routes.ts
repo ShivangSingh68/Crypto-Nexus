@@ -41,3 +41,11 @@ export const authRoutes: string[] = [
 export const apiAuthPrefix: string = "/api/auth"
 
 export const DEFAULT_LOGIN_REDIRECT = "/"; // Changed to redirect  to home  page after login
+
+
+/**
+ * An Array of public api routes for cron jobs 
+ * @type {Array}
+ */
+
+export const publicApiRoutes = ["/api/cron/generate-news", "/api/cron/monthly-rewards", "/api/cron/update-price"]

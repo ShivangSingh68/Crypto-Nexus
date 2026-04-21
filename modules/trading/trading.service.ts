@@ -7,18 +7,11 @@ import { validateBuy, validateSell } from "./validateTrade";
 import { Coin } from "@/lib/generated/prisma/client";
 import { updateAchievements } from "../achievements/achievements.service";
 
-interface ExecuteUserTradeParams {
-  userId: string;
-  coinId: string;
-  type: "BUY" | "SELL";
-  quantity: Decimal;
-}
-
 export async function executeUserTrade(
-  params: ExecuteUserTradeParams,
+  userId: string, coinId: string, quantity: Decimal, type: "BUY" | "SELL"
 ): Promise<Message<Decimal>> {
   try {
-    const { userId, coinId, type, quantity } = params;
+
     const user = await db.user.findUnique({
       where: {
         id: userId,
@@ -223,6 +216,14 @@ export async function executeUserTrade(
       };
     }
 
+    await db.user.update({
+      where: {
+        id: userId,
+      }, 
+      data: {
+        lastTradeAt: new Date(Date.now()),
+      }
+    })
     await updateAchievements(userId, "Trade", avgBuyPrice);
     
     return {

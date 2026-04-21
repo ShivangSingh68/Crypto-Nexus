@@ -1,11 +1,6 @@
-// TODO:
 
 import { Portfolio, Trade, User } from "@/lib/generated/prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
-
-// 🎁 rewardAchievements.ts
-// badges
-// maybe bonus cash later
 
 export function firstProfit(trade: Trade, avgBuyPrice: Decimal) {
 

@@ -1,4 +1,3 @@
-// TODO:
 
 import { db } from "@/lib/db";
 import { Message } from "@/types/messages";
@@ -6,13 +5,6 @@ import { Decimal } from "@prisma/client/runtime/library";
 import { aiVisionary, doublePortfolio, firstProfit, memeLord, millionare, rankOne, tenTrades, topTen } from "./rewardAchievements";
 import { getRichestUser, getUserRank } from "../leaderboard/leaderboard.service";
 import { UserAchievement } from "@/lib/generated/prisma/client";
-
-// checkUserAchievements(userId, event)
-// Triggered on:
-
-// trade
-// profit milestone
-// survival
 
 export async function updateAchievements (userId: string, event: "Price_Update" | "Trade", avgBuyPrice: Decimal = new Decimal(0)): Promise<Message<Decimal>> {
     try {

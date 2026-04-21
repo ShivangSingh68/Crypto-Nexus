@@ -11,6 +11,7 @@ import {
   getSentimentScore,
 } from "./sentiment";
 import { applyPriceChange, calculatePriceChange } from "./priceEngine";
+import { groupOHCLData, OHCLData } from "./ohcl";
 
 //cron job
 export async function runPriceUpdateForAllCoins(): Promise<Message<Decimal>> {
@@ -168,5 +169,42 @@ export async function updateSentimentBasedOnNews(
     console.error("Error: ", error);
     const errMsg = error instanceof Error ? error.message : "Internal Error";
     return { success: false, error: errMsg };
+  }
+}
+
+export async function getOHCLdata (coinId: string, interval: "4h" | "7h" | "1d"): Promise<Message<OHCLData[]>> {
+  try {
+    
+    const coinPrices = await db.coinPrice.findMany({
+      where: {
+        coinId,
+      }, 
+      select: {
+        price: true,
+        timestamp: true,
+      },
+      orderBy: {
+        timestamp: "asc"
+      }
+    });
+
+    const ohclData = groupOHCLData(coinPrices, interval);
+
+    return{
+      success: true,
+      data: ohclData,
+    }
+
+  } catch (error) {
+    
+    console.error("Error: ", error);
+
+    const errMsg = error instanceof Error ? error.message : "Something went wrong"
+
+    return {
+      success: false,
+      error: errMsg,
+    }
+
   }
 }
