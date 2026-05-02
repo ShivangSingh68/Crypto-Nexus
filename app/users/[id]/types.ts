@@ -36,3 +36,12 @@ export interface Achievement {
     desc: string,
     progress: number
 }
+
+export interface UserSettingForm {
+    username: string;
+    displayName: string;
+    email: string;
+    bio: string;
+    location: string;
+    avatar: File;
+}

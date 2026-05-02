@@ -133,6 +133,13 @@ export async function getUserAchievements (userId: string): Promise<Message<User
             db.trade.findMany({
                 where: {
                     traderId: userId
+                },
+                include: {
+                    coin: {
+                        select: {
+                            type: true,
+                        }
+                    }
                 }
             }),
             db.userAchievement.findMany({
@@ -162,11 +169,14 @@ export async function getUserAchievements (userId: string): Promise<Message<User
             if(ac.type === "AI_VISIONARY") {
 
                 const isAchieved = userAchievementMap.has(ac.type);
+
+                const aiTrades = userTrades.filter( ut => ut.coin.type === "AI");
+
                 processedAchievements.push({
                     achievement: ac,
                     id: ac.id,
                     unlocked: isAchieved,
-                    progress: !isAchieved ? aiVisionary(userTrades).progress : 0,
+                    progress: !isAchieved ? aiVisionary(aiTrades).progress*100 : 0,
                 })
 
             } else if(ac.type === "DOUBLE_PORTFOLIO") {
@@ -176,7 +186,7 @@ export async function getUserAchievements (userId: string): Promise<Message<User
                     achievement: ac,
                     id: ac.id,
                     unlocked: isAchieved,
-                    progress: !isAchieved ? doublePortfolio(userPortfolio).progress : 0,
+                    progress: !isAchieved ? doublePortfolio(userPortfolio).progress*100 : 0,
                 })
 
             } else if(ac.type === "FIRST_PROFIT") {
@@ -202,11 +212,12 @@ export async function getUserAchievements (userId: string): Promise<Message<User
             } else if(ac.type === "MEME_LORD") {
 
                 const isAchieved = userAchievementMap.has(ac.type);
+                const memeTrades = userTrades.filter( ut => ut.coin.type === "MEME")
                 processedAchievements.push({
                     achievement: ac,
                     id: ac.id,
                     unlocked: isAchieved,
-                    progress: !isAchieved ? memeLord(userTrades).progress : 0,
+                    progress: !isAchieved ? memeLord(memeTrades).progress*100 : 0,
                 })
 
             } else if(ac.type === "MILLIONAIRE") {
@@ -216,7 +227,7 @@ export async function getUserAchievements (userId: string): Promise<Message<User
                     achievement: ac,
                     id: ac.id,
                     unlocked: isAchieved,
-                    progress: !isAchieved ? millionare(userPortfolio).progress : 0,
+                    progress: !isAchieved ? millionare(userPortfolio).progress*100 : 0,
                 })
 
             } else if(ac.type === "RANK_ONE") {
@@ -236,7 +247,7 @@ export async function getUserAchievements (userId: string): Promise<Message<User
                     achievement: ac,
                     id: ac.id,
                     unlocked: isAchieved,
-                    progress: !isAchieved ? tenTrades(userTrades).progress : 0,
+                    progress: !isAchieved ? (tenTrades(userTrades).progress*100) : 0,
                 })
 
             } else if(ac.type === "TOP_TEN") {

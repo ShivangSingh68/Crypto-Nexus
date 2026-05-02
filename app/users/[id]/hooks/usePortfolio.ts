@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Achievement, Holding, Stats } from "../types";
 import { getAchievements, getHoldingData, getStats } from "../action";
-import { getCurrentUser } from "@/modules/auth/actions";
+import { getUserById } from "@/modules/auth/actions";
 import { User } from "@/lib/generated/prisma/client";
 
 export function usePortfolio(userId: string) {
@@ -21,7 +21,7 @@ export function usePortfolio(userId: string) {
           getHoldingData(userId),
           getStats(userId),
           getAchievements(userId),
-          getCurrentUser(),
+          getUserById(userId),
         ]);
         setHoldings(holdingsRes);
         setStats(statsRes);

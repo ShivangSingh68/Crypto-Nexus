@@ -1,11 +1,15 @@
 'use client';
 
-import { use, useEffect, useRef } from 'react';
+import { use, useEffect, useRef, useState } from 'react';
 import { usePortfolio } from './hooks/usePortfolio';
 import PnlCard from './components/pnl-card';
 import PortfolioTable from './components/portfolio-table';
 import UserSettingsDialog from './components/user-settings-dialog';
 import { Achievement, Holding, PortfolioSnapshotWithoutDecimal } from './types';
+import { onLogout, onUserDelete, onUserSettingSave } from './action';
+import { User } from '@/lib/generated/prisma/client';
+import { getCurrentUser } from '@/modules/auth/actions';
+import Image from 'next/image';
 
 function fmt(n: number, decimals = 2) {
   return n.toLocaleString(undefined, {
@@ -21,6 +25,7 @@ function fmtUsd(n: number) {
 export default function PortfolioPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { holdings, stats, achievements, loading, user } = usePortfolio(id);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const chartRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -129,6 +134,11 @@ export default function PortfolioPage({ params }: { params: Promise<{ id: string
     }
   }, [stats]);
 
+  useEffect(() => {
+  getCurrentUser().then(setCurrentUser);
+}, []);
+
+
   if (loading || !stats) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -148,13 +158,13 @@ export default function PortfolioPage({ params }: { params: Promise<{ id: string
 
   const userProfile = {
     username: user?.name ?? 'trader',
-    displayName: user?.name ?? 'Trader',
+    displayName: user?.displayName ?? 'Trader',
     email: user?.email ?? '',
-    bio: '',
+    bio: user.bio ?? '',
     avatarInitials: (user?.name ?? 'TR').slice(0, 2).toUpperCase(),
     avatarUrl: user?.image ?? undefined,
     joinDate: user?.createdAt ? new Date(user.createdAt).toLocaleDateString(undefined, { month: 'short', year: 'numeric' }) : '—',
-    location: '—',
+    location: user.location ?? '-',
   };
 
   const pnlPctDisplay = fmt(stats.pnlPct*100, 2);
@@ -176,7 +186,7 @@ export default function PortfolioPage({ params }: { params: Promise<{ id: string
             Holdings, performance &amp; achievements
           </p>
         </div>
-        <UserSettingsDialog profile={userProfile} />
+        <UserSettingsDialog profile={userProfile} onSave={onUserSettingSave} onDelete={onUserDelete} onLogout={onLogout} profileId={id} currentUserId={currentUser?.id}/>
       </div>
 
       {/* ── Net Worth Hero ── */}
@@ -338,66 +348,82 @@ export default function PortfolioPage({ params }: { params: Promise<{ id: string
       </section>
 
       {/* ── Achievements ── */}
-      <section style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', paddingBottom: '4rem' }}>
-        <h2 className="font-orbitron font-bold uppercase tracking-widest" style={{ fontSize: '16px', color: '#cdd6f4' }}>
-          Achievements
-        </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '12px' }}>
-          {achievements.map((a: Achievement) => (
+    <section style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', paddingBottom: '4rem' }}>
+      <h2 className="font-orbitron font-bold uppercase tracking-widest" style={{ fontSize: '16px', color: '#cdd6f4' }}>
+        Achievements
+      </h2>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '12px' }}>
+        {achievements.map((a: Achievement) => (
+          <div
+            key={a.id}
+            className={a.unlocked ? 'hover-lift' : ''}
+            style={{
+              borderRadius: '20px',
+              padding: '1.5rem 1.25rem',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+              gap: '10px',
+              opacity: a.unlocked ? 1 : 0.75,
+              background: a.unlocked ? 'rgba(203,166,247,0.06)' : 'rgba(17,17,27,0.5)',
+              border: a.unlocked ? '1px solid rgba(203,166,247,0.15)' : '1px solid rgba(180,190,254,0.05)',
+            }}
+          >
             <div
-              key={a.id}
-              className={a.unlocked ? 'hover-lift' : ''}
               style={{
-                borderRadius: '20px',
-                padding: '1.5rem 1.25rem',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                textAlign: 'center',
-                gap: '10px',
-                opacity: a.unlocked ? 1 : 0.4,
-                background: a.unlocked ? 'rgba(203,166,247,0.06)' : 'rgba(17,17,27,0.5)',
-                border: a.unlocked ? '1px solid rgba(203,166,247,0.15)' : '1px solid rgba(180,190,254,0.05)',
+                position: 'relative',
+                width: '2rem',
+                height: '2rem',
+                filter: a.unlocked ? 'none' : 'grayscale(1)',
+                flexShrink: 0,
               }}
             >
-              <div style={{ fontSize: '2rem', filter: a.unlocked ? 'none' : 'grayscale(1)' }}>{a.icon}</div>
-              <p className="font-orbitron font-bold uppercase" style={{ fontSize: '10px', color: '#cdd6f4', lineHeight: 1.3 }}>
-                {a.label}
-              </p>
-              <p className="font-rajdhani" style={{ fontSize: '11px', color: '#585b70', lineHeight: 1.4 }}>
-                {a.desc}
-              </p>
-              {a.unlocked ? (
-                <span
-                  className="font-mono-tech"
-                  style={{
-                    fontSize: '9px', padding: '4px 10px', borderRadius: '8px',
-                    background: 'rgba(166,227,161,0.1)', color: '#a6e3a1',
-                    border: '1px solid rgba(166,227,161,0.2)', marginTop: 'auto',
-                  }}
-                >
-                  ✓ Unlocked
-                </span>
-              ) : (
-                <div style={{ width: '100%', marginTop: 'auto' }}>
-                  <div
-                    className="rounded-full overflow-hidden"
-                    style={{ height: '4px', background: 'rgba(180,190,254,0.07)', marginBottom: '6px' }}
-                  >
-                    <div
-                      className="h-full rounded-full"
-                      style={{ width: `${a.progress ?? 0}%`, background: 'rgba(203,166,247,0.45)' }}
-                    />
-                  </div>
-                  <span className="font-mono-tech" style={{ fontSize: '9px', color: '#45475a' }}>
-                    {a.progress ?? 0}%
-                  </span>
-                </div>
-              )}
+              <Image
+                src={a.icon}
+                alt={a.label}
+                fill
+                style={{ objectFit: 'contain' }}
+                unoptimized
+              />
             </div>
-          ))}
-        </div>
-      </section>
+            <p className="font-orbitron font-bold uppercase" style={{ fontSize: '10px', color: '#cdd6f4', lineHeight: 1.3 }}>
+              {a.label}
+            </p>
+            <p className="font-rajdhani" style={{ fontSize: '11px', color: a.unlocked ? '#585b70' : '#7f849c', lineHeight: 1.4 }}>
+              {a.desc}
+            </p>
+            {a.unlocked ? (
+              <span
+                className="font-mono-tech"
+                style={{
+                  fontSize: '9px', padding: '4px 10px', borderRadius: '8px',
+                  background: 'rgba(166,227,161,0.1)', color: '#a6e3a1',
+                  border: '1px solid rgba(166,227,161,0.2)', marginTop: 'auto',
+                }}
+              >
+                ✓ Unlocked
+              </span>
+            ) : (
+              <div style={{ width: '100%', marginTop: 'auto' }}>
+                <div
+                  className="rounded-full overflow-hidden"
+                  style={{ height: '4px', background: 'rgba(180,190,254,0.15)', marginBottom: '6px' }}
+                >
+                  <div
+                    className="h-full rounded-full"
+                    style={{ width: `${a.progress ?? 0}%`, background: 'rgba(203,166,247,0.7)' }}
+                  />
+                </div>
+                <span className="font-mono-tech" style={{ fontSize: '9px', color: '#7f849c' }}>
+                  {a.progress.toFixed(2) ?? 0}%
+                </span>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
     </div>
   );
 }
