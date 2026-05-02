@@ -53,6 +53,8 @@ export type CoinMinAggregateOutputType = {
   name: string | null
   logo: string | null
   ticker: string | null
+  color: string | null
+  description: string | null
   type: $Enums.CoinType | null
   totalSupply: runtime.Decimal | null
   circulatingSupply: runtime.Decimal | null
@@ -71,6 +73,8 @@ export type CoinMaxAggregateOutputType = {
   name: string | null
   logo: string | null
   ticker: string | null
+  color: string | null
+  description: string | null
   type: $Enums.CoinType | null
   totalSupply: runtime.Decimal | null
   circulatingSupply: runtime.Decimal | null
@@ -89,6 +93,8 @@ export type CoinCountAggregateOutputType = {
   name: number
   logo: number
   ticker: number
+  color: number
+  description: number
   type: number
   totalSupply: number
   circulatingSupply: number
@@ -131,6 +137,8 @@ export type CoinMinAggregateInputType = {
   name?: true
   logo?: true
   ticker?: true
+  color?: true
+  description?: true
   type?: true
   totalSupply?: true
   circulatingSupply?: true
@@ -149,6 +157,8 @@ export type CoinMaxAggregateInputType = {
   name?: true
   logo?: true
   ticker?: true
+  color?: true
+  description?: true
   type?: true
   totalSupply?: true
   circulatingSupply?: true
@@ -167,6 +177,8 @@ export type CoinCountAggregateInputType = {
   name?: true
   logo?: true
   ticker?: true
+  color?: true
+  description?: true
   type?: true
   totalSupply?: true
   circulatingSupply?: true
@@ -272,6 +284,8 @@ export type CoinGroupByOutputType = {
   name: string
   logo: string
   ticker: string
+  color: string
+  description: string
   type: $Enums.CoinType
   totalSupply: runtime.Decimal
   circulatingSupply: runtime.Decimal
@@ -313,6 +327,8 @@ export type CoinWhereInput = {
   name?: Prisma.StringFilter<"Coin"> | string
   logo?: Prisma.StringFilter<"Coin"> | string
   ticker?: Prisma.StringFilter<"Coin"> | string
+  color?: Prisma.StringFilter<"Coin"> | string
+  description?: Prisma.StringFilter<"Coin"> | string
   type?: Prisma.EnumCoinTypeFilter<"Coin"> | $Enums.CoinType
   totalSupply?: Prisma.DecimalFilter<"Coin"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply?: Prisma.DecimalFilter<"Coin"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -335,6 +351,8 @@ export type CoinOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   logo?: Prisma.SortOrder
   ticker?: Prisma.SortOrder
+  color?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   type?: Prisma.SortOrder
   totalSupply?: Prisma.SortOrder
   circulatingSupply?: Prisma.SortOrder
@@ -360,6 +378,8 @@ export type CoinWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"Coin"> | string
   logo?: Prisma.StringFilter<"Coin"> | string
   ticker?: Prisma.StringFilter<"Coin"> | string
+  color?: Prisma.StringFilter<"Coin"> | string
+  description?: Prisma.StringFilter<"Coin"> | string
   type?: Prisma.EnumCoinTypeFilter<"Coin"> | $Enums.CoinType
   totalSupply?: Prisma.DecimalFilter<"Coin"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply?: Prisma.DecimalFilter<"Coin"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -382,6 +402,8 @@ export type CoinOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   logo?: Prisma.SortOrder
   ticker?: Prisma.SortOrder
+  color?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   type?: Prisma.SortOrder
   totalSupply?: Prisma.SortOrder
   circulatingSupply?: Prisma.SortOrder
@@ -408,6 +430,8 @@ export type CoinScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Coin"> | string
   logo?: Prisma.StringWithAggregatesFilter<"Coin"> | string
   ticker?: Prisma.StringWithAggregatesFilter<"Coin"> | string
+  color?: Prisma.StringWithAggregatesFilter<"Coin"> | string
+  description?: Prisma.StringWithAggregatesFilter<"Coin"> | string
   type?: Prisma.EnumCoinTypeWithAggregatesFilter<"Coin"> | $Enums.CoinType
   totalSupply?: Prisma.DecimalWithAggregatesFilter<"Coin"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply?: Prisma.DecimalWithAggregatesFilter<"Coin"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -426,6 +450,8 @@ export type CoinCreateInput = {
   name: string
   logo: string
   ticker: string
+  color: string
+  description: string
   type: $Enums.CoinType
   totalSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -448,6 +474,8 @@ export type CoinUncheckedCreateInput = {
   name: string
   logo: string
   ticker: string
+  color: string
+  description: string
   type: $Enums.CoinType
   totalSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -470,6 +498,8 @@ export type CoinUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   logo?: Prisma.StringFieldUpdateOperationsInput | string
   ticker?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumCoinTypeFieldUpdateOperationsInput | $Enums.CoinType
   totalSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -492,6 +522,8 @@ export type CoinUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   logo?: Prisma.StringFieldUpdateOperationsInput | string
   ticker?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumCoinTypeFieldUpdateOperationsInput | $Enums.CoinType
   totalSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -514,6 +546,8 @@ export type CoinCreateManyInput = {
   name: string
   logo: string
   ticker: string
+  color: string
+  description: string
   type: $Enums.CoinType
   totalSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -532,6 +566,8 @@ export type CoinUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   logo?: Prisma.StringFieldUpdateOperationsInput | string
   ticker?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumCoinTypeFieldUpdateOperationsInput | $Enums.CoinType
   totalSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -550,6 +586,8 @@ export type CoinUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   logo?: Prisma.StringFieldUpdateOperationsInput | string
   ticker?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumCoinTypeFieldUpdateOperationsInput | $Enums.CoinType
   totalSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -568,6 +606,8 @@ export type CoinCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   logo?: Prisma.SortOrder
   ticker?: Prisma.SortOrder
+  color?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   type?: Prisma.SortOrder
   totalSupply?: Prisma.SortOrder
   circulatingSupply?: Prisma.SortOrder
@@ -597,6 +637,8 @@ export type CoinMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   logo?: Prisma.SortOrder
   ticker?: Prisma.SortOrder
+  color?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   type?: Prisma.SortOrder
   totalSupply?: Prisma.SortOrder
   circulatingSupply?: Prisma.SortOrder
@@ -615,6 +657,8 @@ export type CoinMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   logo?: Prisma.SortOrder
   ticker?: Prisma.SortOrder
+  color?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   type?: Prisma.SortOrder
   totalSupply?: Prisma.SortOrder
   circulatingSupply?: Prisma.SortOrder
@@ -721,6 +765,8 @@ export type CoinCreateWithoutPriceInput = {
   name: string
   logo: string
   ticker: string
+  color: string
+  description: string
   type: $Enums.CoinType
   totalSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -742,6 +788,8 @@ export type CoinUncheckedCreateWithoutPriceInput = {
   name: string
   logo: string
   ticker: string
+  color: string
+  description: string
   type: $Enums.CoinType
   totalSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -779,6 +827,8 @@ export type CoinUpdateWithoutPriceInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   logo?: Prisma.StringFieldUpdateOperationsInput | string
   ticker?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumCoinTypeFieldUpdateOperationsInput | $Enums.CoinType
   totalSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -800,6 +850,8 @@ export type CoinUncheckedUpdateWithoutPriceInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   logo?: Prisma.StringFieldUpdateOperationsInput | string
   ticker?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumCoinTypeFieldUpdateOperationsInput | $Enums.CoinType
   totalSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -821,6 +873,8 @@ export type CoinCreateWithoutTradesInput = {
   name: string
   logo: string
   ticker: string
+  color: string
+  description: string
   type: $Enums.CoinType
   totalSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -842,6 +896,8 @@ export type CoinUncheckedCreateWithoutTradesInput = {
   name: string
   logo: string
   ticker: string
+  color: string
+  description: string
   type: $Enums.CoinType
   totalSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -879,6 +935,8 @@ export type CoinUpdateWithoutTradesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   logo?: Prisma.StringFieldUpdateOperationsInput | string
   ticker?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumCoinTypeFieldUpdateOperationsInput | $Enums.CoinType
   totalSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -900,6 +958,8 @@ export type CoinUncheckedUpdateWithoutTradesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   logo?: Prisma.StringFieldUpdateOperationsInput | string
   ticker?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumCoinTypeFieldUpdateOperationsInput | $Enums.CoinType
   totalSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -921,6 +981,8 @@ export type CoinCreateWithoutNewsInput = {
   name: string
   logo: string
   ticker: string
+  color: string
+  description: string
   type: $Enums.CoinType
   totalSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -942,6 +1004,8 @@ export type CoinUncheckedCreateWithoutNewsInput = {
   name: string
   logo: string
   ticker: string
+  color: string
+  description: string
   type: $Enums.CoinType
   totalSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -979,6 +1043,8 @@ export type CoinUpdateWithoutNewsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   logo?: Prisma.StringFieldUpdateOperationsInput | string
   ticker?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumCoinTypeFieldUpdateOperationsInput | $Enums.CoinType
   totalSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1000,6 +1066,8 @@ export type CoinUncheckedUpdateWithoutNewsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   logo?: Prisma.StringFieldUpdateOperationsInput | string
   ticker?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumCoinTypeFieldUpdateOperationsInput | $Enums.CoinType
   totalSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1021,6 +1089,8 @@ export type CoinCreateWithoutHoldingsInput = {
   name: string
   logo: string
   ticker: string
+  color: string
+  description: string
   type: $Enums.CoinType
   totalSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1042,6 +1112,8 @@ export type CoinUncheckedCreateWithoutHoldingsInput = {
   name: string
   logo: string
   ticker: string
+  color: string
+  description: string
   type: $Enums.CoinType
   totalSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1079,6 +1151,8 @@ export type CoinUpdateWithoutHoldingsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   logo?: Prisma.StringFieldUpdateOperationsInput | string
   ticker?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumCoinTypeFieldUpdateOperationsInput | $Enums.CoinType
   totalSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1100,6 +1174,8 @@ export type CoinUncheckedUpdateWithoutHoldingsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   logo?: Prisma.StringFieldUpdateOperationsInput | string
   ticker?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumCoinTypeFieldUpdateOperationsInput | $Enums.CoinType
   totalSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   circulatingSupply?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1179,6 +1255,8 @@ export type CoinSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   name?: boolean
   logo?: boolean
   ticker?: boolean
+  color?: boolean
+  description?: boolean
   type?: boolean
   totalSupply?: boolean
   circulatingSupply?: boolean
@@ -1202,6 +1280,8 @@ export type CoinSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   name?: boolean
   logo?: boolean
   ticker?: boolean
+  color?: boolean
+  description?: boolean
   type?: boolean
   totalSupply?: boolean
   circulatingSupply?: boolean
@@ -1220,6 +1300,8 @@ export type CoinSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   name?: boolean
   logo?: boolean
   ticker?: boolean
+  color?: boolean
+  description?: boolean
   type?: boolean
   totalSupply?: boolean
   circulatingSupply?: boolean
@@ -1238,6 +1320,8 @@ export type CoinSelectScalar = {
   name?: boolean
   logo?: boolean
   ticker?: boolean
+  color?: boolean
+  description?: boolean
   type?: boolean
   totalSupply?: boolean
   circulatingSupply?: boolean
@@ -1251,7 +1335,7 @@ export type CoinSelectScalar = {
   lastVolumeResetAt?: boolean
 }
 
-export type CoinOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "logo" | "ticker" | "type" | "totalSupply" | "circulatingSupply" | "liquidity" | "volatility" | "currentPrice" | "sentiment" | "momentum" | "buyVolume" | "sellVolume" | "lastVolumeResetAt", ExtArgs["result"]["coin"]>
+export type CoinOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "logo" | "ticker" | "color" | "description" | "type" | "totalSupply" | "circulatingSupply" | "liquidity" | "volatility" | "currentPrice" | "sentiment" | "momentum" | "buyVolume" | "sellVolume" | "lastVolumeResetAt", ExtArgs["result"]["coin"]>
 export type CoinInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   price?: boolean | Prisma.Coin$priceArgs<ExtArgs>
   news?: boolean | Prisma.Coin$newsArgs<ExtArgs>
@@ -1275,6 +1359,8 @@ export type $CoinPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     name: string
     logo: string
     ticker: string
+    color: string
+    description: string
     type: $Enums.CoinType
     totalSupply: runtime.Decimal
     circulatingSupply: runtime.Decimal
@@ -1717,6 +1803,8 @@ export interface CoinFieldRefs {
   readonly name: Prisma.FieldRef<"Coin", 'String'>
   readonly logo: Prisma.FieldRef<"Coin", 'String'>
   readonly ticker: Prisma.FieldRef<"Coin", 'String'>
+  readonly color: Prisma.FieldRef<"Coin", 'String'>
+  readonly description: Prisma.FieldRef<"Coin", 'String'>
   readonly type: Prisma.FieldRef<"Coin", 'CoinType'>
   readonly totalSupply: Prisma.FieldRef<"Coin", 'Decimal'>
   readonly circulatingSupply: Prisma.FieldRef<"Coin", 'Decimal'>

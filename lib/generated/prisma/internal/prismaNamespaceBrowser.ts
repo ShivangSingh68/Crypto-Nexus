@@ -59,7 +59,8 @@ export const ModelName = {
   Holding: 'Holding',
   Achievement: 'Achievement',
   UserAchievement: 'UserAchievement',
-  PortfolioSnapshot: 'PortfolioSnapshot'
+  PortfolioSnapshot: 'PortfolioSnapshot',
+  Badge: 'Badge'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -115,6 +116,8 @@ export const CoinScalarFieldEnum = {
   name: 'name',
   logo: 'logo',
   ticker: 'ticker',
+  color: 'color',
+  description: 'description',
   type: 'type',
   totalSupply: 'totalSupply',
   circulatingSupply: 'circulatingSupply',
@@ -175,6 +178,7 @@ export const NewsScalarFieldEnum = {
   coinId: 'coinId',
   description: 'description',
   heading: 'heading',
+  source: 'source',
   timestamp: 'timestamp',
   impact: 'impact'
 } as const
@@ -196,6 +200,7 @@ export type HoldingScalarFieldEnum = (typeof HoldingScalarFieldEnum)[keyof typeo
 export const AchievementScalarFieldEnum = {
   id: 'id',
   type: 'type',
+  name: 'name',
   description: 'description'
 } as const
 
@@ -220,6 +225,15 @@ export const PortfolioSnapshotScalarFieldEnum = {
 } as const
 
 export type PortfolioSnapshotScalarFieldEnum = (typeof PortfolioSnapshotScalarFieldEnum)[keyof typeof PortfolioSnapshotScalarFieldEnum]
+
+
+export const BadgeScalarFieldEnum = {
+  id: 'id',
+  image: 'image',
+  achievementId: 'achievementId'
+} as const
+
+export type BadgeScalarFieldEnum = (typeof BadgeScalarFieldEnum)[keyof typeof BadgeScalarFieldEnum]
 
 
 export const SortOrder = {

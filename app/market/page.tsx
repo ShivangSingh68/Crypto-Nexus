@@ -6,9 +6,22 @@ import CoinCard from './components/coin-card';
 import MarketTable from './components/market-table';
 
 export default function MarketPage() {
-  const { coins, search, setSearch, sortBy, setSortBy, sortDir, setSortDir } = useMarketData();
+  const { coins, search, setSearch, sortBy, setSortBy, sortDir, setSortDir, loading } = useMarketData();
   const [view, setView] = useState<'grid' | 'table'>('grid');
   const [filter, setFilter] = useState<'all' | 'gainers' | 'losers'>('all');
+
+  if (loading) {
+    return (
+      <div className="page-wrapper">
+        <div className="card-glass rounded-2xl py-20 text-center">
+          <div className="text-4xl mb-3 animate-pulse">📈</div>
+          <p className="font-rajdhani text-[#585b70]">
+            Loading market data...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const handleSort = (col: typeof sortBy) => {
     if (sortBy === col) {
@@ -29,7 +42,7 @@ export default function MarketPage() {
   const losers = coins.filter((c) => c.change24h < 0).length;
 
   return (
-    <div className="min-h-screen px-4 py-10 max-w-7xl mx-auto">
+    <div className="page-wrapper">
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-1">

@@ -90,6 +90,7 @@ model Coin {
   name String
   logo  String
   ticker String
+  color String
   type  CoinType 
   totalSupply Decimal @db.Decimal(18, 6)   //fixed max supply
   circulatingSupply Decimal @db.Decimal(18, 6)     //circulating supply

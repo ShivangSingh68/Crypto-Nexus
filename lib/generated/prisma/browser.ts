@@ -72,3 +72,8 @@ export type UserAchievement = Prisma.UserAchievementModel
  * 
  */
 export type PortfolioSnapshot = Prisma.PortfolioSnapshotModel
+/**
+ * Model Badge
+ * 
+ */
+export type Badge = Prisma.BadgeModel

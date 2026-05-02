@@ -12,7 +12,7 @@ const STATS = [
 
 export default function AdminPage() {
   return (
-    <div className="min-h-screen px-4 py-10 max-w-7xl mx-auto">
+    <div className="page-wrapper">
       {/* Header */}
       <div className="flex items-center gap-3 mb-8">
         <div className="w-10 h-10 rounded-xl bg-[rgba(243,139,168,0.15)] border border-[rgba(243,139,168,0.3)] flex items-center justify-center text-lg">

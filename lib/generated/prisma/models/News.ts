@@ -39,6 +39,7 @@ export type NewsMinAggregateOutputType = {
   coinId: string | null
   description: string | null
   heading: string | null
+  source: string | null
   timestamp: Date | null
   impact: runtime.Decimal | null
 }
@@ -48,6 +49,7 @@ export type NewsMaxAggregateOutputType = {
   coinId: string | null
   description: string | null
   heading: string | null
+  source: string | null
   timestamp: Date | null
   impact: runtime.Decimal | null
 }
@@ -57,6 +59,7 @@ export type NewsCountAggregateOutputType = {
   coinId: number
   description: number
   heading: number
+  source: number
   timestamp: number
   impact: number
   _all: number
@@ -76,6 +79,7 @@ export type NewsMinAggregateInputType = {
   coinId?: true
   description?: true
   heading?: true
+  source?: true
   timestamp?: true
   impact?: true
 }
@@ -85,6 +89,7 @@ export type NewsMaxAggregateInputType = {
   coinId?: true
   description?: true
   heading?: true
+  source?: true
   timestamp?: true
   impact?: true
 }
@@ -94,6 +99,7 @@ export type NewsCountAggregateInputType = {
   coinId?: true
   description?: true
   heading?: true
+  source?: true
   timestamp?: true
   impact?: true
   _all?: true
@@ -190,6 +196,7 @@ export type NewsGroupByOutputType = {
   coinId: string
   description: string
   heading: string
+  source: string
   timestamp: Date
   impact: runtime.Decimal
   _count: NewsCountAggregateOutputType | null
@@ -222,6 +229,7 @@ export type NewsWhereInput = {
   coinId?: Prisma.StringFilter<"News"> | string
   description?: Prisma.StringFilter<"News"> | string
   heading?: Prisma.StringFilter<"News"> | string
+  source?: Prisma.StringFilter<"News"> | string
   timestamp?: Prisma.DateTimeFilter<"News"> | Date | string
   impact?: Prisma.DecimalFilter<"News"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   coin?: Prisma.XOR<Prisma.CoinScalarRelationFilter, Prisma.CoinWhereInput>
@@ -232,6 +240,7 @@ export type NewsOrderByWithRelationInput = {
   coinId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   heading?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   timestamp?: Prisma.SortOrder
   impact?: Prisma.SortOrder
   coin?: Prisma.CoinOrderByWithRelationInput
@@ -245,6 +254,7 @@ export type NewsWhereUniqueInput = Prisma.AtLeast<{
   coinId?: Prisma.StringFilter<"News"> | string
   description?: Prisma.StringFilter<"News"> | string
   heading?: Prisma.StringFilter<"News"> | string
+  source?: Prisma.StringFilter<"News"> | string
   timestamp?: Prisma.DateTimeFilter<"News"> | Date | string
   impact?: Prisma.DecimalFilter<"News"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   coin?: Prisma.XOR<Prisma.CoinScalarRelationFilter, Prisma.CoinWhereInput>
@@ -255,6 +265,7 @@ export type NewsOrderByWithAggregationInput = {
   coinId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   heading?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   timestamp?: Prisma.SortOrder
   impact?: Prisma.SortOrder
   _count?: Prisma.NewsCountOrderByAggregateInput
@@ -272,6 +283,7 @@ export type NewsScalarWhereWithAggregatesInput = {
   coinId?: Prisma.StringWithAggregatesFilter<"News"> | string
   description?: Prisma.StringWithAggregatesFilter<"News"> | string
   heading?: Prisma.StringWithAggregatesFilter<"News"> | string
+  source?: Prisma.StringWithAggregatesFilter<"News"> | string
   timestamp?: Prisma.DateTimeWithAggregatesFilter<"News"> | Date | string
   impact?: Prisma.DecimalWithAggregatesFilter<"News"> | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
@@ -280,6 +292,7 @@ export type NewsCreateInput = {
   id?: string
   description: string
   heading: string
+  source: string
   timestamp?: Date | string
   impact: runtime.Decimal | runtime.DecimalJsLike | number | string
   coin: Prisma.CoinCreateNestedOneWithoutNewsInput
@@ -290,6 +303,7 @@ export type NewsUncheckedCreateInput = {
   coinId: string
   description: string
   heading: string
+  source: string
   timestamp?: Date | string
   impact: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
@@ -298,6 +312,7 @@ export type NewsUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   heading?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   impact?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   coin?: Prisma.CoinUpdateOneRequiredWithoutNewsNestedInput
@@ -308,6 +323,7 @@ export type NewsUncheckedUpdateInput = {
   coinId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   heading?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   impact?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
@@ -317,6 +333,7 @@ export type NewsCreateManyInput = {
   coinId: string
   description: string
   heading: string
+  source: string
   timestamp?: Date | string
   impact: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
@@ -325,6 +342,7 @@ export type NewsUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   heading?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   impact?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
@@ -334,6 +352,7 @@ export type NewsUncheckedUpdateManyInput = {
   coinId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   heading?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   impact?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
@@ -353,6 +372,7 @@ export type NewsCountOrderByAggregateInput = {
   coinId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   heading?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   timestamp?: Prisma.SortOrder
   impact?: Prisma.SortOrder
 }
@@ -366,6 +386,7 @@ export type NewsMaxOrderByAggregateInput = {
   coinId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   heading?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   timestamp?: Prisma.SortOrder
   impact?: Prisma.SortOrder
 }
@@ -375,6 +396,7 @@ export type NewsMinOrderByAggregateInput = {
   coinId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   heading?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   timestamp?: Prisma.SortOrder
   impact?: Prisma.SortOrder
 }
@@ -429,6 +451,7 @@ export type NewsCreateWithoutCoinInput = {
   id?: string
   description: string
   heading: string
+  source: string
   timestamp?: Date | string
   impact: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
@@ -437,6 +460,7 @@ export type NewsUncheckedCreateWithoutCoinInput = {
   id?: string
   description: string
   heading: string
+  source: string
   timestamp?: Date | string
   impact: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
@@ -475,6 +499,7 @@ export type NewsScalarWhereInput = {
   coinId?: Prisma.StringFilter<"News"> | string
   description?: Prisma.StringFilter<"News"> | string
   heading?: Prisma.StringFilter<"News"> | string
+  source?: Prisma.StringFilter<"News"> | string
   timestamp?: Prisma.DateTimeFilter<"News"> | Date | string
   impact?: Prisma.DecimalFilter<"News"> | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
@@ -483,6 +508,7 @@ export type NewsCreateManyCoinInput = {
   id?: string
   description: string
   heading: string
+  source: string
   timestamp?: Date | string
   impact: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
@@ -491,6 +517,7 @@ export type NewsUpdateWithoutCoinInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   heading?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   impact?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
@@ -499,6 +526,7 @@ export type NewsUncheckedUpdateWithoutCoinInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   heading?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   impact?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
@@ -507,6 +535,7 @@ export type NewsUncheckedUpdateManyWithoutCoinInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   heading?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   impact?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
@@ -518,6 +547,7 @@ export type NewsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   coinId?: boolean
   description?: boolean
   heading?: boolean
+  source?: boolean
   timestamp?: boolean
   impact?: boolean
   coin?: boolean | Prisma.CoinDefaultArgs<ExtArgs>
@@ -528,6 +558,7 @@ export type NewsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   coinId?: boolean
   description?: boolean
   heading?: boolean
+  source?: boolean
   timestamp?: boolean
   impact?: boolean
   coin?: boolean | Prisma.CoinDefaultArgs<ExtArgs>
@@ -538,6 +569,7 @@ export type NewsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   coinId?: boolean
   description?: boolean
   heading?: boolean
+  source?: boolean
   timestamp?: boolean
   impact?: boolean
   coin?: boolean | Prisma.CoinDefaultArgs<ExtArgs>
@@ -548,11 +580,12 @@ export type NewsSelectScalar = {
   coinId?: boolean
   description?: boolean
   heading?: boolean
+  source?: boolean
   timestamp?: boolean
   impact?: boolean
 }
 
-export type NewsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "coinId" | "description" | "heading" | "timestamp" | "impact", ExtArgs["result"]["news"]>
+export type NewsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "coinId" | "description" | "heading" | "source" | "timestamp" | "impact", ExtArgs["result"]["news"]>
 export type NewsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   coin?: boolean | Prisma.CoinDefaultArgs<ExtArgs>
 }
@@ -573,6 +606,7 @@ export type $NewsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     coinId: string
     description: string
     heading: string
+    source: string
     timestamp: Date
     impact: runtime.Decimal
   }, ExtArgs["result"]["news"]>
@@ -1003,6 +1037,7 @@ export interface NewsFieldRefs {
   readonly coinId: Prisma.FieldRef<"News", 'String'>
   readonly description: Prisma.FieldRef<"News", 'String'>
   readonly heading: Prisma.FieldRef<"News", 'String'>
+  readonly source: Prisma.FieldRef<"News", 'String'>
   readonly timestamp: Prisma.FieldRef<"News", 'DateTime'>
   readonly impact: Prisma.FieldRef<"News", 'Decimal'>
 }

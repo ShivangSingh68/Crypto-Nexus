@@ -27,18 +27,21 @@ export type AggregateAchievement = {
 export type AchievementMinAggregateOutputType = {
   id: string | null
   type: $Enums.AchievementType | null
+  name: string | null
   description: string | null
 }
 
 export type AchievementMaxAggregateOutputType = {
   id: string | null
   type: $Enums.AchievementType | null
+  name: string | null
   description: string | null
 }
 
 export type AchievementCountAggregateOutputType = {
   id: number
   type: number
+  name: number
   description: number
   _all: number
 }
@@ -47,18 +50,21 @@ export type AchievementCountAggregateOutputType = {
 export type AchievementMinAggregateInputType = {
   id?: true
   type?: true
+  name?: true
   description?: true
 }
 
 export type AchievementMaxAggregateInputType = {
   id?: true
   type?: true
+  name?: true
   description?: true
 }
 
 export type AchievementCountAggregateInputType = {
   id?: true
   type?: true
+  name?: true
   description?: true
   _all?: true
 }
@@ -138,6 +144,7 @@ export type AchievementGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 export type AchievementGroupByOutputType = {
   id: string
   type: $Enums.AchievementType
+  name: string
   description: string
   _count: AchievementCountAggregateOutputType | null
   _min: AchievementMinAggregateOutputType | null
@@ -165,15 +172,19 @@ export type AchievementWhereInput = {
   NOT?: Prisma.AchievementWhereInput | Prisma.AchievementWhereInput[]
   id?: Prisma.StringFilter<"Achievement"> | string
   type?: Prisma.EnumAchievementTypeFilter<"Achievement"> | $Enums.AchievementType
+  name?: Prisma.StringFilter<"Achievement"> | string
   description?: Prisma.StringFilter<"Achievement"> | string
   users?: Prisma.UserAchievementListRelationFilter
+  badge?: Prisma.XOR<Prisma.BadgeNullableScalarRelationFilter, Prisma.BadgeWhereInput> | null
 }
 
 export type AchievementOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   users?: Prisma.UserAchievementOrderByRelationAggregateInput
+  badge?: Prisma.BadgeOrderByWithRelationInput
 }
 
 export type AchievementWhereUniqueInput = Prisma.AtLeast<{
@@ -182,13 +193,16 @@ export type AchievementWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.AchievementWhereInput | Prisma.AchievementWhereInput[]
   OR?: Prisma.AchievementWhereInput[]
   NOT?: Prisma.AchievementWhereInput | Prisma.AchievementWhereInput[]
+  name?: Prisma.StringFilter<"Achievement"> | string
   description?: Prisma.StringFilter<"Achievement"> | string
   users?: Prisma.UserAchievementListRelationFilter
+  badge?: Prisma.XOR<Prisma.BadgeNullableScalarRelationFilter, Prisma.BadgeWhereInput> | null
 }, "id" | "type">
 
 export type AchievementOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   _count?: Prisma.AchievementCountOrderByAggregateInput
   _max?: Prisma.AchievementMaxOrderByAggregateInput
@@ -201,70 +215,85 @@ export type AchievementScalarWhereWithAggregatesInput = {
   NOT?: Prisma.AchievementScalarWhereWithAggregatesInput | Prisma.AchievementScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Achievement"> | string
   type?: Prisma.EnumAchievementTypeWithAggregatesFilter<"Achievement"> | $Enums.AchievementType
+  name?: Prisma.StringWithAggregatesFilter<"Achievement"> | string
   description?: Prisma.StringWithAggregatesFilter<"Achievement"> | string
 }
 
 export type AchievementCreateInput = {
   id?: string
   type: $Enums.AchievementType
+  name: string
   description: string
   users?: Prisma.UserAchievementCreateNestedManyWithoutAchievementInput
+  badge?: Prisma.BadgeCreateNestedOneWithoutAchievementInput
 }
 
 export type AchievementUncheckedCreateInput = {
   id?: string
   type: $Enums.AchievementType
+  name: string
   description: string
   users?: Prisma.UserAchievementUncheckedCreateNestedManyWithoutAchievementInput
+  badge?: Prisma.BadgeUncheckedCreateNestedOneWithoutAchievementInput
 }
 
 export type AchievementUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumAchievementTypeFieldUpdateOperationsInput | $Enums.AchievementType
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   users?: Prisma.UserAchievementUpdateManyWithoutAchievementNestedInput
+  badge?: Prisma.BadgeUpdateOneWithoutAchievementNestedInput
 }
 
 export type AchievementUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumAchievementTypeFieldUpdateOperationsInput | $Enums.AchievementType
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   users?: Prisma.UserAchievementUncheckedUpdateManyWithoutAchievementNestedInput
+  badge?: Prisma.BadgeUncheckedUpdateOneWithoutAchievementNestedInput
 }
 
 export type AchievementCreateManyInput = {
   id?: string
   type: $Enums.AchievementType
+  name: string
   description: string
 }
 
 export type AchievementUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumAchievementTypeFieldUpdateOperationsInput | $Enums.AchievementType
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type AchievementUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumAchievementTypeFieldUpdateOperationsInput | $Enums.AchievementType
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type AchievementCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   description?: Prisma.SortOrder
 }
 
 export type AchievementMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   description?: Prisma.SortOrder
 }
 
 export type AchievementMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   description?: Prisma.SortOrder
 }
 
@@ -291,16 +320,34 @@ export type AchievementUpdateOneRequiredWithoutUsersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AchievementUpdateToOneWithWhereWithoutUsersInput, Prisma.AchievementUpdateWithoutUsersInput>, Prisma.AchievementUncheckedUpdateWithoutUsersInput>
 }
 
+export type AchievementCreateNestedOneWithoutBadgeInput = {
+  create?: Prisma.XOR<Prisma.AchievementCreateWithoutBadgeInput, Prisma.AchievementUncheckedCreateWithoutBadgeInput>
+  connectOrCreate?: Prisma.AchievementCreateOrConnectWithoutBadgeInput
+  connect?: Prisma.AchievementWhereUniqueInput
+}
+
+export type AchievementUpdateOneRequiredWithoutBadgeNestedInput = {
+  create?: Prisma.XOR<Prisma.AchievementCreateWithoutBadgeInput, Prisma.AchievementUncheckedCreateWithoutBadgeInput>
+  connectOrCreate?: Prisma.AchievementCreateOrConnectWithoutBadgeInput
+  upsert?: Prisma.AchievementUpsertWithoutBadgeInput
+  connect?: Prisma.AchievementWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AchievementUpdateToOneWithWhereWithoutBadgeInput, Prisma.AchievementUpdateWithoutBadgeInput>, Prisma.AchievementUncheckedUpdateWithoutBadgeInput>
+}
+
 export type AchievementCreateWithoutUsersInput = {
   id?: string
   type: $Enums.AchievementType
+  name: string
   description: string
+  badge?: Prisma.BadgeCreateNestedOneWithoutAchievementInput
 }
 
 export type AchievementUncheckedCreateWithoutUsersInput = {
   id?: string
   type: $Enums.AchievementType
+  name: string
   description: string
+  badge?: Prisma.BadgeUncheckedCreateNestedOneWithoutAchievementInput
 }
 
 export type AchievementCreateOrConnectWithoutUsersInput = {
@@ -322,13 +369,65 @@ export type AchievementUpdateToOneWithWhereWithoutUsersInput = {
 export type AchievementUpdateWithoutUsersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumAchievementTypeFieldUpdateOperationsInput | $Enums.AchievementType
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  badge?: Prisma.BadgeUpdateOneWithoutAchievementNestedInput
 }
 
 export type AchievementUncheckedUpdateWithoutUsersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumAchievementTypeFieldUpdateOperationsInput | $Enums.AchievementType
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  badge?: Prisma.BadgeUncheckedUpdateOneWithoutAchievementNestedInput
+}
+
+export type AchievementCreateWithoutBadgeInput = {
+  id?: string
+  type: $Enums.AchievementType
+  name: string
+  description: string
+  users?: Prisma.UserAchievementCreateNestedManyWithoutAchievementInput
+}
+
+export type AchievementUncheckedCreateWithoutBadgeInput = {
+  id?: string
+  type: $Enums.AchievementType
+  name: string
+  description: string
+  users?: Prisma.UserAchievementUncheckedCreateNestedManyWithoutAchievementInput
+}
+
+export type AchievementCreateOrConnectWithoutBadgeInput = {
+  where: Prisma.AchievementWhereUniqueInput
+  create: Prisma.XOR<Prisma.AchievementCreateWithoutBadgeInput, Prisma.AchievementUncheckedCreateWithoutBadgeInput>
+}
+
+export type AchievementUpsertWithoutBadgeInput = {
+  update: Prisma.XOR<Prisma.AchievementUpdateWithoutBadgeInput, Prisma.AchievementUncheckedUpdateWithoutBadgeInput>
+  create: Prisma.XOR<Prisma.AchievementCreateWithoutBadgeInput, Prisma.AchievementUncheckedCreateWithoutBadgeInput>
+  where?: Prisma.AchievementWhereInput
+}
+
+export type AchievementUpdateToOneWithWhereWithoutBadgeInput = {
+  where?: Prisma.AchievementWhereInput
+  data: Prisma.XOR<Prisma.AchievementUpdateWithoutBadgeInput, Prisma.AchievementUncheckedUpdateWithoutBadgeInput>
+}
+
+export type AchievementUpdateWithoutBadgeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAchievementTypeFieldUpdateOperationsInput | $Enums.AchievementType
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  users?: Prisma.UserAchievementUpdateManyWithoutAchievementNestedInput
+}
+
+export type AchievementUncheckedUpdateWithoutBadgeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAchievementTypeFieldUpdateOperationsInput | $Enums.AchievementType
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  users?: Prisma.UserAchievementUncheckedUpdateManyWithoutAchievementNestedInput
 }
 
 
@@ -365,32 +464,38 @@ export type AchievementCountOutputTypeCountUsersArgs<ExtArgs extends runtime.Typ
 export type AchievementSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   type?: boolean
+  name?: boolean
   description?: boolean
   users?: boolean | Prisma.Achievement$usersArgs<ExtArgs>
+  badge?: boolean | Prisma.Achievement$badgeArgs<ExtArgs>
   _count?: boolean | Prisma.AchievementCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["achievement"]>
 
 export type AchievementSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   type?: boolean
+  name?: boolean
   description?: boolean
 }, ExtArgs["result"]["achievement"]>
 
 export type AchievementSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   type?: boolean
+  name?: boolean
   description?: boolean
 }, ExtArgs["result"]["achievement"]>
 
 export type AchievementSelectScalar = {
   id?: boolean
   type?: boolean
+  name?: boolean
   description?: boolean
 }
 
-export type AchievementOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "description", ExtArgs["result"]["achievement"]>
+export type AchievementOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "name" | "description", ExtArgs["result"]["achievement"]>
 export type AchievementInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   users?: boolean | Prisma.Achievement$usersArgs<ExtArgs>
+  badge?: boolean | Prisma.Achievement$badgeArgs<ExtArgs>
   _count?: boolean | Prisma.AchievementCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AchievementIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -400,10 +505,12 @@ export type $AchievementPayload<ExtArgs extends runtime.Types.Extensions.Interna
   name: "Achievement"
   objects: {
     users: Prisma.$UserAchievementPayload<ExtArgs>[]
+    badge: Prisma.$BadgePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     type: $Enums.AchievementType
+    name: string
     description: string
   }, ExtArgs["result"]["achievement"]>
   composites: {}
@@ -800,6 +907,7 @@ readonly fields: AchievementFieldRefs;
 export interface Prisma__AchievementClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   users<T extends Prisma.Achievement$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Achievement$usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserAchievementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  badge<T extends Prisma.Achievement$badgeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Achievement$badgeArgs<ExtArgs>>): Prisma.Prisma__BadgeClient<runtime.Types.Result.GetResult<Prisma.$BadgePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -831,6 +939,7 @@ export interface Prisma__AchievementClient<T, Null = never, ExtArgs extends runt
 export interface AchievementFieldRefs {
   readonly id: Prisma.FieldRef<"Achievement", 'String'>
   readonly type: Prisma.FieldRef<"Achievement", 'AchievementType'>
+  readonly name: Prisma.FieldRef<"Achievement", 'String'>
   readonly description: Prisma.FieldRef<"Achievement", 'String'>
 }
     
@@ -1241,6 +1350,25 @@ export type Achievement$usersArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.UserAchievementScalarFieldEnum | Prisma.UserAchievementScalarFieldEnum[]
+}
+
+/**
+ * Achievement.badge
+ */
+export type Achievement$badgeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Badge
+   */
+  select?: Prisma.BadgeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Badge
+   */
+  omit?: Prisma.BadgeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BadgeInclude<ExtArgs> | null
+  where?: Prisma.BadgeWhereInput
 }
 
 /**

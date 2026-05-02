@@ -1,22 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Aldrich&family=Share+Tech+Mono&display=swap");
 
-@import "tailwindcss";
+/* @tailwind base;
+@tailwind components; */
+@tailwind utilities;
 
 :root {
-  /* Backgrounds */
   --bg-base: #0d0b14;
   --bg-mantle: #11111b;
   --bg-crust: #181825;
   --bg-surface0: #1e1e2e;
   --bg-surface1: #252535;
   --bg-surface2: #313148;
-
-  /* Cards */
   --card-lavender: #1d1b35;
   --card-plum: #1a1225;
   --card-slate: #171a2e;
-
-  /* Accents */
   --pink: #f38ba8;
   --cyan: #89dceb;
   --mint: #a6e3a1;
@@ -25,19 +22,13 @@
   --mauve: #cba6f7;
   --yellow: #f9e2af;
   --teal: #94e2d5;
-
-  /* Neon highlights */
   --neon-yellow: #f6f926;
   --neon-cyan: #00f5ff;
   --neon-lime: #39ff14;
-
-  /* Status */
   --gain: #a6e3a1;
   --gain-glow: #a6e3a166;
   --loss: #f38ba8;
   --loss-glow: #f38ba866;
-
-  /* Text */
   --text-base: #cdd6f4;
   --text-subtext1: #bac2de;
   --text-subtext0: #a6adc8;
@@ -50,7 +41,6 @@
   margin: 0;
   padding: 0;
 }
-
 html {
   scroll-behavior: smooth;
 }
@@ -80,7 +70,6 @@ body {
     );
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -96,7 +85,6 @@ body {
   background: var(--mauve);
 }
 
-/* Typography */
 .font-orbitron {
   font-family: "Orbitron", monospace;
 }
@@ -110,9 +98,7 @@ body {
   font-family: "Share Tech Mono", monospace;
 }
 
-/* ============================
-   GLOW UTILITIES
-   ============================ */
+/* ── GLOW UTILITIES ── */
 @layer utilities {
   .glow-cyan {
     box-shadow:
@@ -182,7 +168,6 @@ body {
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(180, 190, 254, 0.1);
   }
-
   .card-glass-strong {
     background: rgba(26, 18, 37, 0.75);
     backdrop-filter: blur(20px);
@@ -252,7 +237,6 @@ body {
       0 0 40px rgba(0, 245, 255, 0.1);
     transform: translateY(-1px);
   }
-
   .neon-btn-pink {
     background: linear-gradient(
       135deg,
@@ -274,7 +258,6 @@ body {
       0 0 40px rgba(243, 139, 168, 0.1);
     transform: translateY(-1px);
   }
-
   .neon-btn-mauve {
     background: linear-gradient(
       135deg,
@@ -296,9 +279,23 @@ body {
       0 0 40px rgba(203, 166, 247, 0.1);
     transform: translateY(-1px);
   }
+
+  /* Gain / Loss */
+  .text-gain {
+    color: var(--gain);
+  }
+  .text-loss {
+    color: var(--loss);
+  }
+  .glow-gain {
+    text-shadow: 0 0 8px rgba(166, 227, 161, 0.7);
+  }
+  .glow-loss {
+    text-shadow: 0 0 8px rgba(243, 139, 168, 0.7);
+  }
 }
 
-/* Pulse animations */
+/* ── ANIMATIONS ── */
 @keyframes pulse-glow {
   0%,
   100% {
@@ -308,7 +305,6 @@ body {
     opacity: 0.4;
   }
 }
-
 @keyframes blink {
   0%,
   100% {
@@ -318,27 +314,24 @@ body {
     opacity: 0;
   }
 }
-
 @keyframes float {
   0%,
   100% {
-    transform: translateY(0px);
+    transform: translateY(0);
   }
   50% {
     transform: translateY(-12px);
   }
 }
-
 @keyframes float-slow {
   0%,
   100% {
-    transform: translateY(0px) rotate(0deg);
+    transform: translateY(0) rotate(0deg);
   }
   50% {
     transform: translateY(-20px) rotate(5deg);
   }
 }
-
 @keyframes ticker {
   0% {
     transform: translateX(0);
@@ -347,7 +340,6 @@ body {
     transform: translateX(-50%);
   }
 }
-
 @keyframes spin-slow {
   from {
     transform: rotate(0deg);
@@ -356,7 +348,6 @@ body {
     transform: rotate(360deg);
   }
 }
-
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
@@ -365,7 +356,6 @@ body {
     background-position: 200% 0;
   }
 }
-
 @keyframes slide-in-up {
   from {
     opacity: 0;
@@ -376,7 +366,6 @@ body {
     transform: translateY(0);
   }
 }
-
 @keyframes scan-line {
   0% {
     top: -10%;
@@ -419,7 +408,7 @@ body {
   animation: shimmer 2s infinite;
 }
 
-/* Live indicator */
+/* ── LIVE DOT ── */
 .live-dot::before {
   content: "";
   display: inline-block;
@@ -432,7 +421,7 @@ body {
   box-shadow: 0 0 6px var(--neon-cyan);
 }
 
-/* Grid pattern overlay */
+/* ── GRID OVERLAY ── */
 .grid-overlay {
   background-image:
     linear-gradient(rgba(180, 190, 254, 0.03) 1px, transparent 1px),
@@ -440,21 +429,7 @@ body {
   background-size: 32px 32px;
 }
 
-/* Gain / Loss colors */
-.text-gain {
-  color: var(--gain);
-}
-.text-loss {
-  color: var(--loss);
-}
-.glow-gain {
-  text-shadow: 0 0 8px rgba(166, 227, 161, 0.7);
-}
-.glow-loss {
-  text-shadow: 0 0 8px rgba(243, 139, 168, 0.7);
-}
-
-/* Scan line effect for terminal panels */
+/* ── TERMINAL SCANLINE ── */
 .terminal-scanline {
   position: relative;
   overflow: hidden;
@@ -473,7 +448,7 @@ body {
   pointer-events: none;
 }
 
-/* Input styles */
+/* ── INPUTS ── */
 .nexus-input {
   background: rgba(17, 17, 27, 0.8);
   border: 1px solid rgba(180, 190, 254, 0.15);
@@ -493,7 +468,7 @@ body {
   color: var(--text-overlay1);
 }
 
-/* Table styles */
+/* ── TABLES ── */
 .nexus-table thead tr {
   border-bottom: 1px solid rgba(180, 190, 254, 0.1);
 }
@@ -505,7 +480,7 @@ body {
   background: rgba(180, 190, 254, 0.04);
 }
 
-/* Badge styles */
+/* ── BADGES ── */
 .badge {
   display: inline-flex;
   align-items: center;

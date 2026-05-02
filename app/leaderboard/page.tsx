@@ -6,7 +6,7 @@ export default async function LeaderboardPage() {
   const top3 = leaders.slice(0, 3);
 
   return (
-    <div className="min-h-screen px-4 py-10 max-w-7xl mx-auto">
+    <div className="page-wrapper">
       {/* Header */}
       <div className="mb-10 text-center">
         <h1 className="font-orbitron font-black text-4xl uppercase tracking-widest text-[#cdd6f4] mb-2">

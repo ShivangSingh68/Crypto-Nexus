@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import type { Coin } from '../hooks/useMarketData';
+import { CoinWithAdditionalData } from '../type';
 
 interface CoinCardProps {
-  coin: Coin;
+  coin: CoinWithAdditionalData;
 }
 
 export default function CoinCard({ coin }: CoinCardProps) {
@@ -28,7 +28,7 @@ export default function CoinCard({ coin }: CoinCardProps) {
               boxShadow: `0 0 12px ${coin.color}20`,
             }}
           >
-            {coin.symbol.slice(0, 2)}
+            {coin.ticker.slice(0, 2)}
           </div>
           <span
             className={`font-mono-tech text-xs px-2.5 py-1 rounded-full ${
@@ -43,14 +43,14 @@ export default function CoinCard({ coin }: CoinCardProps) {
 
         {/* Name */}
         <div className="mb-1">
-          <div className="font-orbitron font-bold text-sm text-[#cdd6f4]">{coin.symbol}</div>
+          <div className="font-orbitron font-bold text-sm text-[#cdd6f4]">{coin.ticker}</div>
           <div className="font-rajdhani text-xs text-[#585b70] mt-0.5 truncate">{coin.name}</div>
         </div>
 
         {/* Price */}
         <div className="mt-3">
           <div className="font-mono-tech text-lg font-bold text-[#cdd6f4]">
-            ${coin.price < 0.01 ? coin.price.toFixed(6) : coin.price.toLocaleString()}
+            ${coin.currentPrice.toNumber() < 0.01 ? coin.currentPrice.toFixed(6) : coin.currentPrice.toLocaleString()}
           </div>
         </div>
 

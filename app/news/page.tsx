@@ -60,7 +60,7 @@ export default function NewsPage() {
   const neutral = NEWS_FEED.filter((n) => n.tag === 'neutral');
 
   return (
-    <div className="min-h-screen">
+    <div className="">
       {/* Ticker */}
       <div className="bg-[rgba(17,17,27,0.8)] border-b border-[rgba(180,190,254,0.08)] overflow-hidden py-2">
         <div className="flex gap-8 animate-ticker whitespace-nowrap">
@@ -79,7 +79,7 @@ export default function NewsPage() {
         </div>
       </div>
 
-      <div className="px-4 py-10 max-w-7xl mx-auto">
+      <div className="page-wrapper">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-1">

@@ -1,7 +1,5 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { SessionProvider } from 'next-auth/react';
-import { auth } from '@/auth';
 import Navbar from './(root)/components/navbar';
 
 export const metadata: Metadata = {
@@ -9,17 +7,13 @@ export const metadata: Metadata = {
   description: 'Trade fantasy crypto coins, grow your portfolio, and dominate the leaderboard.',
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-
-  const session = await auth();
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <SessionProvider session={session}>
     <html lang="en">
-      <body className="min-h-screen grid-overlay">
+      <body className="grid-overlay" style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
         <Navbar />
-        <main className="pt-16">{children}</main>
+        <main style={{ flex: 1, paddingTop: '64px' }}>{children}</main>
       </body>
     </html>
-    </SessionProvider>
   );
 }

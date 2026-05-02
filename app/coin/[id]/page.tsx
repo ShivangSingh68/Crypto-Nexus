@@ -32,7 +32,7 @@ export default function CoinPage({ params }: { params: Promise<{ id: string }> }
   const isGain = coin.change24h >= 0;
 
   return (
-    <div className="min-h-screen px-4 py-10 max-w-7xl mx-auto">
+    <div className="page-wrapper">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
         <div

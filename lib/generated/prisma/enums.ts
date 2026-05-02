@@ -43,7 +43,7 @@ export const AchievementType = {
   AI_VISIONARY: 'AI_VISIONARY',
   TOP_TEN: 'TOP_TEN',
   RANK_ONE: 'RANK_ONE',
-  MILLIONARE: 'MILLIONARE'
+  MILLIONAIRE: 'MILLIONAIRE'
 } as const
 
 export type AchievementType = (typeof AchievementType)[keyof typeof AchievementType]

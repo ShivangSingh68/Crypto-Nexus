@@ -34,7 +34,7 @@ export default function PortfolioPage() {
   }, 0);
 
   return (
-    <div className="min-h-screen px-4 py-10 max-w-7xl mx-auto">
+    <div className="page-wrapper">
       {/* Header */}
       <div className="mb-8">
         <h1 className="font-orbitron font-black text-3xl uppercase tracking-widest text-[#cdd6f4] mb-1">

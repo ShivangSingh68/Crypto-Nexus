@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import type { Coin } from '../hooks/useMarketData';
+import { CoinWithAdditionalData } from '../type';
 
 interface MarketTableProps {
-  coins: Coin[];
+  coins: CoinWithAdditionalData[];
   sortBy: string;
   sortDir: 'asc' | 'desc';
   onSort: (col: 'price' | 'change24h' | 'volume24h' | 'marketCap') => void;
@@ -61,17 +61,17 @@ export default function MarketTable({ coins, sortBy, sortDir, onSort }: MarketTa
                         border: `1px solid ${coin.color}30`,
                       }}
                     >
-                      {coin.symbol.slice(0, 2)}
+                      {coin.ticker.slice(0, 2)}
                     </div>
                     <div>
-                      <div className="font-orbitron font-bold text-sm text-[#cdd6f4]">{coin.symbol}</div>
+                      <div className="font-orbitron font-bold text-sm text-[#cdd6f4]">{coin.ticker}</div>
                       <div className="font-rajdhani text-xs text-[#585b70]">{coin.name}</div>
                     </div>
                   </div>
                 </td>
                 <td className="px-5 py-4 text-right">
                   <span className="font-mono-tech text-sm text-[#cdd6f4]">
-                    ${coin.price < 0.01 ? coin.price.toFixed(6) : coin.price.toLocaleString()}
+                    ${coin.currentPrice.toNumber() < 0.01 ? coin.currentPrice.toFixed(6) : coin.currentPrice.toLocaleString()}
                   </span>
                 </td>
                 <td className="px-5 py-4 text-right">

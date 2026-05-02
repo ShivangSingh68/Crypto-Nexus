@@ -400,7 +400,8 @@ export const ModelName = {
   Holding: 'Holding',
   Achievement: 'Achievement',
   UserAchievement: 'UserAchievement',
-  PortfolioSnapshot: 'PortfolioSnapshot'
+  PortfolioSnapshot: 'PortfolioSnapshot',
+  Badge: 'Badge'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -416,7 +417,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "account" | "coin" | "portfolio" | "coinPrice" | "trade" | "news" | "holding" | "achievement" | "userAchievement" | "portfolioSnapshot"
+    modelProps: "user" | "account" | "coin" | "portfolio" | "coinPrice" | "trade" | "news" | "holding" | "achievement" | "userAchievement" | "portfolioSnapshot" | "badge"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1234,6 +1235,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Badge: {
+      payload: Prisma.$BadgePayload<ExtArgs>
+      fields: Prisma.BadgeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BadgeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BadgePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BadgeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BadgePayload>
+        }
+        findFirst: {
+          args: Prisma.BadgeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BadgePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BadgeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BadgePayload>
+        }
+        findMany: {
+          args: Prisma.BadgeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BadgePayload>[]
+        }
+        create: {
+          args: Prisma.BadgeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BadgePayload>
+        }
+        createMany: {
+          args: Prisma.BadgeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BadgeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BadgePayload>[]
+        }
+        delete: {
+          args: Prisma.BadgeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BadgePayload>
+        }
+        update: {
+          args: Prisma.BadgeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BadgePayload>
+        }
+        deleteMany: {
+          args: Prisma.BadgeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BadgeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BadgeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BadgePayload>[]
+        }
+        upsert: {
+          args: Prisma.BadgeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BadgePayload>
+        }
+        aggregate: {
+          args: Prisma.BadgeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBadge>
+        }
+        groupBy: {
+          args: Prisma.BadgeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BadgeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BadgeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BadgeCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1310,6 +1385,8 @@ export const CoinScalarFieldEnum = {
   name: 'name',
   logo: 'logo',
   ticker: 'ticker',
+  color: 'color',
+  description: 'description',
   type: 'type',
   totalSupply: 'totalSupply',
   circulatingSupply: 'circulatingSupply',
@@ -1370,6 +1447,7 @@ export const NewsScalarFieldEnum = {
   coinId: 'coinId',
   description: 'description',
   heading: 'heading',
+  source: 'source',
   timestamp: 'timestamp',
   impact: 'impact'
 } as const
@@ -1391,6 +1469,7 @@ export type HoldingScalarFieldEnum = (typeof HoldingScalarFieldEnum)[keyof typeo
 export const AchievementScalarFieldEnum = {
   id: 'id',
   type: 'type',
+  name: 'name',
   description: 'description'
 } as const
 
@@ -1415,6 +1494,15 @@ export const PortfolioSnapshotScalarFieldEnum = {
 } as const
 
 export type PortfolioSnapshotScalarFieldEnum = (typeof PortfolioSnapshotScalarFieldEnum)[keyof typeof PortfolioSnapshotScalarFieldEnum]
+
+
+export const BadgeScalarFieldEnum = {
+  id: 'id',
+  image: 'image',
+  achievementId: 'achievementId'
+} as const
+
+export type BadgeScalarFieldEnum = (typeof BadgeScalarFieldEnum)[keyof typeof BadgeScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1684,6 +1772,7 @@ export type GlobalOmitConfig = {
   achievement?: Prisma.AchievementOmit
   userAchievement?: Prisma.UserAchievementOmit
   portfolioSnapshot?: Prisma.PortfolioSnapshotOmit
+  badge?: Prisma.BadgeOmit
 }
 
 /* Types for Logging */
