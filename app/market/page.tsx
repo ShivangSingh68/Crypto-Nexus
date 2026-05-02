@@ -6,18 +6,16 @@ import CoinCard from './components/coin-card';
 import MarketTable from './components/market-table';
 
 export default function MarketPage() {
-  const { coins, search, setSearch, sortBy, setSortBy, sortDir, setSortDir, loading } = useMarketData();
+  const { coins, search, setSearch, sortBy, setSortBy, sortDir, setSortDir, marketCap, loading } = useMarketData();
   const [view, setView] = useState<'grid' | 'table'>('grid');
   const [filter, setFilter] = useState<'all' | 'gainers' | 'losers'>('all');
 
   if (loading) {
     return (
       <div className="page-wrapper">
-        <div className="card-glass rounded-2xl py-20 text-center">
-          <div className="text-4xl mb-3 animate-pulse">📈</div>
-          <p className="font-rajdhani text-[#585b70]">
-            Loading market data...
-          </p>
+        <div className="card-glass rounded-2xl" style={{ padding: '5rem 2rem', textAlign: 'center' }}>
+          <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }} className="animate-pulse">📈</div>
+          <p className="font-rajdhani" style={{ color: '#585b70' }}>Loading market data...</p>
         </div>
       </div>
     );
@@ -32,105 +30,137 @@ export default function MarketPage() {
     }
   };
 
-  const filtered = coins.filter((c) => {
-    if (filter === 'gainers') return c.change24h > 0;
-    if (filter === 'losers') return c.change24h < 0;
+  const filtered = coins!.filter((c) => {
+    if (filter === 'gainers') return !c.change24h.includes('-');
+    if (filter === 'losers') return c.change24h.includes('-');
     return true;
   });
 
-  const gainers = coins.filter((c) => c.change24h > 0).length;
-  const losers = coins.filter((c) => c.change24h < 0).length;
+  const gainers = coins.filter((c) => !c.change24h.includes('-')).length;
+  const losers = coins.filter((c) => c.change24h.includes('-')).length;
+
+  const stats = [
+    { label: 'Total Coins', value: coins.length, color: '#b4befe' },
+    { label: 'Gainers',     value: gainers,       color: '#a6e3a1' },
+    { label: 'Losers',      value: losers,         color: '#f38ba8' },
+    { label: 'Mkt Cap',     value: marketCap.toFixed(2),      color: '#00f5ff' },
+  ];
 
   return (
     <div className="page-wrapper">
-      {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="live-dot font-orbitron text-xs text-[#00f5ff] tracking-widest uppercase">Live</span>
+
+      {/* ── Header ── */}
+      <div style={{ marginBottom: '2rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+          <span className="live-dot font-orbitron" style={{ fontSize: '0.75rem', color: '#00f5ff', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+            Live
+          </span>
         </div>
-        <h1 className="font-orbitron font-black text-3xl uppercase tracking-widest text-[#cdd6f4] mb-1">
+        <h1 className="font-orbitron" style={{ fontWeight: 900, fontSize: '1.875rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: '#cdd6f4', marginBottom: '0.25rem' }}>
           Market
         </h1>
-        <p className="font-rajdhani text-[#7f849c]">Real-time simulated crypto prices</p>
+        <p className="font-rajdhani" style={{ color: '#7f849c' }}>Real-time simulated crypto prices</p>
       </div>
 
-      {/* Stats bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
-        {[
-          { label: 'Total Coins', value: coins.length, color: '#b4befe' },
-          { label: 'Gainers', value: gainers, color: '#a6e3a1' },
-          { label: 'Losers', value: losers, color: '#f38ba8' },
-          { label: 'Mkt Cap', value: '$192.5B', color: '#00f5ff' },
-        ].map((s) => (
-          <div key={s.label} className="card-glass rounded-2xl px-4 py-3">
-            <div className="font-rajdhani text-xs text-[#585b70] uppercase tracking-wider mb-1">{s.label}</div>
-            <div className="font-orbitron font-bold text-lg" style={{ color: s.color }}>
+      {/* ── Stats Bar ── */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem', marginBottom: '2rem' }}>
+        {stats.map((s) => (
+          <div key={s.label} className="card-glass" style={{ borderRadius: '1rem', padding: '0.75rem 1rem' }}>
+            <div className="font-rajdhani" style={{ fontSize: '0.7rem', color: '#585b70', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.25rem' }}>
+              {s.label}
+            </div>
+            <div className="font-orbitron" style={{ fontWeight: 700, fontSize: '1.25rem', color: s.color }}>
               {s.value}
             </div>
           </div>
         ))}
       </div>
 
-      {/* Controls */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+      {/* ── Controls ── */}
+      <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+
         {/* Search */}
-        <div className="relative flex-1">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#585b70] text-sm">⌕</span>
+        <div style={{ position: 'relative', flex: 1, minWidth: '180px' }}>
+          <span style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: '#585b70', fontSize: '1rem', pointerEvents: 'none' }}>
+            🔍
+          </span>
           <input
             type="text"
             placeholder="Search coins..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="nexus-input w-full pl-8 pr-4 py-2.5 text-sm"
+            className="nexus-input"
+            style={{ width: '100%', paddingLeft: '2.25rem', paddingRight: '1rem', paddingTop: '0.625rem', paddingBottom: '0.625rem', fontSize: '0.875rem' }}
           />
         </div>
 
         {/* Filter tabs */}
-        <div className="flex items-center gap-1 card-glass rounded-xl p-1">
-          {(['all', 'gainers', 'losers'] as const).map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-4 py-2 rounded-lg font-rajdhani font-semibold text-xs uppercase tracking-widest transition-all ${
-                filter === f
-                  ? f === 'gainers'
-                    ? 'bg-[rgba(166,227,161,0.15)] text-[#a6e3a1] border border-[rgba(166,227,161,0.3)]'
-                    : f === 'losers'
-                    ? 'bg-[rgba(243,139,168,0.15)] text-[#f38ba8] border border-[rgba(243,139,168,0.3)]'
-                    : 'bg-[rgba(180,190,254,0.12)] text-[#b4befe] border border-[rgba(180,190,254,0.25)]'
-                  : 'text-[#585b70] hover:text-[#a6adc8]'
-              }`}
-            >
-              {f}
-            </button>
-          ))}
+        <div className="card-glass" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', borderRadius: '0.75rem', padding: '0.25rem' }}>
+          {(['all', 'gainers', 'losers'] as const).map((f) => {
+            const active = filter === f;
+            const activeStyle = f === 'gainers'
+              ? { background: 'rgba(166,227,161,0.15)', color: '#a6e3a1', border: '1px solid rgba(166,227,161,0.3)' }
+              : f === 'losers'
+              ? { background: 'rgba(243,139,168,0.15)', color: '#f38ba8', border: '1px solid rgba(243,139,168,0.3)' }
+              : { background: 'rgba(180,190,254,0.12)', color: '#b4befe', border: '1px solid rgba(180,190,254,0.25)' };
+            return (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className="font-rajdhani"
+                style={{
+                  padding: '0.4rem 1rem',
+                  borderRadius: '0.5rem',
+                  fontWeight: 600,
+                  fontSize: '0.7rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                  border: '1px solid transparent',
+                  ...(active ? activeStyle : { background: 'transparent', color: '#585b70' }),
+                }}
+              >
+                {f}
+              </button>
+            );
+          })}
         </div>
 
         {/* View toggle */}
-        <div className="flex items-center gap-1 card-glass rounded-xl p-1">
-          <button
-            onClick={() => setView('grid')}
-            className={`px-3 py-2 rounded-lg transition-all ${view === 'grid' ? 'bg-[rgba(0,245,255,0.12)] text-[#00f5ff]' : 'text-[#585b70] hover:text-[#a6adc8]'}`}
-          >
-            ⊞
-          </button>
-          <button
-            onClick={() => setView('table')}
-            className={`px-3 py-2 rounded-lg transition-all ${view === 'table' ? 'bg-[rgba(0,245,255,0.12)] text-[#00f5ff]' : 'text-[#585b70] hover:text-[#a6adc8]'}`}
-          >
-            ≡
-          </button>
+        <div className="card-glass" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', borderRadius: '0.75rem', padding: '0.25rem' }}>
+          {([
+            { key: 'grid', icon: '▦' },
+            { key: 'table', icon: '☰' },
+          ] as const).map(({ key, icon }) => (
+            <button
+              key={key}
+              onClick={() => setView(key)}
+              style={{
+                padding: '0.4rem 0.75rem',
+                borderRadius: '0.5rem',
+                fontSize: '1rem',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+                border: 'none',
+                background: view === key ? 'rgba(0,245,255,0.12)' : 'transparent',
+                color: view === key ? '#00f5ff' : '#585b70',
+              }}
+            >
+              {icon}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Content */}
+      {/* ── Content ── */}
       {filtered.length === 0 ? (
-        <div className="card-glass rounded-2xl py-20 text-center">
-          <div className="text-4xl mb-3">🔍</div>
-          <p className="font-rajdhani text-[#585b70]">No coins match your search.</p>
+        <div className="card-glass" style={{ borderRadius: '1rem', padding: '5rem 2rem', textAlign: 'center' }}>
+          <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>🔍</div>
+          <p className="font-rajdhani" style={{ color: '#585b70' }}>No coins match your search.</p>
         </div>
       ) : view === 'grid' ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '1rem' }}>
           {filtered.map((coin) => (
             <CoinCard key={coin.id} coin={coin} />
           ))}

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import Navbar from './(root)/components/navbar';
+import Toaster from '@/components/toaster';
 
 export const metadata: Metadata = {
   title: 'Crypto Nexus — Virtual Trading Game',
@@ -11,8 +11,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className="grid-overlay" style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
-        <Navbar />
+        {/* <Navbar /> */}
         <main style={{ flex: 1, paddingTop: '64px' }}>{children}</main>
+        <Toaster />
       </body>
     </html>
   );

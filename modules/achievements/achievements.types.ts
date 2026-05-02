@@ -6,3 +6,8 @@ export interface HoldingWithCoinType {
     quantity: Decimal,
     coinType: string,
 }
+
+export interface AchievementMessage {
+    unlocked: boolean,
+    progress?: number,
+}

@@ -7,7 +7,7 @@
  */
 
 export const publicRoutes: string[] = [
-
+    '/'
 ]
 
 /**
@@ -40,7 +40,7 @@ export const authRoutes: string[] = [
 
 export const apiAuthPrefix: string = "/api/auth"
 
-export const DEFAULT_LOGIN_REDIRECT = "/"; // Changed to redirect  to home  page after login
+export const DEFAULT_LOGIN_REDIRECT = "/market"; // Changed to redirect  to home  page after login
 
 
 /**
@@ -49,3 +49,10 @@ export const DEFAULT_LOGIN_REDIRECT = "/"; // Changed to redirect  to home  page
  */
 
 export const publicApiRoutes = ["/api/cron/generate-news", "/api/cron/monthly-rewards", "/api/cron/update-price"]
+
+/**
+ * Admin Dashboard
+ * @type {string}
+ */
+
+export const adminDashboard = "/admin"

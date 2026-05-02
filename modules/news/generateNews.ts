@@ -50,6 +50,7 @@ export async function generateNewsEvent(timestamp: Date): Promise<Message<AIResp
                 description: p.description,
                 impact: p.impact,
                 timestamp,
+                source: p.source,
             }))
         });
 

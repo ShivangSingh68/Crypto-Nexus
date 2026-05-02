@@ -6,8 +6,7 @@ interface CoinCardProps {
 }
 
 export default function CoinCard({ coin }: CoinCardProps) {
-  const isGain = coin.change24h >= 0;
-
+  const isGain = !coin.change24h.includes('-');
   return (
     <Link href={`/coin/${coin.id}`}>
       <div
@@ -37,7 +36,7 @@ export default function CoinCard({ coin }: CoinCardProps) {
                 : 'bg-[rgba(243,139,168,0.1)] text-[#f38ba8] border border-[rgba(243,139,168,0.25)]'
             }`}
           >
-            {isGain ? '▲' : '▼'} {Math.abs(coin.change24h)}%
+            {isGain ? '▲' : '▼'} {coin.change24h.replace('-', '')}%
           </span>
         </div>
 
@@ -50,11 +49,12 @@ export default function CoinCard({ coin }: CoinCardProps) {
         {/* Price */}
         <div className="mt-3">
           <div className="font-mono-tech text-lg font-bold text-[#cdd6f4]">
-            ${coin.currentPrice.toNumber() < 0.01 ? coin.currentPrice.toFixed(6) : coin.currentPrice.toLocaleString()}
+            ${coin.currentPrice < 0.01 ? coin.currentPrice.toFixed(6) : coin.currentPrice.toLocaleString()}
           </div>
         </div>
 
         {/* Sparkline (visual only) */}
+        {/* TODO: */}
         <div className="mt-3 h-8 flex items-end gap-0.5">
           {coin.sparkline.map((v, i) => {
             const min = Math.min(...coin.sparkline);

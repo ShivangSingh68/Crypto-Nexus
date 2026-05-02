@@ -42,6 +42,7 @@ export const aiResponseSchema = z.array(z.object({
   impact: z
     .number()
     .describe("Sentiment of the public based on the news between -1 and +1"),
+  source: z.string().describe("Source of the news"),
 }));
 
 export type AIResponse = z.infer<typeof aiResponseSchema>[number];

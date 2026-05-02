@@ -1,7 +1,11 @@
-import { Coin } from "@/lib/generated/prisma/client"
 
-export type CoinWithAdditionalData = Coin & {
-  change24h: number;
+export type CoinWithAdditionalData = {
+  id: string,
+  currentPrice: number,
+  ticker: string,
+  name: string,
+  color: string,
+  change24h: string;
   volume24h: number;
   marketCap: number;
   sparkline: number[];

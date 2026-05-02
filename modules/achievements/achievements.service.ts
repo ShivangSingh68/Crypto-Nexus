@@ -4,265 +4,257 @@ import { Message } from "@/types/messages";
 import { Decimal } from "@prisma/client/runtime/library";
 import { aiVisionary, doublePortfolio, firstProfit, memeLord, millionare, rankOne, tenTrades, topTen } from "./rewardAchievements";
 import { getRichestUser, getUserRank } from "../leaderboard/leaderboard.service";
-import { UserAchievement } from "@/lib/generated/prisma/client";
+import { AchievementType } from "@/lib/generated/prisma/client";
+import { UserAchievementModified } from "../portfolio/portfolio.types";
 
-export async function updateAchievements (userId: string, event: "Price_Update" | "Trade", avgBuyPrice: Decimal = new Decimal(0)): Promise<Message<Decimal>> {
+const allAchievements = await db.achievement.findMany({
+    include: {
+        badge: true,
+    }
+});
+
+const achievementMap = new Map(allAchievements.map((a) => [a.type, a]));
+
+const getAchievementId = (type: AchievementType): string => {
+    const achievement = achievementMap.get(type);
+    if (achievement) throw new Error(`Achievement "${type}" not found in DB. Run prisma db seed.`);
+    return achievement.id;
+};
+
+export async function updateAchievements(userId: string, event: "Price_Update" | "Trade", avgBuyPrice: Decimal = new Decimal(0)): Promise<Message<AchievementType[]>> {
     try {
-        
-        const user = await db.user.findFirst({
-            where: {
-                id: userId,
-            }
-        });
+        const user = await db.user.findFirst({ where: { id: userId } });
+        if (!user) return { success: false, error: "Invalid user id" };
 
-        if(!user) {
-            return {
-                success: false,
-                error: "Invalid user id"
-            };
-        }
-        
+        const newAchievements: AchievementType[] = [];
+
+
         const userAchievements = await db.userAchievement.findMany({
-            where: {
-                userId: user.id
-            },
-            include: {
-                achievement: true
-            }
+            where: { userId: user.id },
+            include: { achievement: true },
         });
 
-        const allAchievements = await db.achievement.findMany();
-        const achievementMap = new Map(allAchievements.map((a) => [a.type, a.id]));
+        const unlockedTypes = new Set(userAchievements.map((ua) => ua.achievement.type));
 
-        let hasFIRST_TRADE = false;
-        let hasFIRST_PROFIT = false;
-        let hasTEN_TRADES = false; 
-        let hasDOUBLE_PORTFOLIO = false;
-        let hasMEME_LORD = false;
-        let hasAI_VISIONARY = false;
-        let hasTOP_TEN = false; 
-        let hasRANK_ONE = false;
-        let hasMILLIONARE = false;
+        const has = (type: AchievementType) => unlockedTypes.has(type);
 
-        for(const userAchievement of userAchievements) {
+        const unlock = async (type: AchievementType) => {
+            await db.userAchievement.create({
+                data: {
+                    userId: user.id,
+                    achievementId: getAchievementId(type),
+                    unlockedAt: new Date(),
+                },
+            });
+            newAchievements.push(type);
+        };
 
-            const achievement = userAchievement.achievement;
-            const type = achievement.type;
-
-            if(type === "FIRST_TRADE") {
-                hasFIRST_TRADE = true;
-            }
-            else if(type === "FIRST_PROFIT") {
-                hasFIRST_PROFIT = true;
-            }
-            else if(type === "TEN_TRADES") {
-                hasTEN_TRADES = true;
-            }
-            else if(type === "DOUBLE_PORTFOLIO") {
-                hasDOUBLE_PORTFOLIO = true;
-            }
-            else if(type === "MEME_LORD") {
-                hasMEME_LORD = true;
-            }
-            else if(type === "AI_VISIONARY") {
-                hasAI_VISIONARY = true;
-            }
-            else if(type === "TOP_TEN") {
-                hasTOP_TEN = true;
-            }
-            else if(type === "RANK_ONE") {
-                hasRANK_ONE = true;
-            }
-            else if(type === "MILLIONARE") {
-                hasMILLIONARE = true;
-            }
-        } 
-
-        if(event === "Trade") {
-            
+        if (event === "Trade") {
             const trades = await db.trade.findMany({
-                where: {
-                    traderId: userId,
-                },
-                orderBy: {
-                    timestamp: "desc",
-                },
-                include: {
-                    coin: true
-                }
+                where: { traderId: userId },
+                orderBy: { timestamp: "desc" },
+                include: { coin: true },
             });
 
-            if(!trades) {
-                return {
-                    success: false,
-                    error: "No trade made by user",
-                }
-            };
+            if (!trades.length) return { success: false, error: "No trades found for user" };
 
-            if(!hasFIRST_TRADE) {
-                await db.userAchievement.create({
-                    data: {
-                        userId: user.id,
-                        unlockedAt: new Date(Date.now()),
-                        achievementId: achievementMap.get("FIRST_TRADE")!
-                    }
-                });
+            if (!has(AchievementType.FIRST_TRADE)) {
+                await unlock(AchievementType.FIRST_TRADE);
             }
-            if(!hasFIRST_PROFIT) {
-                if(trades[0].type === "SELL") {
-                    const isTradeProfitable = firstProfit(trades[0], avgBuyPrice);
-                    if(isTradeProfitable) {
-                        await db.userAchievement.create({
-                            data: {
-                                userId: user.id,
-                                unlockedAt: new Date(Date.now()),
-                                achievementId: achievementMap.get("FIRST_PROFIT")!
-                            }
-                        })
-                    }
+
+            if (!has(AchievementType.FIRST_PROFIT) && trades[0].type === "SELL") {
+                if (firstProfit(trades[0], avgBuyPrice).unlocked) {
+                    await unlock(AchievementType.FIRST_PROFIT);
                 }
             }
-            if(!hasTEN_TRADES) {
-                const hasCompletedTEN_TRADES = tenTrades(trades);
-                if(hasCompletedTEN_TRADES) {
-                    await db.userAchievement.create({
-                        data: {
-                            userId: user.id,
-                            unlockedAt: new Date(Date.now()),
-                            achievementId: achievementMap.get("TEN_TRADES")!,
-                        }
-                    })
+
+            if (!has(AchievementType.TEN_TRADES)) {
+                if (tenTrades(trades).unlocked) {
+                    await unlock(AchievementType.TEN_TRADES); // ← was wrongly FIRST_PROFIT
                 }
             }
-            if(!hasAI_VISIONARY) {
-                const buyAITrades = trades.filter((trade) => trade.type === "BUY").filter((trade) => trade.coin.type === "AI");
-                const isAIVisionary = aiVisionary(buyAITrades);  
-                if(isAIVisionary) {
-                    await db.userAchievement.create({
-                        data: {
-                            userId: user.id,
-                            achievementId: achievementMap.get("AI_VISIONARY")!,
-                            unlockedAt: new Date(Date.now()),
-                        }
-                    })
+
+            if (!has(AchievementType.AI_VISIONARY)) {
+                const buyAITrades = trades.filter((t) => t.type === "BUY" && t.coin.type === "AI");
+                if (aiVisionary(buyAITrades).unlocked) {
+                    await unlock(AchievementType.AI_VISIONARY);
                 }
             }
-            if(!hasMEME_LORD) {
-                const buyMEMETrades = trades.filter((trade) => trade.type === "BUY").filter((trade) => trade.coin.type === "MEME");
-                const isMemeLord = memeLord(buyMEMETrades);
-                if(isMemeLord) {
-                    await db.userAchievement.create({
-                        data: {
-                            userId: user.id,
-                            achievementId: achievementMap.get("MEME_LORD")!,
-                            unlockedAt: new Date(Date.now()),
-                        }
-                    })
+
+            if (!has(AchievementType.MEME_LORD)) {
+                const buyMemeTrades = trades.filter((t) => t.type === "BUY" && t.coin.type === "MEME");
+                if (memeLord(buyMemeTrades).unlocked) {
+                    await unlock(AchievementType.MEME_LORD);
                 }
             }
 
         } else {
-            
-            const portfolio = await db.portfolio.findFirst({
-                where: {
-                    userId: user.id,
-                }
-            });
-            if(!portfolio) {
-                return {
-                    success: false,
-                    error: "No portfolio found for user",
-                }
+            const portfolio = await db.portfolio.findFirst({ where: { userId: user.id } });
+            if (!portfolio) return { success: false, error: "No portfolio found for user" };
+
+            if (!has(AchievementType.DOUBLE_PORTFOLIO) && doublePortfolio(portfolio).unlocked) {
+                await unlock(AchievementType.DOUBLE_PORTFOLIO);
             }
 
-            if(!hasDOUBLE_PORTFOLIO) {
-                const isDoublePortfolio = doublePortfolio(portfolio);
-                if(isDoublePortfolio) {
-                    await db.userAchievement.create({
-                        data: {
-                            userId: user.id,
-                            achievementId: achievementMap.get("DOUBLE_PORTFOLIO")!,
-                            unlockedAt: new Date(Date.now()),
-                        }
-                    })
-                }
+            if (!has(AchievementType.MILLIONAIRE) && millionare(portfolio).unlocked) {
+                await unlock(AchievementType.MILLIONAIRE);
             }
-            if(!hasMILLIONARE) {
-                const isMillionare = millionare(portfolio);
-                if(isMillionare) {
-                    await db.userAchievement.create({
-                        data: {
-                            userId: user.id,
-                            achievementId: achievementMap.get("MILLIONARE")!,
-                            unlockedAt: new Date(Date.now()),
-                        }
-                    })
-                }
-            }
-            if(!hasRANK_ONE) {
+
+            if (!has(AchievementType.RANK_ONE)) {
                 const richestUser = (await getRichestUser()).data;
-                const isRankOne = rankOne(user, richestUser!);
-                if(isRankOne) {
-                    await db.userAchievement.create({
-                        data: {
-                            userId: user.id,
-                            achievementId: achievementMap.get("RANK_ONE")!,
-                            unlockedAt: new Date(Date.now()),
-                        }
-                    })
+                if (richestUser && rankOne(user, richestUser).unlocked) {
+                    await unlock(AchievementType.RANK_ONE);
                 }
             }
-            if(!hasTOP_TEN) {
+
+            if (!has(AchievementType.TOP_TEN)) {
                 const userRank = (await getUserRank(user.id)).data;
-                const isTopTen = topTen(userRank!);
-                if(isTopTen) {
-                    await db.userAchievement.create({
-                        data: {
-                            userId: user.id,
-                            achievementId: achievementMap.get("TOP_TEN")!,
-                            unlockedAt: new Date(Date.now()),
-                        }
-                    })
+                if (userRank !== undefined && topTen(userRank).unlocked) {
+                    await unlock(AchievementType.TOP_TEN);
                 }
             }
-
         }
 
-        return {
-            success: true,
-            msg: "Achievements updated successfully"
-        }
+        return { success: true, msg: "Achievements updated successfully", data: newAchievements };
 
     } catch (error) {
-        
-        console.error("Error: ", error);
-
-        const errMsg = error instanceof Error ? error.message: "Internal error";
-
+        console.error("Error in updateAchievements:", error);
         return {
             success: false,
-            error: errMsg,
+            error: error instanceof Error ? error.message : "Internal error",
         };
     }
 }
 
-export async function getUserAchievements (userId: string): Promise<Message<UserAchievement[]>> {
+export async function getUserAchievements (userId: string): Promise<Message<UserAchievementModified[]>> {
     try {
-        
-        const userAchievements = await db.userAchievement.findMany({
-            where: {
-                userId,
-            },
-            include: {
-                achievement: true,
-            }
-        })
 
+        const [userTrades, userAchievements, userPortfolio] = await Promise.all([
+            db.trade.findMany({
+                where: {
+                    traderId: userId
+                }
+            }),
+            db.userAchievement.findMany({
+                where: {
+                    userId,
+                },
+                include: {
+                    achievement: {
+                        include: {
+                            badge: true,
+                        }
+                    }
+                }
+            }),
+            db.portfolio.findUnique({
+                where: {
+                    userId,
+                }
+            })
+        ]);
+
+        const  userAchievementMap = new Map(userAchievements.map((uc) => [uc.achievement.type, uc]));
+
+        const processedAchievements: UserAchievementModified[] = [];
+        
+        for(const ac of allAchievements) {
+            if(ac.type === "AI_VISIONARY") {
+
+                const isAchieved = userAchievementMap.has(ac.type);
+                processedAchievements.push({
+                    achievement: ac,
+                    id: ac.id,
+                    unlocked: isAchieved,
+                    progress: !isAchieved ? aiVisionary(userTrades).progress : 0,
+                })
+
+            } else if(ac.type === "DOUBLE_PORTFOLIO") {
+
+                const isAchieved = userAchievementMap.has(ac.type);
+                processedAchievements.push({
+                    achievement: ac,
+                    id: ac.id,
+                    unlocked: isAchieved,
+                    progress: !isAchieved ? doublePortfolio(userPortfolio).progress : 0,
+                })
+
+            } else if(ac.type === "FIRST_PROFIT") {
+
+                const isAchieved = userAchievementMap.has(ac.type);
+                processedAchievements.push({
+                    achievement: ac,
+                    id: ac.id,
+                    unlocked: isAchieved,
+                    progress: 0,
+                })
+
+            } else if(ac.type === "FIRST_TRADE") {
+
+                const isAchieved = userAchievementMap.has(ac.type);
+                processedAchievements.push({
+                    achievement: ac,
+                    id: ac.id,
+                    unlocked: isAchieved,
+                    progress: 0,
+                })
+
+            } else if(ac.type === "MEME_LORD") {
+
+                const isAchieved = userAchievementMap.has(ac.type);
+                processedAchievements.push({
+                    achievement: ac,
+                    id: ac.id,
+                    unlocked: isAchieved,
+                    progress: !isAchieved ? memeLord(userTrades).progress : 0,
+                })
+
+            } else if(ac.type === "MILLIONAIRE") {
+
+                const isAchieved = userAchievementMap.has(ac.type);
+                processedAchievements.push({
+                    achievement: ac,
+                    id: ac.id,
+                    unlocked: isAchieved,
+                    progress: !isAchieved ? millionare(userPortfolio).progress : 0,
+                })
+
+            } else if(ac.type === "RANK_ONE") {
+
+                const isAchieved = userAchievementMap.has(ac.type);
+                processedAchievements.push({
+                    achievement: ac,
+                    id: ac.id,
+                    unlocked: isAchieved,
+                    progress: 0,
+                })
+
+            } else if(ac.type === "TEN_TRADES") {
+
+                const isAchieved = userAchievementMap.has(ac.type);
+                processedAchievements.push({
+                    achievement: ac,
+                    id: ac.id,
+                    unlocked: isAchieved,
+                    progress: !isAchieved ? tenTrades(userTrades).progress : 0,
+                })
+
+            } else if(ac.type === "TOP_TEN") {
+
+                const isAchieved = userAchievementMap.has(ac.type);
+                processedAchievements.push({
+                    achievement: ac,
+                    id: ac.id,
+                    unlocked: isAchieved,
+                    progress: 0,
+                })
+
+            }
+        }
         return {
             success: true,
-            data: userAchievements,
+            data: processedAchievements,
         }
-
     } catch (error) {
         
         console.error("Error: ", error);

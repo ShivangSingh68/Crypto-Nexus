@@ -1,4 +1,5 @@
 
+import { PortfolioSnapshot } from "@/lib/generated/prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
 
 export interface HoldingData {
@@ -50,4 +51,26 @@ export function calculatePnLPercentage(avgBuyPrice: Decimal, currentPrice: Decim
     const pnl = currentPrice.sub(avgBuyPrice);
 
     return pnl.div(avgBuyPrice);
+}
+
+export function calculateDayChangeForPortfolio(snapshots: PortfolioSnapshot[]): {dayChange: Decimal, dayChangePct: Decimal} {
+
+    if(snapshots.length < 1) {
+        return {dayChange: new Decimal(0), dayChangePct: new Decimal(0)};
+    }
+    const offset = 24*60*60*1000;
+    const latestPortfolioValue = snapshots[snapshots.length -1].value;
+    let oldPortfolioValue = snapshots[0].value;
+    for(const snap of snapshots) {
+        if(snap.timestamp.getTime() >=  Date.now() - offset) {
+            oldPortfolioValue = snap.value;
+            break;
+        }
+    };
+    const dayChange = latestPortfolioValue.sub(oldPortfolioValue);
+    const dayChangePct = oldPortfolioValue.eq(0) ? new Decimal(0) : dayChange.div(oldPortfolioValue);
+    return {
+        dayChange,
+        dayChangePct
+    }
 }

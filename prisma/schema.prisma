@@ -27,6 +27,8 @@ model User {
   image String?
   role UserRole @default(USER)
   lastTradeAt DateTime?
+  location String?
+  bio String?
 
   accounts Account[]
   portfolio Portfolio?
@@ -76,7 +78,7 @@ enum AchievementType {
   AI_VISIONARY
   TOP_TEN
   RANK_ONE
-  MILLIONARE
+  MILLIONAIRE
 }
 
 enum Volatility {
@@ -91,6 +93,7 @@ model Coin {
   logo  String
   ticker String
   color String
+  description String
   type  CoinType 
   totalSupply Decimal @db.Decimal(18, 6)   //fixed max supply
   circulatingSupply Decimal @db.Decimal(18, 6)     //circulating supply
@@ -163,6 +166,7 @@ model News {
   coinId  String
   description String
   heading String
+  source  String
   timestamp DateTime @default(now())
   impact  Decimal @db.Decimal(18, 6) //-1 to +1
 
@@ -189,9 +193,11 @@ model Holding {
 model Achievement {
   id  String @id @default(cuid()) @map("_id")
   type AchievementType @unique
+  name  String
   description String
 
   users UserAchievement[]
+  badge Badge?
 }
 
 model UserAchievement {
@@ -216,4 +222,15 @@ model PortfolioSnapshot {
 
   @@index([portfolioId])
   @@index([timestamp])
+}
+
+model Badge {
+  id  String  @id @default(cuid())
+  image String
+
+  achievementId String  @unique
+
+  achievement Achievement @relation(fields: [achievementId], references: [id])
+
+  @@index([achievementId])
 }

@@ -1,13 +1,4 @@
-export interface NewsItem {
-  id: string;
-  headline: string;
-  body: string;
-  tag: 'bullish' | 'bearish' | 'neutral';
-  coinSymbol?: string;
-  coinColor?: string;
-  time: string;
-  source: string;
-}
+import { NewsItem } from "../types";
 
 interface NewsCardProps {
   news: NewsItem;
@@ -20,46 +11,73 @@ const TAG_ICONS: Record<string, string> = {
 };
 
 export default function NewsCard({ news }: NewsCardProps) {
+  const isBullish = news.tag === 'bullish';
+  const isBearish = news.tag === 'bearish';
+
+  const accentColor = isBullish ? '#a6e3a1' : isBearish ? '#f38ba8' : '#f9e2af';
+
   return (
-    <article className="card-glass rounded-2xl p-5 hover-lift group transition-all duration-200">
-      <div className="flex items-start justify-between gap-3 mb-3">
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className={`badge ${
-            news.tag === 'bullish' ? 'badge-bullish' :
-            news.tag === 'bearish' ? 'badge-bearish' :
-            'badge-neutral'
-          }`}>
-            {TAG_ICONS[news.tag]} {news.tag}
-          </span>
-          {news.coinSymbol && (
-            <span
-              className="badge text-[10px] font-orbitron"
-              style={{
-                background: `${news.coinColor ?? '#b4befe'}15`,
-                border: `1px solid ${news.coinColor ?? '#b4befe'}30`,
-                color: news.coinColor ?? '#b4befe',
-              }}
-            >
-              {news.coinSymbol}
+    <article
+      style={{
+        borderLeft: `4px solid ${accentColor}`,
+        border: `1px solid rgba(180,190,254,0.1)`,
+        borderLeftWidth: '4px',
+        borderLeftColor: accentColor,
+        borderRadius: '1.25rem',
+        background: 'rgba(24,24,37,0.9)',
+        transition: 'all 0.2s',
+        cursor: 'pointer',
+        display: 'block',
+        width: '100%',
+      }}
+      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(180,190,254,0.22)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
+      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(180,190,254,0.1)'; (e.currentTarget as HTMLElement).style.transform = 'none'; }}
+    >
+      <div style={{ padding: '1.75rem', display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
+
+        {/* Tags + time */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <span className="nx-badge" style={
+              isBullish
+                ? { background: 'rgba(166,227,161,0.12)', border: '1px solid rgba(166,227,161,0.3)', color: '#a6e3a1' }
+                : isBearish
+                ? { background: 'rgba(243,139,168,0.12)', border: '1px solid rgba(243,139,168,0.3)', color: '#f38ba8' }
+                : { background: 'rgba(249,226,175,0.12)', border: '1px solid rgba(249,226,175,0.3)', color: '#f9e2af' }
+            }>
+              {TAG_ICONS[news.tag]} {news.tag}
             </span>
-          )}
+            {news.coinSymbol && (
+              <span className="nx-badge" style={{
+                background: `${news.coinColor ?? '#b4befe'}18`,
+                border: `1px solid ${news.coinColor ?? '#b4befe'}40`,
+                color: news.coinColor ?? '#b4befe',
+              }}>
+                {news.coinSymbol}
+              </span>
+            )}
+          </div>
+          <span className="font-mono-tech" style={{ fontSize: '0.68rem', color: '#45475a', flexShrink: 0, marginTop: '2px' }}>
+            {news.time}
+          </span>
         </div>
-        <span className="font-mono-tech text-xs text-[#45475a] shrink-0">{news.time}</span>
-      </div>
 
-      <h3 className="font-rajdhani font-bold text-base text-[#cdd6f4] mb-2 leading-snug group-hover:text-[#00f5ff] transition-colors">
-        {news.headline}
-      </h3>
+        {/* Headline */}
+        <h3 className="font-rajdhani" style={{ fontWeight: 700, fontSize: '1rem', lineHeight: 1.45, color: '#cdd6f4', margin: 0 }}>
+          {news.headline}
+        </h3>
 
-      <p className="font-rajdhani text-sm text-[#7f849c] leading-relaxed line-clamp-2 mb-3">
-        {news.body}
-      </p>
+        {/* Body */}
+        <p className="font-rajdhani" style={{ fontSize: '0.875rem', color: '#6c7086', lineHeight: 1.65, margin: 0, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+          {news.body}
+        </p>
 
-      <div className="flex items-center justify-between pt-3 border-t border-[rgba(180,190,254,0.06)]">
-        <span className="font-rajdhani text-xs text-[#45475a] uppercase tracking-wider">{news.source}</span>
-        <span className="font-rajdhani text-xs text-[#00f5ff] opacity-0 group-hover:opacity-100 transition-opacity">
-          Read more →
-        </span>
+        {/* Footer */}
+        <div style={{ paddingTop: '1rem', borderTop: '1px solid rgba(180,190,254,0.07)', marginTop: '0.25rem' }}>
+          <span className="font-rajdhani" style={{ fontSize: '0.72rem', color: '#45475a', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            {news.source}
+          </span>
+        </div>
       </div>
     </article>
   );

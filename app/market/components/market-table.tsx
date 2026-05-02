@@ -45,7 +45,7 @@ export default function MarketTable({ coins, sortBy, sortDir, onSort }: MarketTa
         </thead>
         <tbody>
           {coins.map((coin, i) => {
-            const isGain = coin.change24h >= 0;
+            const isGain = !coin.change24h.includes('-');
             return (
               <tr key={coin.id} className="group">
                 <td className="px-5 py-4">
@@ -71,7 +71,7 @@ export default function MarketTable({ coins, sortBy, sortDir, onSort }: MarketTa
                 </td>
                 <td className="px-5 py-4 text-right">
                   <span className="font-mono-tech text-sm text-[#cdd6f4]">
-                    ${coin.currentPrice.toNumber() < 0.01 ? coin.currentPrice.toFixed(6) : coin.currentPrice.toLocaleString()}
+                    ${coin.currentPrice < 0.01 ? coin.currentPrice.toFixed(6) : coin.currentPrice.toLocaleString()}
                   </span>
                 </td>
                 <td className="px-5 py-4 text-right">

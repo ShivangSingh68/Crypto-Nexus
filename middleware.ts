@@ -5,11 +5,13 @@ import {
     apiAuthPrefix,
     publicRoutes,
     authRoutes,
-    publicApiRoutes
+    publicApiRoutes,
+    adminDashboard
 } from "./routes"
 import authConfig from "./auth.config";
 
 const { auth } = NextAuth (authConfig);
+
 
 export default auth((req) => {
     const { nextUrl } = req;
@@ -19,6 +21,7 @@ export default auth((req) => {
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
     const isPublicAuthRoute = publicApiRoutes.includes(nextUrl.pathname);
+    const isAdminRoute = nextUrl.pathname.startsWith(adminDashboard);
 
     if(isApiAuthRoute) {
         return null;
@@ -37,6 +40,16 @@ export default auth((req) => {
 
     if(!isLoggedIn && !isPublicRoute) {
         return Response.redirect(new URL('/auth/sign-in', nextUrl));
+    }
+
+    if(isAdminRoute) {
+
+        const role = req.auth.user.role;
+        if(role !== "ADMIN") {
+            return Response.redirect(new URL('/', nextUrl));
+        }
+
+        return null;
     }
 
     return null;

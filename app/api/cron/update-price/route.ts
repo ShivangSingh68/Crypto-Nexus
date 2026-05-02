@@ -1,5 +1,7 @@
 
+import { db } from "@/lib/db";
 import { runPriceUpdateForAllCoins } from "@/modules/engine/engine.service";
+import { createPortfolioSnapshot } from "@/modules/portfolio/portfolio.service";
 import { NextResponse } from "next/server"
 
 
@@ -7,8 +9,8 @@ export async function GET() {
     try {
         
         console.log("Received cron reminder for update-price");
-
-        const response = await runPriceUpdateForAllCoins();
+        const currTimestamp = new Date();
+        const response = await runPriceUpdateForAllCoins(currTimestamp);
 
         if(!response.success) {
             return NextResponse.json(
@@ -16,6 +18,10 @@ export async function GET() {
                 {status: 500},
             )
         }
+
+        const users = await db.user.findMany();
+
+        await Promise.all(users.map(async(u) => createPortfolioSnapshot(u.id, currTimestamp)))
 
         return NextResponse.json(
             {message: "Price updated for each coin successfully"},

@@ -4,12 +4,12 @@ import { db } from "@/lib/db";
 import { Message } from "@/types/messages";
 import { Decimal } from "@prisma/client/runtime/library";
 import { validateBuy, validateSell } from "./validateTrade";
-import { Coin } from "@/lib/generated/prisma/client";
+import { AchievementType, Coin } from "@/lib/generated/prisma/client";
 import { updateAchievements } from "../achievements/achievements.service";
 
 export async function executeUserTrade(
   userId: string, coinId: string, quantity: Decimal, type: "BUY" | "SELL"
-): Promise<Message<Decimal>> {
+): Promise<Message<AchievementType[]>> {
   try {
 
     const user = await db.user.findUnique({
@@ -224,11 +224,14 @@ export async function executeUserTrade(
         lastTradeAt: new Date(Date.now()),
       }
     })
-    await updateAchievements(userId, "Trade", avgBuyPrice);
-    
+    const updatedAchievementRes = await updateAchievements(userId, "Trade", avgBuyPrice);
+    if(!updatedAchievementRes.success) {
+      throw new Error(updatedAchievementRes.error);
+    }
     return {
       success: true,
       msg: "Trade executed successfully",
+      data: updatedAchievementRes.data
     };
   } catch (error) {
     console.error("Error: ", error);
@@ -237,5 +240,95 @@ export async function executeUserTrade(
       success: false,
       error: errMsg,
     };
+  }
+}
+
+export async function getTradesToday(): Promise<Message<number>> {
+  try {
+    
+    const trades = await db.trade.findMany({
+      orderBy: {
+        timestamp: "asc"
+      }
+    });
+
+    const offset = 24*60*60*1000;
+
+    const todayTrades = trades.filter( t => t.timestamp.getTime() >= Date.now() - offset);
+
+    return {
+      success: true,
+      data: todayTrades.length,
+    }
+
+  } catch (error) {
+      
+    console.error("Failed to calculate today's trade: ", error);
+      
+      const errMsg = error instanceof Error ? error.message : "Something went wrong";
+
+      return {
+        success: false,
+        error: errMsg,
+      }
+  }
+}
+
+export async function getVolume24H(): Promise<Message<number>> {
+  try {
+    
+    const coins = await db.coin.findMany();
+    
+    let volume24h = new Decimal(0);
+
+    for(const c of coins) {
+      volume24h = volume24h.add(c.buyVolume).add(c.sellVolume);
+    }
+
+    return {
+      success: true,
+      data: volume24h.toNumber(),
+    }
+
+  } catch (error) {
+    
+    console.error("Failed to get volume 24h: ", error);
+
+    const errMsg = error instanceof Error ? error.message : "Something went wrong";
+
+    return {
+      success: false,
+      error: errMsg,
+    }
+  }
+}
+
+export async function getMarketCap(): Promise<Message<number>> {
+  try {
+    
+    const trades = await db.trade.findMany();
+
+    let marketCap = new Decimal(0);
+
+    for(const t of trades) {
+      marketCap = marketCap.add(t.tradeValue);
+    }
+
+    return {
+      success: true,
+      data: marketCap.toNumber(),
+    }
+
+  } catch (error) {
+    
+    console.error("Failed to calculate market cap: ", error);
+
+    const errMsg = error instanceof Error ? error.message : "Something went wrong";
+
+    return {
+      success: false,
+      error: errMsg,
+    }
+
   }
 }

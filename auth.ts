@@ -1,30 +1,29 @@
-import NextAuth from "next-auth"
-import authConfig from "./auth.config"
-import { PrismaAdapter } from "@auth/prisma-adapter"
-import { db } from "@/lib/db"
-import { getAccountByUserId, getUserById } from "./modules/auth/actions"
- 
+import NextAuth from "next-auth";
+import authConfig from "./auth.config";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { db } from "@/lib/db";
+import { getUserById } from "./modules/auth/actions";
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  ...authConfig,
+  secret: process.env.AUTH_SECRET,
+  adapter: PrismaAdapter(db),
+  session: { strategy: "jwt" },
   callbacks: {
-    async signIn({user, account}) {
-      if(!user || !account) {
-        return false;
-      }
+    async signIn({ user, account }) {
+      if (!user || !account) return false;
+
       const existingUser = await db.user.findUnique({
-        where: {
-          email: user.email!,
-        }
-      })
-      if(!existingUser) {
+        where: { email: user.email! },
+      });
+
+      if (!existingUser) {
         const newUser = await db.user.create({
           data: {
             email: user.email!,
             name: user.name,
             image: user.image,
-
             accounts: {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
               create: {
                 type: account.type,
                 provider: account.provider,
@@ -35,26 +34,29 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 tokenType: account.token_type,
                 scope: account.scope,
                 idToken: account.id_token,
+                // @ts-expect-error — sessionState not in base type
                 sessionState: account.sessionState,
-              }
-            }
-          }
-        })
-
-        if(!newUser) {
-          return false;
-        }
+              },
+            },
+            portfolio: {
+              create: { value: 25000, cash: 25000 },
+            },
+          },
+        });
+        if (!newUser) return false;
       } else {
         const existingAccount = await db.account.findUnique({
           where: {
             provider_providerAccountId: {
               provider: account.provider,
               providerAccountId: account.providerAccountId,
-            }
-          }
+            },
+          },
         });
-
-        if(!existingAccount) {
+        const existingPortfolio = await db.portfolio.findUnique({
+          where: { userId: existingUser.id },
+        });
+        if (!existingAccount) {
           await db.account.create({
             data: {
               userId: existingUser.id,
@@ -67,49 +69,49 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               tokenType: account.token_type,
               scope: account.scope,
               idToken: account.id_token,
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error — sessionState not in base type
               sessionState: account.sessionState,
-            }
-          })
+            },
+          });
+        }
+        if (!existingPortfolio) {
+          await db.portfolio.create({
+            data: { cash: 25000, value: 25000, userId: existingUser.id },
+          });
         }
       }
       return true;
     },
-    async jwt({token}) {
-      if(!token.sub) {
-        return token;
+
+    async jwt({ token, user, trigger }) {
+
+      // With PrismaAdapter + JWT strategy, user.id may be undefined on the
+      // initial call — use token.sub as the reliable identifier instead.
+      const userId = user?.id ?? token.sub;
+
+      if (!userId) return token;
+
+      // Always fetch on first sign-in (user is present) or when role is missing
+      if (user || trigger === "update" || !token.role) {
+        const dbUser = await getUserById(userId);
+        if (dbUser) {
+          token.sub   = dbUser.id;   // ensure sub is always set
+          token.name  = dbUser.name;
+          token.email = dbUser.email;
+          token.role  = dbUser.role;
+        }
       }
-
-      const existingUser = await getUserById(token.sub);
-      
-      if(!existingUser) {
-        return token;
-      }
-
-      const existingAccount = await getAccountByUserId(existingUser.id);
-
-      token.name = existingUser.name;
-      token.email = existingUser.email;
-      token.role = existingUser.role;
 
       return token;
-    }, 
-    async session({session, token}) {
+    },
 
-      if(token.sub && session.user) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
+    async session({ session, token }) {
+      if (token.sub && session.user) {
+        session.user.id = token.sub;
+        // @ts-expect-error — role extended via next-auth.d.ts
         session.user.role = token.role;
       }
-
       return session;
-    }
+    },
   },
-  secret: process.env.AUTH_SECRET,
-  adapter: PrismaAdapter(db),
-  session: {
-    strategy: "jwt",
-  },
-  ...authConfig 
-})
+});

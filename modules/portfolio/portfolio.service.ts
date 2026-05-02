@@ -11,6 +11,7 @@ import { db } from "@/lib/db";
 
 import {
   calculateAllocation,
+  calculateDayChangeForPortfolio,
   calculateHoldingPnL,
   calculateHoldingValue,
   calculateTotalPnL,
@@ -20,6 +21,7 @@ import {
 import { Decimal } from "@prisma/client/runtime/library";
 import { Holding, PortfolioSnapshot } from "@/lib/generated/prisma/client";
 import { updateAchievements } from "../achievements/achievements.service";
+import { PortfolioSnapshotWithoutDecimal } from "@/app/users/[id]/types";
 
 //returns cash, totalValue, totalPnl, holdings[]
 export async function getUserPortfolio(
@@ -65,17 +67,13 @@ export async function getUserPortfolio(
           in: coinIds,
         },
       },
-      select: {
-        id: true,
-        currentPrice: true,
-      },
     });
 
-    const coinMap = new Map(coins.map((c) => [c.id, c.currentPrice]));
+    const coinMap = new Map(coins.map((c) => [c.id, c]));
 
     const holdingData: HoldingData[] = holdings
       .map((hld) => {
-        const price = coinMap.get(hld.coinId);
+        const price = coinMap.get(hld.coinId).currentPrice;
 
         if (!price) {
           return null;
@@ -97,28 +95,28 @@ export async function getUserPortfolio(
 
     const holdingView: HoldingView[] = holdings
       .map((hld) => {
-        const price = coinMap.get(hld.coinId);
+        const coin = coinMap.get(hld.coinId);
 
-        if (!price) {
+        if (!coin) {
           return null;
         }
         return {
-          coinId: hld.coinId,
+          id: hld.id,
           avgBuyPrice: hld.avgBuyPrice,
           allocationPct: calculateAllocation(
             hld.quantity,
-            price,
+            coin.currentPrice,
             totalPortfolioValue,
           ),
-          currentPrice: price,
           pnl: calculateHoldingPnL({
             avgBuyPrice: hld.avgBuyPrice,
             coinId: hld.coinId,
-            currentPrice: price,
+            currentPrice: coin.currentPrice,
             quantity: hld.quantity,
           }),
           quantity: hld.quantity,
-          value: calculateHoldingValue(hld.quantity, price),
+          value: calculateHoldingValue(hld.quantity, coin.currentPrice),
+          coin,
         };
       })
       .filter((hld) => hld !== null);
@@ -190,21 +188,22 @@ export async function getPortfolioHoldingsDetailed(
       },
     });
 
-    const coinMap = new Map(coins.map((c) => [c.id, c.currentPrice]));
+    const coinMap = new Map(coins.map((c) => [c.id, c]));
 
     const holdingData: HoldingData[] = holdings
       .map((hld) => {
-        const price = coinMap.get(hld.coinId);
+        const coin = coinMap.get(hld.coinId);
 
-        if (!price) {
+        if (!coin) {
           return;
         }
 
         return {
           avgBuyPrice: hld.avgBuyPrice,
           coinId: hld.coinId,
-          currentPrice: price,
+          currentPrice: coin.currentPrice,
           quantity: hld.quantity,
+
         };
       })
       .filter((hld) => hld !== undefined);
@@ -216,29 +215,29 @@ export async function getPortfolioHoldingsDetailed(
 
     const processedHoldings: HoldingView[] = holdings
       .map((hld) => {
-        const price = coinMap.get(hld.coinId);
+        const coin = coinMap.get(hld.coinId);
 
-        if (!price) {
+        if (!coin) {
           return;
         }
 
         return {
-          coinId: hld.coinId,
+          id: hld.id,
           avgBuyPrice: hld.avgBuyPrice,
-          currentPrice: price,
-          value: calculateHoldingValue(hld.quantity, price),
+          value: calculateHoldingValue(hld.quantity, coin.currentPrice),
           pnl: calculateHoldingPnL({
             avgBuyPrice: hld.avgBuyPrice,
             coinId: hld.coinId,
-            currentPrice: price,
+            currentPrice: coin.currentPrice,
             quantity: hld.quantity,
           }),
           allocationPct: calculateAllocation(
             hld.quantity,
-            price,
+            coin.currentPrice,
             totalPortfolioValue,
           ),
           quantity: hld.quantity,
+          coin,
         };
       })
       .filter((hld) => hld !== undefined);
@@ -416,6 +415,13 @@ export async function getPortfolioSummary(
       where: {
         userId: user.id,
       },
+      include: {
+        snapshots: {
+          orderBy: {
+            timestamp: "asc"
+          }
+        },
+      }
     });
 
     if (!userPortfolio) {
@@ -468,13 +474,24 @@ export async function getPortfolioSummary(
     if (!totalValue.eq(0)) {
       pnlPercentage = totalPnL.div(totalValue);
     }
+    
+    const {dayChange, dayChangePct} = calculateDayChangeForPortfolio(userPortfolio.snapshots);
+
+    const snapshots: PortfolioSnapshotWithoutDecimal[] = userPortfolio.snapshots.map(snap => ({
+      ...snap,
+      value: snap.value.toNumber(),
+    }));
 
     return {
       success: true,
       data: {
+        cashBalance: userPortfolio.cash,
+        dayChange,
+        dayChangePct,
         totalPnL,
         pnlPercentage,
         totalValue,
+        snapshots,
       },
     };
   } catch (error) {

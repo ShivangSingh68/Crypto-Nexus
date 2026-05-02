@@ -1,15 +1,13 @@
 "use server"
 import { db } from "@/lib/db";
 import { Message } from "@/types/messages";
-import { Decimal } from "@prisma/client/runtime/library";
 import { CoinWithAdditionalData } from "./type";
+import { calculateDayChangePct } from "@/modules/engine/calculateDayChangePct";
 
 
 export async function getCoins(): Promise<Message<CoinWithAdditionalData[]>> {
     try {
-        
-        const offset = 24*60*60*1000;
-        
+
         const coins = await db.coin.findMany({
             include: {
                 price: {
@@ -20,27 +18,22 @@ export async function getCoins(): Promise<Message<CoinWithAdditionalData[]>> {
             },
         });
         
-        const updatedCoins: CoinWithAdditionalData[] = coins.map( (c)=> {
-            const latestPrice = new Decimal(c.price[c.price.length - 1].price);
-            let oldPrice;
+        const updatedCoins: CoinWithAdditionalData[] = coins.map((c)=> {
             const sparkline = [];
             for(const p  of c.price) {
-                if(p.timestamp.getTime() >= Date.now() - offset) {
-                    oldPrice = new Decimal(p.price);
-                }
                 sparkline.push(p.price.toNumber());
             };
 
-            if(!oldPrice) {
-                oldPrice = c.price[0].price;
-            }
-
-            const change24h = oldPrice.eq(0) ? 1 :(latestPrice.sub(oldPrice).div(oldPrice)).toNumber();
+            const change24h = calculateDayChangePct(c.price, "1d").mul(100).toFixed(2);
             const volume24h = c.buyVolume.add(c.sellVolume).toNumber();
             const marketCap = c.currentPrice.mul(c.circulatingSupply).toNumber();
 
             return{
-                ...c,
+                id: c.id,
+                color: c.color,
+                currentPrice: c.currentPrice.toNumber(),
+                name: c.name,
+                ticker: c.ticker,
                 change24h,
                 volume24h,
                 marketCap,

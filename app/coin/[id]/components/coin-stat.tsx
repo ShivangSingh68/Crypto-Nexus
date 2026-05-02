@@ -6,17 +6,20 @@ interface CoinStatProps {
   highlight?: boolean;
 }
 
-export default function CoinStat({ label, value, sub, color = '#b4befe', highlight }: CoinStatProps) {
+export default function CoinStat({ label, value, sub, color = '#b4befe'}: CoinStatProps) {
   return (
-    <div
-      className={`card-glass rounded-2xl p-4 ${highlight ? 'border-[rgba(0,245,255,0.2)]' : ''}`}
-      style={highlight ? { boxShadow: '0 0 20px rgba(0,245,255,0.08)' } : {}}
-    >
-      <div className="font-rajdhani text-xs uppercase tracking-widest text-[#585b70] mb-1">{label}</div>
-      <div className="font-mono-tech text-base font-bold" style={{ color }}>
+    <div className="nx-stat" style={{ borderColor: `${color}22`, boxShadow: `0 0 16px ${color}10` }}>
+      <div className="font-rajdhani" style={{ fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#585b70' }}>
+        {label}
+      </div>
+      <div className="font-mono-tech" style={{ fontSize: '1rem', fontWeight: 700, color, textShadow: `0 0 10px ${color}66` }}>
         {value}
       </div>
-      {sub && <div className="font-rajdhani text-xs text-[#585b70] mt-0.5">{sub}</div>}
+      {sub && (
+        <div className="font-rajdhani" style={{ fontSize: '0.72rem', color: '#585b70', marginTop: '0.15rem' }}>
+          {sub}
+        </div>
+      )}
     </div>
   );
 }

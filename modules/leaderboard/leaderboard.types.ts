@@ -1,31 +1,36 @@
-
 import { User } from "@/lib/generated/prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
 
-interface Snapshot {
-    value: Decimal,
-}
 export interface LatestPortfolioSnapshotView {
-    id: string,
-    value: Decimal,
-    user: User,
-    snapshots: Snapshot[]
+  avatar: string;
+  badge: string[];
+  dayChange: Decimal;
+  netWorth: Decimal;
+  totalTrades: number;
+  winRate: Decimal;
+  userId: string;
+  username: string;
+  dayChangePct: Decimal;
+  rank: number;
 }
 
 export interface Gainers {
-    rank: number, 
-    user: User,
-    performance: Decimal,
+    userId: string,
+    dayChange: number,
+    avatar: string,
+    username: string,
+    rank: number,
+    dayChangePct: number,
 }
 
 export interface LeaderBoardSummary {
-  richestUser: User,
-  richestValue: Decimal,
-  topGainerUser: User,
-  topGainerPercent: Decimal,
-  topLoserUser: User,
-  topLoserPercent: Decimal,
-  totalPlayers: number,
-  currentUserRank?: number,
-  currentUserValue?: Decimal
+  richestUserId: string;
+  richestValue: Decimal;
+  topGainerUser: User;
+  topGainerPercent: Decimal;
+  topLoserUser: User;
+  topLoserPercent: Decimal;
+  totalPlayers: number;
+  currentUserRank?: number;
+  currentUserValue?: Decimal;
 }

@@ -34,5 +34,26 @@ export const getAccountByUserId = async (userId: string) => {
 
 export const getCurrentUser = async () => {
     const authData = await auth();
-    return authData?.user
+    const user = await db.user.findFirst({
+      where: {
+        id: authData.user.id
+      }
+    })
+
+    return user;
 };
+
+export const getActiveUsers = async() => {
+
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  const activeUsers = await db.user.findMany({
+    where: {
+      lastTradeAt: {
+        gte: sevenDaysAgo,
+      }
+    }
+  })
+
+  return activeUsers.length;
+}

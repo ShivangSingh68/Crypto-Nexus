@@ -1,120 +1,319 @@
-import NewsCard from './components/news-card';
-import type { NewsItem } from './components/news-card';
+"use client";
 
-const NEWS_FEED: NewsItem[] = [
-  {
-    id: 'n1', tag: 'bullish', headline: 'NexusCoin surges 40% following major protocol upgrade',
-    body: 'The NXC network completed its long-awaited v3 upgrade today, introducing zero-fee micro-transactions and a new staking mechanism that analysts say could drive sustained demand.',
-    coinSymbol: 'NXC', coinColor: '#00f5ff', time: '2m ago', source: 'Nexus Wire',
-  },
-  {
-    id: 'n2', tag: 'bearish', headline: 'Global volatility index spikes to 6-month high, signals correction ahead',
-    body: 'The Nexus Volatility Index (NVI) surged past the 80-point threshold today, a level historically associated with short-term market corrections. Analysts urge caution.',
-    time: '14m ago', source: 'CryptoSignal',
-  },
-  {
-    id: 'n3', tag: 'bullish', headline: 'VoxelCoin breaks resistance at $80, eyes $120 target',
-    body: 'Technical analysts are increasingly bullish on VXL after it broke through a major resistance level that had held for three consecutive cycles. Volume data confirms strong buyer momentum.',
-    coinSymbol: 'VXL', coinColor: '#a6e3a1', time: '31m ago', source: 'Chart Nexus',
-  },
-  {
-    id: 'n4', tag: 'neutral', headline: 'Three new coins scheduled for Nexus listing in next market cycle',
-    body: 'The Nexus Market Committee has approved three new tokens for listing in the upcoming cycle. Community voting will determine the final roster and initial price ranges.',
-    time: '1h ago', source: 'Nexus Dispatch',
-  },
-  {
-    id: 'n5', tag: 'bearish', headline: 'HelixChain drops 12% as whale wallets offload significant holdings',
-    body: 'On-chain data reveals that three wallets collectively holding over 8% of the HLX supply have been steadily distributing since yesterday, contributing to the downward pressure.',
-    coinSymbol: 'HLX', coinColor: '#cba6f7', time: '1h 22m ago', source: 'Chain Intel',
-  },
-  {
-    id: 'n6', tag: 'bullish', headline: 'NightShade (NGT) gains 44% as low-cap gem catches trader attention',
-    body: 'The micro-cap token NGT has become one of the most discussed assets on Nexus forums this week. Early adopters are reporting exceptional returns as the project gains visibility.',
-    coinSymbol: 'NGT', coinColor: '#f9e2af', time: '2h ago', source: 'Gem Hunter',
-  },
-  {
-    id: 'n7', tag: 'neutral', headline: 'Monthly portfolio rewards cycle begins — top traders earn bonus tokens',
-    body: 'The monthly rewards distribution is now live. Traders ranked in the top 100 will receive bonus NXC tokens proportional to their performance over the past 30 days.',
-    time: '3h ago', source: 'Nexus Rewards',
-  },
-  {
-    id: 'n8', tag: 'bullish', headline: 'FluxCore ecosystem expands with new DeFi integration',
-    body: 'FLX holders can now stake their tokens in the new FluxPool mechanism, earning passive yield while contributing to network security. APY projections range from 12% to 28%.',
-    coinSymbol: 'FLX', coinColor: '#b4befe', time: '4h ago', source: 'DeFi Nexus',
-  },
-  {
-    id: 'n9', tag: 'bearish', headline: 'PhotonToken struggles below key support as sell pressure mounts',
-    body: 'PHT has failed to reclaim the $340 support level for the third consecutive session. Options data suggests elevated put volume, indicating traders are hedging for further downside.',
-    coinSymbol: 'PHT', coinColor: '#cba6f7', time: '5h ago', source: 'Market Depth',
-  },
-];
+import NewsCard from "./components/news-card";
+import { useNews } from "./hooks/useNews";
 
-const TICKER_ITEMS = [
-  'NXC +12.4%', 'PHT -3.2%', 'VXL +28.7%', 'DRK -8.1%', 'SLR +5.3%',
-  'QNT +2.1%', 'ZRO -1.8%', 'FLX +18.9%', 'NGT +44.8%', 'HLX -12.3%',
-];
+function SkeletonCard() {
+  return (
+    <div
+      style={{
+        borderRadius: "1.25rem",
+        border: "1px solid rgba(180,190,254,0.08)",
+        borderLeft: "4px solid rgba(180,190,254,0.1)",
+        background: "rgba(24,24,37,0.9)",
+        padding: "1.75rem",
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+        <div
+          style={{
+            height: "1.4rem",
+            width: "5rem",
+            borderRadius: "999px",
+            background: "rgba(180,190,254,0.08)",
+          }}
+        />
+        <div
+          style={{
+            height: "1.4rem",
+            width: "3.5rem",
+            borderRadius: "999px",
+            background: "rgba(180,190,254,0.05)",
+          }}
+        />
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+        <div
+          style={{
+            height: "0.85rem",
+            width: "100%",
+            borderRadius: "999px",
+            background: "rgba(180,190,254,0.08)",
+          }}
+        />
+        <div
+          style={{
+            height: "0.85rem",
+            width: "80%",
+            borderRadius: "999px",
+            background: "rgba(180,190,254,0.08)",
+          }}
+        />
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+        <div
+          style={{
+            height: "0.65rem",
+            width: "100%",
+            borderRadius: "999px",
+            background: "rgba(180,190,254,0.05)",
+          }}
+        />
+        <div
+          style={{
+            height: "0.65rem",
+            width: "75%",
+            borderRadius: "999px",
+            background: "rgba(180,190,254,0.05)",
+          }}
+        />
+        <div
+          style={{
+            height: "0.65rem",
+            width: "55%",
+            borderRadius: "999px",
+            background: "rgba(180,190,254,0.05)",
+          }}
+        />
+      </div>
+      <div
+        style={{
+          paddingTop: "1rem",
+          borderTop: "1px solid rgba(180,190,254,0.07)",
+        }}
+      >
+        <div
+          style={{
+            height: "0.6rem",
+            width: "7rem",
+            borderRadius: "999px",
+            background: "rgba(180,190,254,0.05)",
+          }}
+        />
+      </div>
+    </div>
+  );
+}
 
 export default function NewsPage() {
-  const bullish = NEWS_FEED.filter((n) => n.tag === 'bullish');
-  const bearish = NEWS_FEED.filter((n) => n.tag === 'bearish');
-  const neutral = NEWS_FEED.filter((n) => n.tag === 'neutral');
+  const { news, isLoading, tickerItems } = useNews();
+
+  const bullish = news.filter((n) => n.tag === "bullish");
+  const bearish = news.filter((n) => n.tag === "bearish");
+  const neutral = news.filter((n) => n.tag === "neutral");
 
   return (
-    <div className="">
+    <div style={{ minHeight: "100vh" }}>
       {/* Ticker */}
-      <div className="bg-[rgba(17,17,27,0.8)] border-b border-[rgba(180,190,254,0.08)] overflow-hidden py-2">
-        <div className="flex gap-8 animate-ticker whitespace-nowrap">
-          {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => {
-            const isNeg = item.includes('-');
-            return (
-              <span
-                key={i}
-                className={`font-mono-tech text-xs ${isNeg ? 'text-[#f38ba8]' : 'text-[#a6e3a1]'}`}
-              >
-                {item}
-                <span className="text-[#313148] mx-4">|</span>
-              </span>
-            );
-          })}
+      <div
+        style={{
+          background: "#11111b",
+          borderBottom: "1px solid rgba(180,190,254,0.08)",
+          overflow: "hidden",
+          padding: "0.75rem 0",
+        }}
+      >
+        <div style={{ display: "flex" }}>
+          {[0, 1].map((copy) => (
+            <div
+              key={copy}
+              className="animate-ticker"
+              style={{
+                display: "flex",
+                gap: "2rem",
+                whiteSpace: "nowrap",
+                flexShrink: 0,
+                minWidth: "100%",
+              }}
+            >
+              {tickerItems.map((item, i) => {
+                const isNeg = item.includes("-");
+                return (
+                  <span
+                    key={i}
+                    className="font-mono-tech"
+                    style={{
+                      fontSize: "0.75rem",
+                      letterSpacing: "0.05em",
+                      color: isNeg ? "#f38ba8" : "#a6e3a1",
+                      flexShrink: 0,
+                    }}
+                  >
+                    {item}
+                    <span style={{ color: "#313148", margin: "0 1rem" }}>
+                      |
+                    </span>
+                  </span>
+                );
+              })}
+            </div>
+          ))}
         </div>
       </div>
 
       <div className="page-wrapper">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="live-dot font-orbitron text-xs text-[#00f5ff] tracking-widest uppercase">Live Feed</span>
+        <div style={{ marginBottom: "2.5rem" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              marginBottom: "0.75rem",
+            }}
+          >
+            <span
+              className="live-dot font-orbitron"
+              style={{
+                fontSize: "0.72rem",
+                color: "#00f5ff",
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}
+            >
+              Live Feed
+            </span>
           </div>
-          <h1 className="font-orbitron font-black text-3xl uppercase tracking-widest text-[#cdd6f4] mb-1">
+          <h1
+            className="font-orbitron"
+            style={{
+              fontWeight: 900,
+              fontSize: "1.75rem",
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              color: "#cdd6f4",
+              marginBottom: "0.5rem",
+            }}
+          >
             Market Intel
           </h1>
-          <p className="font-rajdhani text-[#7f849c]">AI-generated simulated market news</p>
+          <p
+            className="font-rajdhani"
+            style={{ color: "#7f849c", fontSize: "1rem" }}
+          >
+            Simulated market news
+          </p>
         </div>
 
-        {/* Stats row */}
-        <div className="grid grid-cols-3 gap-3 mb-8">
+        {/* Stat pills */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "1rem",
+            marginBottom: "3.5rem",
+          }}
+        >
           {[
-            { label: 'Bullish', count: bullish.length, color: '#a6e3a1', bg: 'rgba(166,227,161,0.08)', border: 'rgba(166,227,161,0.2)' },
-            { label: 'Bearish', count: bearish.length, color: '#f38ba8', bg: 'rgba(243,139,168,0.08)', border: 'rgba(243,139,168,0.2)' },
-            { label: 'Neutral', count: neutral.length, color: '#f9e2af', bg: 'rgba(249,226,175,0.08)', border: 'rgba(249,226,175,0.2)' },
-          ].map((s) => (
+            { count: bullish.length, label: "Bullish", color: "#a6e3a1" },
+            { count: bearish.length, label: "Bearish", color: "#f38ba8" },
+            { count: neutral.length, label: "Neutral", color: "#f9e2af" },
+          ].map(({ count, label, color }) => (
             <div
-              key={s.label}
-              className="rounded-2xl px-4 py-3 text-center"
-              style={{ background: s.bg, border: `1px solid ${s.border}` }}
+              key={label}
+              style={{
+                borderRadius: "1rem",
+                padding: "1.25rem",
+                textAlign: "center",
+                background: `${color}09`,
+                border: `1px solid ${color}30`,
+              }}
             >
-              <div className="font-orbitron font-bold text-xl" style={{ color: s.color }}>{s.count}</div>
-              <div className="font-rajdhani text-xs text-[#585b70] uppercase tracking-wider mt-0.5">{s.label}</div>
+              <div
+                className="font-orbitron"
+                style={{
+                  fontWeight: 700,
+                  fontSize: "1.5rem",
+                  color,
+                  marginBottom: "0.6rem",
+                }}
+              >
+                {isLoading ? "—" : count}
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.4rem",
+                }}
+              >
+                <span
+                  style={{
+                    width: "6px",
+                    height: "6px",
+                    borderRadius: "50%",
+                    background: color,
+                    display: "inline-block",
+                  }}
+                />
+                <span
+                  className="font-rajdhani"
+                  style={{
+                    fontSize: "0.7rem",
+                    color: "#585b70",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.1em",
+                  }}
+                >
+                  {label}
+                </span>
+              </div>
             </div>
           ))}
         </div>
 
         {/* News grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {NEWS_FEED.map((item) => (
-            <NewsCard key={item.id} news={item} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div style={{ columns: "1", gap: "1.25rem" }}>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={i}
+                style={{ breakInside: "avoid", marginBottom: "1.25rem" }}
+              >
+                <SkeletonCard />
+              </div>
+            ))}
+          </div>
+        ) : news.length === 0 ? (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "1rem",
+              minHeight: "20rem",
+            }}
+          >
+            <div style={{ fontSize: "3rem", opacity: 0.2 }}>📭</div>
+            <p
+              className="font-orbitron"
+              style={{
+                fontSize: "0.75rem",
+                color: "#45475a",
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+              }}
+            >
+              No intel available
+            </p>
+          </div>
+        ) : (
+          <div style={{ columns: "320px", gap: "1.25rem" }}>
+            {news.map((item) => (
+              <div
+                key={item.id}
+                style={{ breakInside: "avoid", marginBottom: "1.25rem" }}
+              >
+                <NewsCard news={item} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

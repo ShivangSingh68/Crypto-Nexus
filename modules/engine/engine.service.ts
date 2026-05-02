@@ -12,14 +12,20 @@ import {
 } from "./sentiment";
 import { applyPriceChange, calculatePriceChange } from "./priceEngine";
 import { groupOHCLData, OHCLData } from "./ohcl";
+import { calculateDayChangePct } from "./calculateDayChangePct";
+
+interface DayChangeProps {
+  coinId?: string,
+  timeframe: "1d" | "7d",
+}
 
 //cron job
-export async function runPriceUpdateForAllCoins(): Promise<Message<Decimal>> {
+export async function runPriceUpdateForAllCoins(timestamp: Date): Promise<Message<Decimal>> {
   try {
     const coins: Coin[] = await db.coin.findMany();
     await Promise.all(
       coins.map(async (coin) => {
-        const res = await updateCoinPrice(coin.id);
+        const res = await updateCoinPrice(coin.id, timestamp);
         if (!res.success) {
           throw new Error(res.error);
         }
@@ -41,6 +47,7 @@ export async function runPriceUpdateForAllCoins(): Promise<Message<Decimal>> {
 
 export async function updateCoinPrice(
   coinId: string,
+  timestamp: Date
 ): Promise<Message<Decimal>> {
   try {
     const coin = await db.coin.findUnique({
@@ -82,7 +89,7 @@ export async function updateCoinPrice(
       data: {
         coinId: coin.id,
         price: updatedPrice,
-        timestamp: new Date(),
+        timestamp: timestamp,
       },
     });
     const updatedCoin = await db.coin.update({
@@ -206,5 +213,94 @@ export async function getOHCLdata (coinId: string, interval: "4h" | "7h" | "1d")
       error: errMsg,
     }
 
+  }
+}
+
+export async function calculateDayChangePctForCoins(props: DayChangeProps): Promise<Message<{ticker: string, pct: Decimal}[]>> {
+  try {
+    const {coinId, timeframe} = props;
+    let coins;
+    if(coinId) {
+      const coin = await db.coin.findFirst({
+        where: {
+          id: coinId,
+        },
+        include: {
+          price: {
+            orderBy: { timestamp: "asc"}
+          }
+        }
+      });
+      coins = [coin];
+    } else {
+        coins = await db.coin.findMany({
+        include: {
+          price: {
+            orderBy: { timestamp: "asc"}
+          }
+        }
+      });
+    }
+
+    const processedData = coins!.map((c) => {
+      return {
+        ticker: c.ticker,
+        pct: calculateDayChangePct(c.price ?? [], timeframe),
+      }
+    })
+
+    return {
+      success: true,
+      data: processedData,
+    }
+
+  } catch (error) {
+    
+    console.error("Error in calculateDayChangePctForCoins: ", error);
+    
+    const errMsg = error instanceof Error ? error.message : "Something went wrong";
+
+    return {
+      success: false,
+      error: errMsg,
+    }
+  
+  }
+}
+
+export async function getCoinATHandATL(coinId: string): Promise<Message<{ath: Decimal, atl: Decimal}>> { 
+  try {
+    
+    const coin = await db.coin.findFirst({
+      where: {
+        id: coinId,
+      },
+      include: {
+        price: {
+          orderBy: {
+            price: "asc"
+          }
+        }
+      }
+    });
+
+    return {
+      success: true,
+      data: {
+        ath: coin.price[coin.price.length-1].price,
+        atl: coin.price[0].price,
+      }
+    }
+
+  } catch (error) {
+    
+    console.error("Error in getting ath and atl for a coin");
+    
+    const errMsg = error instanceof Error ? error.message : "Something went wrong";
+
+    return {
+      success: false,
+      error: errMsg,
+    }
   }
 }
